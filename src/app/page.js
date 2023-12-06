@@ -1,15 +1,13 @@
-import Image from "next/image";
-import dynamic from "next/dynamic";
-// const DynamicComponent = dynamic(
-//   () => import("../components/DynamicComponent"),
-//   {
-//     loading: () => <p>Loading...</p>,
-//     ssr: false, // Set to false if component doesn't need SSR
-//   }
-// );
-
-import NavbarHomePage from "@/components/NavBarHomePage";
+import React from "react";
+import NavbarHomePage from "@/components/NavBarHomePage"; // Update the path based on your project structure
 
 export default function Home() {
-  return;
+  const isLoggedIn = true; // You can set this based on your authentication state
+
+  return (
+    <div>
+      <NavbarHomePage isLoggedIn={isLoggedIn} />
+      {/* Other content of your homepage */}
+    </div>
+  );
 }

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import styles from "../css/signin.css";
-
+import NavbarSignIn from "@/components/NavbarSignIn";
 const SignIn = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -69,7 +69,9 @@ const SignIn = () => {
           </div>
           <div className="flex flex-col text-center mt-3">
             <p>Not have an account?</p>
-            <a href="/signup" className="text-purple-600 hover:underline">Sign up</a>
+            <a href="/signup" className="text-purple-600 hover:underline">
+              Sign up
+            </a>
           </div>
         </form>
       </div>

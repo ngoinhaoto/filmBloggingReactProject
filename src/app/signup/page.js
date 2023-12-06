@@ -2,7 +2,7 @@
 "use client";
 import React, { useState } from "react";
 import styles from "../css/signup.css";
-
+import NavbarSignIn from "@/components/NavbarSignIn";
 const Signup = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -30,7 +30,10 @@ const Signup = () => {
       <h1 className="text-3xl lg:text-4xl font-bold mb-5 text-center text-white">
         Join Us
       </h1>
-      <form onSubmit={handleSubmit} className="bg-white p-8 md:mx-4 rounded-2xl max-w-md w-full lg:max-w-3xl md:max-w-2xl border-2 border-gray-600">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 md:mx-4 rounded-2xl max-w-md w-full lg:max-w-3xl md:max-w-2xl border-2 border-gray-600"
+      >
         <div className="mb-4">
           <label htmlFor="username" className="block text-gray-700 mb-2">
             Username
@@ -89,14 +92,19 @@ const Signup = () => {
           />
         </div>{" "}
         <div className="mt-6 flex justify-center">
-          <button type="submit" className="bg-purple-800 text-white px-4 py-2 rounded hover:bg-purple-600 focus:outline-none w-full transition duration-500 ease-in-out">
+          <button
+            type="submit"
+            className="bg-purple-800 text-white px-4 py-2 rounded hover:bg-purple-600 focus:outline-none w-full transition duration-500 ease-in-out"
+          >
             Sign Up
           </button>
         </div>
         <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
         <div className="flex flex-col text-center">
           <p>Already have an account?</p>
-          <a href="/signin" className="text-purple-600 hover:underline">Sign in</a>
+          <a href="/signin" className="text-purple-600 hover:underline">
+            Sign in
+          </a>
         </div>
       </form>
     </div>

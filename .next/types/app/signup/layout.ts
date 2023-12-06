@@ -1,4 +1,4 @@
-// File: D:\Documents\Advanced Web Design\filmBloggingReactProject\src\app\signup\layout.js
+// File: /Users/ritherthemuncher/Desktop/funny ai /filmBloggingReactProject/src/app/signup/layout.js
 import * as entry from '../../../../src/app/signup/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

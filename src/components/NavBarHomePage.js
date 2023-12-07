@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Icon } from "@iconify/react";
 
 export default function Navbar({ isLoggedIn }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,12 +65,13 @@ export default function Navbar({ isLoggedIn }) {
               />
               {isLoggedIn ? (
                 <>
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/40px-User-avatar.svg.png?20201213175635"
-                    alt="User Avatar"
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <button className="px-4 py-2 bg-purple-600 text-white rounded-md">
+                  <a href="/user-profile">
+                    <Icon
+                      className="text-5xl ml-2 text-purple-600 hover:text-purple-800 transition duration-500 ease-in-out"
+                      icon="iconamoon:profile-circle-fill"
+                    />
+                  </a>
+                  <button className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-800 transition duration-500 ease-in-out">
                     Create Post
                   </button>
                 </>
@@ -100,20 +102,32 @@ export default function Navbar({ isLoggedIn }) {
               className="w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             {isLoggedIn ? (
-              <button className="block px-4 py-2 text-left w-full text-purple-800 hover:bg-purple-600 hover:text-white rounded-md">
-                Create Post
-              </button>
+              <>
+                <button className="block px-4 py-2 text-left w-full bg-purple-800 text-white  hover:bg-purple-600 hover:text-white rounded-md">
+                  Create Post
+                </button>
+                <a
+                  href="/user-profile"
+                  className="block px-4 py-2 text-left w-full bg-orange-800 text-white hover:bg-purple-600 hover:text-white rounded-md flex items-center"
+                >
+                  <span>User Profile </span>
+                  <Icon
+                    className="text-2xl ml-2"
+                    icon="iconamoon:profile-circle-fill"
+                  />
+                </a>
+              </>
             ) : (
               <>
                 <a
                   href="/signup"
-                  className="block px-4 py-2 text-left w-full text-purple-800 hover:bg-purple-600 hover:text-white rounded-md"
+                  className="block px-4 py-2 text-left w-full text-white bg-purple-600 hover:bg-purple-800  rounded-md"
                 >
                   Sign Up
                 </a>
                 <a
                   href="/signin"
-                  className="block px-4 py-2 text-left w-full text-purple-800 hover:bg-purple-600 hover:text-white rounded-md"
+                  className="block  px-4 py-2 text-left w-full text-white bg-purple-600 hover:bg-purple-800  rounded-md"
                 >
                   Sign In
                 </a>

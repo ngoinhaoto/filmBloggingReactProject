@@ -10,8 +10,8 @@ export default function Home() {
     <div className="bg-slate-100">
       <NavbarHomePage isLoggedIn={isLoggedIn} />
       <div className="flex flex-col-reverse md:flex-row container mx-auto mt-5">
-        <ForumOverview/>
-        <ForumPosts/>
+        <ForumPosts />
+        <ForumOverview />
       </div>
     </div>
   );

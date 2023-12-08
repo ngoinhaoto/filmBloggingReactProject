@@ -71,9 +71,12 @@ export default function Navbar({ isLoggedIn }) {
                       icon="iconamoon:profile-circle-fill"
                     />
                   </a>
-                  <button className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-800 transition duration-500 ease-in-out">
+                  <a
+                    href="/create-post"
+                    className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-800 transition duration-500 ease-in-out"
+                  >
                     Create Post
-                  </button>
+                  </a>
                 </>
               ) : (
                 <>
@@ -103,9 +106,12 @@ export default function Navbar({ isLoggedIn }) {
             />
             {isLoggedIn ? (
               <>
-                <button className="block px-4 py-2 text-left w-full bg-purple-800 text-white  hover:bg-purple-600 hover:text-white rounded-md">
+                <a
+                  href="/create-post"
+                  className="block px-4 py-2 text-left w-full bg-purple-800 text-white  hover:bg-purple-600 hover:text-white rounded-md"
+                >
                   Create Post
-                </button>
+                </a>
                 <a
                   href="/user-profile"
                   className="block px-4 py-2 text-left w-full bg-orange-800 text-white hover:bg-purple-600 hover:text-white rounded-md flex items-center"

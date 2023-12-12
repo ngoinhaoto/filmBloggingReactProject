@@ -1,10 +1,10 @@
 import React from "react";
-import NavbarHomePage from "@/components/NavBarHomePage"; // Update the path based on your project structure
+import NavbarHomePage from "@/components/NavBarHomePage";
 import ForumOverview from "@/components/ForumOverview";
 import ForumPosts from "@/components/ForumPosts";
 
 export default function Home() {
-  const isLoggedIn = true; // You can set this based on your authentication state
+  const isLoggedIn = true; // todo authen
 
   return (
     <div className="bg-slate-100">

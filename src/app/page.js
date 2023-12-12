@@ -1,5 +1,5 @@
 import React from "react";
-import NavbarHomePage from "@/components/NavBarHomePage";
+import NavbarHomePage from "@/components/navbar/NavBarHomePage";
 import ForumOverview from "@/components/ForumOverview";
 import ForumPosts from "@/components/ForumPosts";
 

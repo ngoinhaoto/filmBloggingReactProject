@@ -1,8 +1,8 @@
 // UserProfilePage.js
 
 import React from "react";
-import EditProfileForm from "@/components/EditProfileForm";
-import NavBarHomePage from "@/components/NavBarHomePage";
+import EditProfileForm from "@/app/edit-user-profile/EditProfileForm";
+import NavBarHomePage from "@/components/navbar/NavBarHomePage";
 
 const isLoggedIn = true;
 

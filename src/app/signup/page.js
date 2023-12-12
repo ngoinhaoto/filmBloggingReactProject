@@ -1,8 +1,8 @@
 // pages/signup.js
 "use client";
 import React, { useState } from "react";
-import styles from "../css/signup.css";
-import NavbarSignIn from "@/components/NavbarSignIn";
+import styles from "./signup.css";
+import NavbarSignIn from "@/components/navbar/NavbarSignIn";
 const Signup = () => {
   const [formData, setFormData] = useState({
     username: "",

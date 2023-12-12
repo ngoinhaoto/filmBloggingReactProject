@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
+import {Chip} from "@nextui-org/react";
 
 export default function ForumPosts() {
   const [sortByDate, setSortByDate] = React.useState(new Set(["sortDateAsc"]));
@@ -25,7 +26,10 @@ export default function ForumPosts() {
           <Dropdown>
             <DropdownTrigger>
               <Button  
-                className="capitalize rounded-md bg-purple-600 text-white"
+                variant="faded"
+                radius="sm"
+                color="secondary"
+                className="capitalize ms-2"
               >
                 {selectedSortByDate}
               </Button>
@@ -46,7 +50,10 @@ export default function ForumPosts() {
           <Dropdown>
             <DropdownTrigger>
               <Button 
-                className="capitalize rounded-md bg-purple-600 text-white ms-2"
+                variant="faded"
+                radius="sm"
+                color="secondary"
+                className="capitalize ms-2"
               >
                 {selectedCategories}
               </Button>
@@ -74,18 +81,28 @@ export default function ForumPosts() {
         <section className="flex flex-col">
           <a
             href="/post"
-            className="bg-white flex shadow-lg rounded-lg flex-col md:flex-row"
+            className="bg-white flex shadow-lg rounded-xl flex-col md:flex-row"
           >
             <div className="md:basis-1/4">
-              <img src="board.jpg" alt="thumbnail" className="rounded-l-lg" />
+              <img src="board.jpg" alt="thumbnail" className="rounded-l-xl" />
             </div>
-            <div className="md:basis-3/4 flex-col p-6">
-              <div className="text-xl font-medium">
-                This film sucks. Don't watch it
+            <div className="md:basis-3/4 flex-col p-6 w-full">
+              <div className="mb-6">
+                <div className="text-xl font-medium">
+                  This film sucks. Don't watch it
+                </div>
+                <div className="text-gray-400">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua...
+                </div>
               </div>
-              <div className="text-gray-400">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua...
+              <div className="flex gap-1">
+                <Chip color="secondary" variant="solid" radius="sm">Spoiled</Chip>
+                <Chip color="danger" variant="solid" radius="sm">NSFW</Chip>
+                <Chip color="default" variant="solid" radius="sm">Fantasy</Chip>
+                <Chip color="default" variant="solid" radius="sm">Horror</Chip>
+                <Chip color="default" variant="solid" radius="sm">Sci-Fi</Chip>
+                <Chip color="default" variant="solid" radius="sm">Action</Chip>
               </div>
             </div>
           </a>

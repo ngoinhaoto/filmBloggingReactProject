@@ -17,8 +17,8 @@ const Footer = () => {
       >
         <defs>
           <linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%">
-            <stop offset="5%" stop-color="#9900ef"></stop>
-            <stop offset="95%" stop-color="#f78da7"></stop>
+            <stop offset="5%" stopColor="#9900ef"></stop>
+            <stop offset="95%" stopColor="#f78da7"></stop>
           </linearGradient>
         </defs>
         <path
@@ -41,7 +41,7 @@ const Footer = () => {
           stroke-width="0"
           fill="url(#gradient)"
           fill-opacity="0.53"
-          class="transition-all duration-300 ease-in-out delay-150 path-1"
+          className="transition-all duration-300 ease-in-out delay-150 path-1"
         ></path>
         <defs>
           <linearGradient id="gradient" x1="0%" y1="50%" x2="100%" y2="50%">
@@ -55,7 +55,7 @@ const Footer = () => {
           strokeWidth="0"
           fill="url(#gradient)"
           fillOpacity="1"
-          class="transition-all duration-300 ease-in-out delay-150 path-2"
+          className="transition-all duration-300 ease-in-out delay-150 path-2"
         ></path>
       </svg>
 

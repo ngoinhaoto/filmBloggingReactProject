@@ -65,7 +65,7 @@ export default function Navbar({ isLoggedIn }) {
               />
               {isLoggedIn ? (
                 <>
-                  <a href="/user-profile">
+                  <a href="/edit-user-profile">
                     <Icon
                       className="text-5xl ml-2 text-purple-600 hover:text-purple-800 transition duration-500 ease-in-out"
                       icon="iconamoon:profile-circle-fill"

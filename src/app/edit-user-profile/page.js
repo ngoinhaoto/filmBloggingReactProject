@@ -8,11 +8,11 @@ const isLoggedIn = true;
 
 const UserProfilePage = () => {
   return (
-    <div className="bg-slate-100">
+    <div className="bg-white">
       <NavBarHomePage isLoggedIn={isLoggedIn} />
 
-      <div className="flex bg-slate-100 h-screen">
-        <div className="w-1/5 bg-gray-200">
+      <div className="flex container mx-auto h-screen">
+        <div className="w-1/5">
           <nav className="mt-10">
             <ul>
               <li>

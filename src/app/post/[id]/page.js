@@ -5,6 +5,7 @@ import PostContent from "./PostContent";
 
 import NavbarHomePage from "@/components/navbar/NavBarHomePage";
 import Footer from "@/components/footer/Footer";
+import CommentSection from "./CommentSection";
 
 export default function Post({ params }) {
   const isLoggedIn = true;
@@ -14,6 +15,8 @@ export default function Post({ params }) {
     <div className="bg-slate-100">
       <NavbarHomePage isLoggedIn={isLoggedIn} />
       <PostContent id={1} />
+
+      <CommentSection postId={1} />
       <Footer />
     </div>
   );

@@ -38,8 +38,10 @@ model Post {
 
 model Comment {
   id            Int   @id @default(autoincrement())
+  commentBody   String
   commentUserId Int
   commentUser   User  @relation(fields: [commentUserId], references: [id])
   Post          Post? @relation(fields: [postId], references: [id])
   postId        Int?
+  createdAt     DateTime @default(now())
 }

@@ -28,6 +28,7 @@ model Post {
   title          String
   author         User      @relation(fields: [authorId], references: [id])
   authorId       Int
+  content        String?
   nsfw           Boolean   @default(false)
   spoiledContent Boolean   @default(false)
   comments       Comment[]
@@ -38,7 +39,7 @@ model Post {
 
 model Comment {
   id            Int   @id @default(autoincrement())
-  commentBody   String
+  commentBody   String?
   commentUserId Int
   commentUser   User  @relation(fields: [commentUserId], references: [id])
   Post          Post? @relation(fields: [postId], references: [id])

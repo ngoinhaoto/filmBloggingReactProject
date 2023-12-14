@@ -20,12 +20,12 @@ model User {
   createdAt   DateTime  @default(now())
   location    String // Adding a location field
   post        Post[]
-  Comment     Comment[]
+  comment     Comment[]
 }
 
 model Post {
   id             Int       @id @default(autoincrement())
-  title          String
+  title          String?
   author         User      @relation(fields: [authorId], references: [id])
   authorId       Int
   content        String?

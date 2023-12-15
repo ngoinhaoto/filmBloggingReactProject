@@ -1,10 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
+import Navbar from "@/components/navbar/NavBarHomePage";
 
+import Footer from "@/components/footer/Footer";
 const CreatePostPage = () => {
   return (
     <div className="min-h-screen bg-slate-100">
+      <Navbar isLoggedIn={true} />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-semibold mb-8 text-center">Create Post</h1>
         <form className="bg-white shadow-md rounded-lg p-6">
@@ -59,6 +62,7 @@ const CreatePostPage = () => {
           </button>
         </form>
       </div>
+      <Footer />
     </div>
   );
 };

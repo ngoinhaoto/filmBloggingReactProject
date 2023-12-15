@@ -2,9 +2,33 @@
 import React, { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import Navbar from "@/components/navbar/NavBarHomePage";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+  Switch,
+} from "@nextui-org/react";
 
 import Footer from "@/components/footer/Footer";
 const CreatePostPage = () => {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [category, setCategory] = useState("");
+  const [nsfw, setNsfw] = useState(false);
+  const [spoiled, setSpoiled] = useState(false);
+
+  const handlePublish = (e) => {
+    e.preventDefault();
+    // handle submission
+    console.log("Title:", title);
+    console.log("Content:", content);
+    console.log("Category:", category);
+    console.log("NSFW:", nsfw);
+    console.log("Spoiled:", spoiled);
+  };
+
   return (
     <div className="min-h-screen bg-slate-100">
       <Navbar isLoggedIn={true} />
@@ -24,12 +48,60 @@ const CreatePostPage = () => {
               name="title"
               className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:border-purple-500"
               placeholder="Enter title..."
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
+          </div>
+          <div className="flex justify-between">
+            <div className="flex items-center mb-6">
+              <label
+                htmlFor="categories"
+                className="block text-gray-700 font-bold mb-2 mr-4"
+              >
+                Categories:
+              </label>
+              <Dropdown placeholder="Select category" bordered>
+                <DropdownTrigger>
+                  <Button color="secondary">
+                    {category || "Select category"}
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu>
+                  <DropdownItem onClick={() => setCategory("Horror")}>
+                    Horror
+                  </DropdownItem>
+                  <DropdownItem onClick={() => setCategory("Fantasy")}>
+                    Fantasy
+                  </DropdownItem>
+                  <DropdownItem onClick={() => setCategory("Action")}>
+                    Action
+                  </DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            </div>
+            <div className="flex items-center mb-6">
+              <span className="mr-4 text-gray-700 font-bold">NSFW:</span>
+              <Switch
+                color="secondary"
+                checked={nsfw}
+                onChange={(checked) => setNsfw(checked)}
+              />
+            </div>
+            <div className="flex items-center mb-6">
+              <span className="mr-4 text-gray-700 font-bold">
+                Spoiled Content:
+              </span>
+              <Switch
+                color="secondary"
+                checked={spoiled}
+                onChange={(checked) => setSpoiled(checked)}
+              />
+            </div>
           </div>
           <div className="mb-8">
             <label
               htmlFor="content"
-              className="block text-gray-700 font-medium mb-2"
+              className="block text-gray-700 font-bold mb-2"
             >
               Content
             </label>
@@ -51,7 +123,7 @@ const CreatePostPage = () => {
                     Promise.reject("See docs to implement AI Assistant")
                   ),
               }}
-              initialValue="Welcome to TinyMCE!"
+              initialValue="Enter your post here!"
             />
           </div>
           <button

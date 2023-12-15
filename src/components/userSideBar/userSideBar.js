@@ -14,7 +14,7 @@ export default function UserSideBar() {
             <Link
               className={`link ${
                 pathname === "/edit-user-profile"
-                  ? "text-blue-500 font-bold"
+                  ? "text-purple-600 font-bold"
                   : "text-gray-500"
               }`}
               href="/edit-user-profile"
@@ -26,7 +26,7 @@ export default function UserSideBar() {
             <Link
               className={`link ${
                 pathname === "/account-overview"
-                  ? "text-blue-500 font-bold"
+                  ? "text-purple-600 font-bold"
                   : "text-gray-500"
               }`}
               href="/account-overview"
@@ -38,7 +38,7 @@ export default function UserSideBar() {
             <Link
               className={`link ${
                 pathname === "/post-overview"
-                  ? "text-blue-500 font-bold"
+                  ? "text-purple-600 font-bold"
                   : "text-gray-500"
               }`}
               href="/post-overview"

@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
@@ -19,30 +19,29 @@ model User {
   avatar      String
   createdAt   DateTime  @default(now())
   location    String // Adding a location field
-  post        Post[]
-  comment     Comment[]
+  post        Post[]    @relation("LinkBetweenUserAndPost")
+  comment     Comment[] @relation("LinkBetweenUserAndComment")
 }
 
 model Post {
   id             Int       @id @default(autoincrement())
   title          String?
-  author         User      @relation(fields: [authorId], references: [id])
-  authorId       Int
   content        String?
+  thumbnail      String
   nsfw           Boolean   @default(false)
   spoiledContent Boolean   @default(false)
   comments       Comment[]
   createdAt      DateTime  @default(now())
   lastUpdateAt   DateTime  @default(now())
   published      Boolean   @default(false)
+  author         User[]    @relation("LinkBetweenUserAndPost")
 }
 
 model Comment {
-  id            Int   @id @default(autoincrement())
-  commentBody   String?
-  commentUserId Int
-  commentUser   User  @relation(fields: [commentUserId], references: [id])
-  Post          Post? @relation(fields: [postId], references: [id])
-  postId        Int?
-  createdAt     DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  commentBody String?
+  commentUser User[]   @relation("LinkBetweenUserAndComment")
+  Post        Post?    @relation(fields: [postId], references: [id])
+  postId      Int?
+  createdAt   DateTime @default(now())
 }

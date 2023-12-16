@@ -10,14 +10,16 @@ import {
   Button,
   Switch,
 } from "@nextui-org/react";
+import {Select, SelectItem} from "@nextui-org/react";
 
 import Footer from "@/components/footer/Footer";
 const CreatePostPage = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState("");
+  const [categories, setCategories] = useState("");
   const [nsfw, setNsfw] = useState(false);
   const [spoiled, setSpoiled] = useState(false);
+
 
   const handlePublish = (e) => {
     e.preventDefault();
@@ -52,33 +54,19 @@ const CreatePostPage = () => {
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-          <div className="flex justify-between">
-            <div className="flex items-center mb-6">
+          <div className="flex items-center mb-6">
               <label
                 htmlFor="categories"
                 className="block text-gray-700 font-bold mb-2 mr-4"
               >
                 Categories:
               </label>
-              <Dropdown placeholder="Select category" bordered>
-                <DropdownTrigger>
-                  <Button color="secondary">
-                    {category || "Select category"}
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu>
-                  <DropdownItem onClick={() => setCategory("Horror")}>
-                    Horror
-                  </DropdownItem>
-                  <DropdownItem onClick={() => setCategory("Fantasy")}>
-                    Fantasy
-                  </DropdownItem>
-                  <DropdownItem onClick={() => setCategory("Action")}>
-                    Action
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
-            </div>
+              <Select label="Categories" placeholder="Select multiple" selectionMode="multiple" className="max-w-xs" variant="bordered">
+                <SelectItem key="horror" value="horror">Horror</SelectItem>
+                <SelectItem key="fantasy" value="fantasy">Fantasy</SelectItem>
+              </Select>
+          </div>
+          <div className="flex justify-between">
             <div className="flex items-center mb-6">
               <span className="mr-4 text-gray-700 font-bold">NSFW:</span>
               <Switch

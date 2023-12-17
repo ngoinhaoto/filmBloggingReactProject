@@ -56,7 +56,14 @@ const EditProfileForm = () => {
         label="Location"
         className="mb-3"
       />
-      <Button type="submit" radius="sm" color="secondary" className="font-medium">Save Changes</Button>
+      <Button
+        type="submit"
+        radius="sm"
+        color="secondary"
+        className="font-medium"
+      >
+        Save Changes
+      </Button>
     </form>
   );
 };

@@ -9,8 +9,8 @@ export default function UserSideBar() {
   return (
     <div className="w-full md:w-1/5">
       <nav className="mt-10">
-        <ul>
-          <li>
+        <ul className="flex flex-wrap text-center md:text-left">
+          <li className="md:w-full w-1/3">
             <Link
               className={`link ${
                 pathname === "/edit-user-profile"
@@ -22,7 +22,7 @@ export default function UserSideBar() {
               Edit Information
             </Link>
           </li>
-          <li>
+          <li className="md:w-full w-1/3">
             <Link
               className={`link ${
                 pathname === "/account-overview"
@@ -34,7 +34,7 @@ export default function UserSideBar() {
               Account Overview
             </Link>
           </li>
-          <li>
+          <li className="md:w-full w-1/3">
             <Link
               className={`link ${
                 pathname === "/post-overview"

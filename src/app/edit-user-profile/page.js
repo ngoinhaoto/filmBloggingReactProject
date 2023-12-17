@@ -13,7 +13,7 @@ const UserProfilePage = () => {
       <div className="container mx-auto p-4 md:p-0">
         <div className="md:flex">
           <UserSideBar />
-          <div className="w-full md:w-4/5 p-10">
+          <div className="w-full md:w-4/5 p-10 text-center">
             <h1 className="text-2xl mb-6">Edit Your Profile</h1>
             <EditProfileForm />
           </div>

@@ -14,6 +14,8 @@ import timeLine from "@iconify/icons-mingcute/time-line";
 
 import { useEffect } from "react";
 
+import Post from "./Post";
+
 export default function ForumPosts() {
   const [sortByDate, setSortByDate] = React.useState(new Set(["sortDateAsc"]));
   const [categories, setCategories] = React.useState(new Set(["Categories"]));
@@ -21,7 +23,6 @@ export default function ForumPosts() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    // Fetch posts from the API
     fetch("/api/overview")
       .then((response) => response.json())
       .then((data) => {
@@ -107,60 +108,9 @@ export default function ForumPosts() {
         </div>
 
         <section className="flex flex-col">
-          <a
-            href="/post/1"
-            className="bg-white flex shadow-lg rounded-xl flex-col md:flex-row"
-          >
-            <div className="md:basis-1/4">
-              <img
-                src="board.jpg"
-                alt="thumbnail"
-                className="md:rounded-l-xl h-full"
-              />
-            </div>
-            <div className="md:basis-3/4 flex-col p-6 w-full">
-              <div className="mb-6">
-                <div className="text-xl font-medium">
-                  This film sucks. Don't watch it
-                </div>
-                <div className="text-gray-400">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna
-                  aliqua...
-                </div>
-              </div>
-              <div className="flex gap-1 flex-wrap mb-3">
-                <Chip color="secondary" variant="solid" radius="sm">
-                  Spoiled
-                </Chip>
-                <Chip color="danger" variant="solid" radius="sm">
-                  NSFW
-                </Chip>
-                <Chip color="default" variant="solid" radius="sm">
-                  Fantasy
-                </Chip>
-                <Chip color="default" variant="solid" radius="sm">
-                  Horror
-                </Chip>
-                <Chip color="default" variant="solid" radius="sm">
-                  Sci-Fi
-                </Chip>
-                <Chip color="default" variant="solid" radius="sm">
-                  Action
-                </Chip>
-              </div>
-              <div className="w-full flex">
-                <div className="me-4 flex items-center">
-                  <Icon icon={userFilled} color="#4b5563" className="me-1" />
-                  <p className="text-gray-600">Xi Jingpi</p>
-                </div>
-                <div className="flex items-center">
-                  <Icon icon={timeLine} color="#4b5563" />
-                  <p className="text-gray-600">3 days ago</p>
-                </div>
-              </div>
-            </div>
-          </a>
+          {posts.map((post) => (
+            <Post key={post.id} post={post} />
+          ))}
         </section>
       </div>
     </>

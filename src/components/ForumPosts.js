@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -12,9 +12,25 @@ import { Icon } from "@iconify/react";
 import userFilled from "@iconify/icons-tabler/user-filled";
 import timeLine from "@iconify/icons-mingcute/time-line";
 
+import { useEffect } from "react";
+
 export default function ForumPosts() {
   const [sortByDate, setSortByDate] = React.useState(new Set(["sortDateAsc"]));
   const [categories, setCategories] = React.useState(new Set(["Categories"]));
+
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    // Fetch posts from the API
+    fetch("/api/overview")
+      .then((response) => response.json())
+      .then((data) => {
+        setPosts(data.allPosts);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  }, []);
 
   const selectedSortByDate = React.useMemo(
     () => Array.from(sortByDate).join(", ").replaceAll("_", " "),

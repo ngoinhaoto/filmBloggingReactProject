@@ -2,6 +2,8 @@ import Navbar from "@/components/navbar/NavbarSignIn";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { getServerSession } from "next-auth";
+import SessionProvider from "../components/SessionProvider.js";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,12 +13,13 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const session = getServerSession();
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
-          {children}
-        </Providers>
+        <SessionProvider>
+          <Providers>{children}</Providers>
+        </SessionProvider>
       </body>
     </html>
   );

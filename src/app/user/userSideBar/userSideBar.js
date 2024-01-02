@@ -13,11 +13,11 @@ export default function UserSideBar() {
           <li className="md:w-full w-1/3">
             <Link
               className={`link ${
-                pathname === "/edit-user-profile"
+                pathname === "/user/edit-user-profile"
                   ? "text-purple-600 font-bold"
                   : "text-gray-500"
               }`}
-              href="/edit-user-profile"
+              href="/user/edit-user-profile"
             >
               Edit Information
             </Link>
@@ -25,11 +25,11 @@ export default function UserSideBar() {
           <li className="md:w-full w-1/3">
             <Link
               className={`link ${
-                pathname === "/account-overview"
+                pathname === "/user/account-overview"
                   ? "text-purple-600 font-bold"
                   : "text-gray-500"
               }`}
-              href="/account-overview"
+              href="/user/account-overview"
             >
               Account Overview
             </Link>
@@ -37,11 +37,11 @@ export default function UserSideBar() {
           <li className="md:w-full w-1/3">
             <Link
               className={`link ${
-                pathname === "/post-overview"
+                pathname === "/user/post-overview"
                   ? "text-purple-600 font-bold"
                   : "text-gray-500"
               }`}
-              href="/post-overview"
+              href="/user/post-overview"
             >
               Post Overview
             </Link>

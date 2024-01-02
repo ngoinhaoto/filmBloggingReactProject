@@ -1,7 +1,7 @@
 import React from "react";
-import EditProfileForm from "@/app/edit-user-profile/EditProfileForm";
+import EditProfileForm from "@/app/user/edit-user-profile/EditProfileForm";
 import NavBarHomePage from "@/components/navbar/NavBarHomePage";
-import UserSideBar from "@/components/userSideBar/userSideBar";
+import UserSideBar from "@/app/user/userSideBar/userSideBar";
 import Footer from "@/components/footer/Footer";
 const isLoggedIn = true;
 

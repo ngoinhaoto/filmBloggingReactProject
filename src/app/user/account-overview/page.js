@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import NavBarHomePage from "@/components/navbar/NavBarHomePage";
-import UserSideBar from "@/components/userSideBar/userSideBar";
+import UserSideBar from "@/app/user/userSideBar/userSideBar";
 const isLoggedIn = true;
 import Footer from "@/components/footer/Footer";
 

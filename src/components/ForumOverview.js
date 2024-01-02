@@ -1,9 +1,25 @@
 "use client";
 import { useState } from "react";
 
+import { useEffect } from "react";
+
+import Post from "./Post";
+
 export default function ForumOverview() {
   const [forumPosts, setForumPosts] = useState("0");
   const [forumUsers, setForumUsers] = useState("0");
+
+  useEffect(() => {
+    fetch("/api/overview")
+      .then((response) => response.json())
+      .then((data) => {
+        setForumPosts(data.totalPostNumber);
+        setForumUsers(data.totalUserNumber);
+      })
+      .catch((error) => {
+        console.error("Error fetching posts:", error);
+      });
+  }, []);
 
   return (
     <>
@@ -16,11 +32,11 @@ export default function ForumOverview() {
           <div className="grid grid-cols-2">
             <div>
               <p className="uppercase font-bold text-gray-400">Total Posts</p>
-              <p className="font-medium">04</p>
+              <p className="font-medium">{forumPosts}</p>
             </div>
             <div>
               <p className="uppercase font-bold text-gray-400">Users</p>
-              <p className="font-medium">0460</p>
+              <p className="font-medium">{forumUsers}</p>
             </div>
           </div>
         </div>

@@ -10,7 +10,7 @@ import {
   Button,
   Switch,
 } from "@nextui-org/react";
-import {Select, SelectItem} from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/react";
 
 import Footer from "@/components/footer/Footer";
 const CreatePostPage = () => {
@@ -19,7 +19,6 @@ const CreatePostPage = () => {
   const [categories, setCategories] = useState("");
   const [nsfw, setNsfw] = useState(false);
   const [spoiled, setSpoiled] = useState(false);
-
 
   const handlePublish = (e) => {
     e.preventDefault();
@@ -55,16 +54,26 @@ const CreatePostPage = () => {
             />
           </div>
           <div className="flex items-center mb-6">
-              <label
-                htmlFor="categories"
-                className="block text-gray-700 font-bold mb-2 mr-4"
-              >
-                Categories:
-              </label>
-              <Select label="Categories" placeholder="Select multiple" selectionMode="multiple" className="max-w-xs" variant="bordered">
-                <SelectItem key="horror" value="horror">Horror</SelectItem>
-                <SelectItem key="fantasy" value="fantasy">Fantasy</SelectItem>
-              </Select>
+            <label
+              htmlFor="categories"
+              className="block text-gray-700 font-bold mb-2 mr-4"
+            >
+              Categories:
+            </label>
+            <Select
+              label="Categories"
+              placeholder="Select multiple"
+              selectionMode="multiple"
+              className="max-w-xs"
+              variant="bordered"
+            >
+              <SelectItem key="horror" value="horror">
+                Horror
+              </SelectItem>
+              <SelectItem key="fantasy" value="fantasy">
+                Fantasy
+              </SelectItem>
+            </Select>
           </div>
           <div className="flex justify-between">
             <div className="flex items-center mb-6">
@@ -97,7 +106,7 @@ const CreatePostPage = () => {
               apiKey="zxirgmsu4aopej2bbk4zbnvg3k2gn4p324z0i5uf2vwxxgch"
               init={{
                 plugins:
-                  "ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss",
+                  "anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount ",
                 toolbar:
                   "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
                 tinycomments_mode: "embedded",
@@ -106,10 +115,6 @@ const CreatePostPage = () => {
                   { value: "First.Name", title: "First Name" },
                   { value: "Email", title: "Email" },
                 ],
-                ai_request: (request, respondWith) =>
-                  respondWith.string(() =>
-                    Promise.reject("See docs to implement AI Assistant")
-                  ),
               }}
               initialValue="Enter your post here!"
             />

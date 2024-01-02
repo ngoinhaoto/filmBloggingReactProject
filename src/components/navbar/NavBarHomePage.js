@@ -2,12 +2,26 @@
 import { useState } from "react";
 import { Icon } from "@iconify/react";
 
-export default function Navbar({ isLoggedIn }) {
+import { signIn, signOut, useSession } from "next-auth/react";
+
+export default function Navbar() {
+  const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleSignOut = () => {
+    signOut();
+  };
+  const handleSignIn = () => {
+    signIn();
+  };
+
+  if (status === "loading") {
+    return null; // or render a loading indicator
+  }
 
   return (
     <>
@@ -63,7 +77,7 @@ export default function Navbar({ isLoggedIn }) {
                 placeholder="Search"
                 className="px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
-              {isLoggedIn ? (
+              {session ? (
                 <>
                   <a href="/edit-user-profile">
                     <Icon
@@ -77,21 +91,27 @@ export default function Navbar({ isLoggedIn }) {
                   >
                     Create Post
                   </a>
+                  <button
+                    onClick={handleSignOut}
+                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-800 transition duration-500 ease-in-out"
+                  >
+                    Sign Out
+                  </button>
                 </>
               ) : (
                 <>
-                  <a
+                  {/* <a
                     href="/signup"
                     className="px-4 py-2 bg-purple-600 text-white rounded-md"
                   >
                     Sign Up
-                  </a>
-                  <a
-                    href="/signin"
+                  </a> */}
+                  <button
+                    onClick={handleSignIn}
                     className="px-4 py-2 bg-purple-600 text-white rounded-md"
                   >
                     Sign In
-                  </a>
+                  </button>
                 </>
               )}
             </div>
@@ -104,7 +124,7 @@ export default function Navbar({ isLoggedIn }) {
               placeholder="Search"
               className="w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-            {isLoggedIn ? (
+            {session ? (
               <>
                 <a
                   href="/create-post"
@@ -122,21 +142,27 @@ export default function Navbar({ isLoggedIn }) {
                     icon="iconamoon:profile-circle-fill"
                   />
                 </a>
+                <button
+                  onClick={handleSignOut}
+                  className="block px-4 py-2 text-left w-full bg-red-600 text-white rounded-md hover:bg-red-800 transition duration-500 ease-in-out"
+                >
+                  Sign Out
+                </button>
               </>
             ) : (
               <>
-                <a
+                {/* <a
                   href="/signup"
                   className="block px-4 py-2 text-left w-full text-white bg-purple-600 hover:bg-purple-800  rounded-md"
                 >
                   Sign Up
-                </a>
-                <a
-                  href="/signin"
+                </a> */}
+                <button
+                  onClick={handleSignIn}
                   className="block  px-4 py-2 text-left w-full text-white bg-purple-600 hover:bg-purple-800  rounded-md"
                 >
                   Sign In
-                </a>
+                </button>
               </>
             )}
           </div>

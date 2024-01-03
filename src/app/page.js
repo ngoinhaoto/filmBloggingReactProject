@@ -8,7 +8,7 @@ export default function Home() {
 
   return (
     <div className="bg-slate-100">
-      <NavbarHomePage isLoggedIn={isLoggedIn} />
+      <NavbarHomePage />
       <div className="flex flex-col-reverse md:flex-row container mx-auto mt-5">
         <ForumPosts />
         <ForumOverview />

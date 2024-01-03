@@ -25,6 +25,8 @@ export default function Navbar() {
     return null; // or render a loading indicator
   }
 
+  console.log(session.user);
+
   return (
     <>
       <nav className="bg-white shadow-lg">
@@ -94,12 +96,12 @@ export default function Navbar() {
                     </p>
                   </Link>
 
-                  <a
-                    href="/create-post"
+                  <Link
+                    href="/user/create-post"
                     className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-800 transition duration-500 ease-in-out"
                   >
                     Create Post
-                  </a>
+                  </Link>
                   <button
                     onClick={handleSignOut}
                     className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-800 transition duration-500 ease-in-out"

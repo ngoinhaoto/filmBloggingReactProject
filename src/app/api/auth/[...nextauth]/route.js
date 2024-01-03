@@ -36,6 +36,7 @@ export const authOptions = {
   session: {
     jwt: true,
     maxAge: 30 * 24 * 60 * 60,
+    // session lasts 30 days
   },
   jwt: {
     signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,

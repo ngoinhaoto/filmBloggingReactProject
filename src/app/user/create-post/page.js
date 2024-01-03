@@ -24,9 +24,15 @@ const CreatePostPage = () => {
   const [categories, setCategories] = useState([]);
   const [nsfw, setNsfw] = useState(false);
   const [spoiled, setSpoiled] = useState(false);
+  const [thumbnail, setThumbnail] = useState(null);
 
   const handleContentChange = (content, editor) => {
     setContent(content);
+  };
+
+  const handleThumbnailChange = (e) => {
+    const file = e.target.files[0];
+    setThumbnail(file);
   };
 
   const handleCategoryChange = (selectedItems) => {
@@ -55,6 +61,7 @@ const CreatePostPage = () => {
           author,
           published: true,
           createdAt: currentTime.toISOString(),
+          thumbnail,
         },
       });
     } catch (error) {
@@ -172,6 +179,21 @@ const CreatePostPage = () => {
               }}
               initialValue="Enter your post here!"
               onEditorChange={handleContentChange}
+            />
+          </div>
+          <div className="mb-6">
+            <label
+              htmlFor="thumbnail"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Thumbnail
+            </label>
+            <input
+              type="file"
+              id="thumbnail"
+              name="thumbnail"
+              className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:border-purple-500"
+              onChange={handleThumbnailChange}
             />
           </div>
           <button

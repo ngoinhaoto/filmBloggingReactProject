@@ -30,6 +30,7 @@ export async function POST(req, res) {
         createdAt,
         published,
         userId,
+        thumbnail,
       },
     });
 

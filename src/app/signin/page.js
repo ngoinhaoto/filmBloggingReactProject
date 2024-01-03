@@ -4,15 +4,16 @@ import React, { useState } from "react";
 import styles from "./signin.css";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-const SignInPage = () => {
-  // const router = useRouter();
+const SignInPage = (props) => {
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,12 +29,19 @@ const SignInPage = () => {
     const res = await signIn("credentials", {
       username: formData.username,
       password: formData.password,
-      redirect: true,
-      callbackUrl: "/",
+      redirect: false,
+      // callbackUrl: "/",
     });
 
+    console.log(res);
+    if (!res?.error) {
+      router.push(props.searchParams?.callbackUrl ?? "http://localhost:3000");
+    } else {
+      setErrorMessage("Wrong password or username!");
+    }
+
     // if (!res?.error) {
-    //   router.push("http://localhost:3000");
+    //   // Redirect upon successful sign-in
     // }
   };
 
@@ -82,6 +90,11 @@ const SignInPage = () => {
               Sign In
             </button>
           </div>
+          {errorMessage && (
+            <div className="text-red-600 text-center text-sm mt-2">
+              {errorMessage}
+            </div>
+          )}
           <div className="flex flex-col text-center mt-3">
             <p>Not have an account?</p>
             <Link href="/signup" className="text-purple-600 hover:underline">

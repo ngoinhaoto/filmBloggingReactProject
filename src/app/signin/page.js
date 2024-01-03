@@ -2,8 +2,13 @@
 
 import React, { useState } from "react";
 import styles from "./signin.css";
-import NavbarSignIn from "@/components/navbar/NavbarSignIn";
+
+import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 const SignIn = () => {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -17,10 +22,20 @@ const SignIn = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
+    // console.log(formData);
+    const res = await signIn("credentials", {
+      username: formData.username,
+      password: formData.password,
+      redirect: false,
+    });
+
+    console.log(res);
+    if (!res?.error) {
+      router.push("http://localhost:3000");
+    }
   };
 
   return (

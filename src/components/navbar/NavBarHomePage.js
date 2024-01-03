@@ -2,6 +2,8 @@
 import { useState } from "react";
 import { Icon } from "@iconify/react";
 
+import Link from "next/link";
+
 import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function Navbar() {
@@ -77,14 +79,21 @@ export default function Navbar() {
                 placeholder="Search"
                 className="px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
-              {session ? (
+              {session && session.user ? (
                 <>
-                  <a href="/edit-user-profile">
+                  <Link
+                    className="flex items-center"
+                    href="/user/edit-user-profile"
+                  >
                     <Icon
-                      className="text-5xl ml-2 text-purple-600 hover:text-purple-800 transition duration-500 ease-in-out"
+                      className="text-5xl text-purple-600 hover:text-purple-800 transition duration-500 ease-in-out"
                       icon="iconamoon:profile-circle-fill"
                     />
-                  </a>
+                    <p className="text-sm ml-2 text-purple-600 hover:text-purple-800 transition duration-500 ease-in-out">
+                      {session.user.displayName}
+                    </p>
+                  </Link>
+
                   <a
                     href="/create-post"
                     className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-800 transition duration-500 ease-in-out"
@@ -124,7 +133,7 @@ export default function Navbar() {
               placeholder="Search"
               className="w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-            {session ? (
+            {session && session.user ? (
               <>
                 <a
                   href="/create-post"
@@ -132,8 +141,8 @@ export default function Navbar() {
                 >
                   Create Post
                 </a>
-                <a
-                  href="/user-profile"
+                <Link
+                  href="/user/edit-user-profile/"
                   className="block px-4 py-2 text-left w-full bg-orange-800 text-white hover:bg-purple-600 hover:text-white rounded-md flex items-center"
                 >
                   <span>User Profile </span>
@@ -141,7 +150,7 @@ export default function Navbar() {
                     className="text-2xl ml-2"
                     icon="iconamoon:profile-circle-fill"
                   />
-                </a>
+                </Link>
                 <button
                   onClick={handleSignOut}
                   className="block px-4 py-2 text-left w-full bg-red-600 text-white rounded-md hover:bg-red-800 transition duration-500 ease-in-out"

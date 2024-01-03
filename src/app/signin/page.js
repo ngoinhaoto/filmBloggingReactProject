@@ -3,7 +3,10 @@
 import React, { useState } from "react";
 import styles from "./signin.css";
 import NavbarSignIn from "@/components/navbar/NavbarSignIn";
-const SignIn = () => {
+import { signIn } from "next-auth/react";
+
+const SignInPage = () => {
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -17,9 +20,15 @@ const SignIn = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const signInWithCredentials = await signIn("credentials", {
+      username: formData.username,
+      password: formData.password,
+      redirect: true,
+      callbackUrl: "/",
+    })
+    
     console.log(formData);
   };
 
@@ -59,6 +68,7 @@ const SignIn = () => {
               required
             />
           </div>
+
           <div className="mt-6">
             <button
               type="submit"
@@ -79,4 +89,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignInPage;

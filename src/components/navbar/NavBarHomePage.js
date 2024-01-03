@@ -79,7 +79,7 @@ export default function Navbar() {
               />
               {session ? (
                 <>
-                  <a href="/edit-user-profile">
+                  <a href="/user/edit-user-profile">
                     <Icon
                       className="text-5xl ml-2 text-purple-600 hover:text-purple-800 transition duration-500 ease-in-out"
                       icon="iconamoon:profile-circle-fill"

@@ -29,30 +29,6 @@ export const authOptions = {
       },
     }),
   ],
-  pages: {
-    signIn: "/signin",
-  },
-
-  session: {
-    jwt: true,
-    maxAge: 30 * 24 * 60 * 60,
-  },
-  jwt: {
-    signingKey: process.env.JWT_SIGNING_PRIVATE_KEY,
-  },
-
-  callbacks: {
-    async session({ session, token }) {
-      session.user = token.user;
-      return session;
-    },
-    async jwt({ token, user }) {
-      if (user) {
-        token.user = user;
-      }
-      return token;
-    },
-  },
 };
 
 export const handler = NextAuth(authOptions);

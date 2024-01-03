@@ -81,10 +81,7 @@ export default function Navbar() {
               />
               {session && session.user ? (
                 <>
-                  <Link
-                    className="flex items-center"
-                    href="/user/edit-user-profile"
-                  >
+                  <a href="/edit-user-profile">
                     <Icon
                       className="text-5xl text-purple-600 hover:text-purple-800 transition duration-500 ease-in-out"
                       icon="iconamoon:profile-circle-fill"

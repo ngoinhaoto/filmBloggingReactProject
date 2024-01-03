@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import styles from "./signup.css";
 import NavbarSignIn from "@/components/navbar/NavbarSignIn";
-const Signup = () => {
+
+const SignupPage = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -21,6 +22,7 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     // Handle form submission, you can add your logic here like sending data to an API, etc.
     console.log(formData); // For example, logging the form data
   };
@@ -111,4 +113,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupPage;

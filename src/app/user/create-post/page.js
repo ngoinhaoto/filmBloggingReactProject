@@ -12,22 +12,60 @@ import {
 } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
 
+import { useSession } from "next-auth/react";
+
 import Footer from "@/components/footer/Footer";
 const CreatePostPage = () => {
+  const currentTime = new Date(); // Get current timestamp
+  const { data: session, status } = useSession();
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [categories, setCategories] = useState("");
+  const [categories, setCategories] = useState([]);
   const [nsfw, setNsfw] = useState(false);
   const [spoiled, setSpoiled] = useState(false);
 
-  const handlePublish = (e) => {
+  const handleContentChange = (content, editor) => {
+    setContent(content);
+  };
+
+  const handleCategoryChange = (selectedItems) => {
+    setCategories(selectedItems);
+  };
+
+  const handlePublish = async (e) => {
     e.preventDefault();
-    // handle submission
-    console.log("Title:", title);
-    console.log("Content:", content);
-    console.log("Category:", category);
-    console.log("NSFW:", nsfw);
-    console.log("Spoiled:", spoiled);
+
+    const userId = session.user.id;
+    const author = session.user;
+
+    try {
+      const response = await fetch("/api/post", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: {
+          title,
+          content,
+          categories,
+          nsfw,
+          spoiled,
+          userId,
+          author,
+          published: true,
+          createdAt: currentTime.toISOString(),
+        },
+      });
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
+
+    // console.log("Title:", title);
+    // console.log("Content:", content);
+    // console.log("NSFW:", nsfw);
+    // console.log("Spoiled:", spoiled);
+    // console.log("Category:", categories);
   };
 
   return (
@@ -35,7 +73,10 @@ const CreatePostPage = () => {
       <Navbar isLoggedIn={true} />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-semibold mb-8 text-center">Create Post</h1>
-        <form className="bg-white shadow-md rounded-lg p-6">
+        <form
+          className="bg-white shadow-md rounded-lg p-6"
+          onSubmit={handlePublish}
+        >
           <div className="mb-6">
             <label
               htmlFor="title"
@@ -66,12 +107,25 @@ const CreatePostPage = () => {
               selectionMode="multiple"
               className="max-w-xs"
               variant="bordered"
+              onSelectionChange={handleCategoryChange}
             >
               <SelectItem key="horror" value="horror">
                 Horror
               </SelectItem>
               <SelectItem key="fantasy" value="fantasy">
                 Fantasy
+              </SelectItem>
+              <SelectItem key="action" value="action">
+                Action
+              </SelectItem>
+              <SelectItem key="experimental" value="experimental">
+                Experimental
+              </SelectItem>
+              <SelectItem key="comedy" value="comedy">
+                Comedy
+              </SelectItem>
+              <SelectItem key="romance" value="romance">
+                Romance
               </SelectItem>
             </Select>
           </div>
@@ -81,7 +135,7 @@ const CreatePostPage = () => {
               <Switch
                 color="secondary"
                 checked={nsfw}
-                onChange={(checked) => setNsfw(checked)}
+                onChange={(checked) => setNsfw(checked.target.checked)}
               />
             </div>
             <div className="flex items-center mb-6">
@@ -91,7 +145,7 @@ const CreatePostPage = () => {
               <Switch
                 color="secondary"
                 checked={spoiled}
-                onChange={(checked) => setSpoiled(checked)}
+                onChange={(checked) => setSpoiled(checked.target.checked)}
               />
             </div>
           </div>
@@ -117,6 +171,7 @@ const CreatePostPage = () => {
                 ],
               }}
               initialValue="Enter your post here!"
+              onEditorChange={handleContentChange}
             />
           </div>
           <button

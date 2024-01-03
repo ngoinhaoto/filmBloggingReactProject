@@ -25,8 +25,6 @@ export default function Navbar() {
     return null; // or render a loading indicator
   }
 
-  console.log(session.user);
-
   return (
     <>
       <nav className="bg-white shadow-lg">

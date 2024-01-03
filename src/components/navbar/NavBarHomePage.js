@@ -81,7 +81,10 @@ export default function Navbar() {
               />
               {session && session.user ? (
                 <>
-                  <a href="/edit-user-profile">
+                  <Link
+                    className="flex items-center"
+                    href="/user/edit-user-profile"
+                  >
                     <Icon
                       className="text-5xl text-purple-600 hover:text-purple-800 transition duration-500 ease-in-out"
                       icon="iconamoon:profile-circle-fill"
@@ -132,12 +135,12 @@ export default function Navbar() {
             />
             {session && session.user ? (
               <>
-                <a
+                <Link
                   href="/create-post"
                   className="block px-4 py-2 text-left w-full bg-purple-800 text-white  hover:bg-purple-600 hover:text-white rounded-md"
                 >
                   Create Post
-                </a>
+                </Link>
                 <Link
                   href="/user/edit-user-profile/"
                   className="block px-4 py-2 text-left w-full bg-orange-800 text-white hover:bg-purple-600 hover:text-white rounded-md flex items-center"

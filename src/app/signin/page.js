@@ -2,8 +2,13 @@
 
 import React, { useState } from "react";
 import styles from "./signin.css";
-import NavbarSignIn from "@/components/navbar/NavbarSignIn";
-const SignIn = () => {
+import Link from "next/link";
+import { signIn } from "next-auth/react";
+// import { useRouter } from "next/navigation";
+
+const SignInPage = () => {
+  // const router = useRouter();
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -20,7 +25,16 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
+    const res = await signIn("credentials", {
+      username: formData.username,
+      password: formData.password,
+      redirect: true,
+      callbackUrl: "/",
+    });
+
+    // if (!res?.error) {
+    //   router.push("http://localhost:3000");
+    // }
   };
 
   return (
@@ -70,9 +84,9 @@ const SignIn = () => {
           </div>
           <div className="flex flex-col text-center mt-3">
             <p>Not have an account?</p>
-            <a href="/signup" className="text-purple-600 hover:underline">
+            <Link href="/signup" className="text-purple-600 hover:underline">
               Sign up
-            </a>
+            </Link>
           </div>
         </form>
       </div>

@@ -2,6 +2,12 @@ import prisma from "../../../../lib/prisma";
 import { put } from '@vercel/blob';
 import { NextResponse } from 'next/server';
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export async function POST(req, res) {
   const { searchParams } = new URL(req.url);
   const getThumbnailFromParams = searchParams.get('thumbnail');
@@ -10,20 +16,29 @@ export async function POST(req, res) {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const body = await req.json();
-  console.log(body)
+  const formData = await req.formData();
+  const values = {};
+  for (const [key, value] of formData.entries()) {
+    values[key] = value;
+  }
 
-  const title = body.title;
-  const content = body.content;
-  const nsfw = body.nsfw;
-  const spoiledContent = body.spoiled;
-  const createdAt = body.createdAt;
-  const published = body.published;
-  const categories = body.categories;
-  const userId = body.userId;
-  const thumbnail = await put(getThumbnailFromParams, req.body, {
-    access: 'public',
+  let textData = values.data;
+  const parsedData = JSON.parse(textData);
+
+  console.log(parsedData)
+
+  const title = parsedData.title;
+  const content = parsedData.content;
+  const nsfw = parsedData.nsfw;
+  const spoiledContent = parsedData.spoiledContent;
+  const createdAt = parsedData.createdAt;
+  const userId = parsedData.userId;
+  const categories = parsedData.categories;
+  const published = parsedData.published;
+  const getThumbnail = await put(getThumbnailFromParams, formData, {
+     access: 'public',
   });
+  const thumbnail = getThumbnail.url;
 
   try {
     const post = await prisma.post.create({
@@ -32,18 +47,20 @@ export async function POST(req, res) {
         content,
         nsfw,
         spoiledContent,
-        author,
         createdAt,
         categories,
         published,
         userId,
         thumbnail
       },
+      include: {
+        author: true
+      }
     });
 
-    return res.status(201).json({ post });
+    return Response.json({ post });
   } catch (error) {
     console.error("Error creating post:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    return Response.json({ message: "Internal Server Error" });
   }
 }

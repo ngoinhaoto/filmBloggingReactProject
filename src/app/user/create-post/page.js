@@ -69,13 +69,14 @@ const CreatePostPage = () => {
       userId,
     };
 
+    const formData = new FormData();
+    formData.append("thumbnail", thumbnail);
+    formData.append("data", JSON.stringify(bodyData));
+
     try {
       const response = await fetch(`/api/post?thumbnail=${thumbnail.name}`, {
         method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(bodyData),
+        body: formData,
       });
       
       const inputPost = (await response.json());

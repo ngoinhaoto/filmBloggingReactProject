@@ -1,20 +1,33 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Chip } from "@nextui-org/react";
 
 const PostContent = ({ id }) => {
-  // Placeholder data for the post
-  const post = {
-    id: "1",
-    title: "Sample Post Title",
-    categories: ["NSFW", "Horror", "Spoiler"],
-    author: {
-      name: "John Doe",
-      avatar: "https://via.placeholder.com/60", // Placeholder avatar image URL
-    },
-    content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`,
-  };
+  const [post, setPost] = useState(null);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await fetch(`/api/post/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch post");
+        }
+        const data = await response.json();
+        setPost(data.postDetail);
+      } catch (error) {
+        console.error("Error fetching post:", error);
+      }
+    };
+
+    if (id) {
+      fetchPost();
+    }
+  }, [id]);
+
+  if (!post) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -29,7 +42,6 @@ const PostContent = ({ id }) => {
             ))}
           </div>
         </div>
-
         {/* Author Name & Avatar */}
         <div className="flex items-center">
           <div className="flex flex-col items-center">
@@ -42,9 +54,10 @@ const PostContent = ({ id }) => {
           </div>
         </div>
       </div>
-
-      {/* Post Content */}
-      <div className="text-lg">{post.content}</div>
+      <div
+        className="text-lg"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
     </div>
   );
 };

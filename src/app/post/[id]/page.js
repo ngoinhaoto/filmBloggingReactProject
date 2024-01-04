@@ -14,9 +14,9 @@ export default function Post({ params }) {
   return (
     <div className="bg-slate-100">
       <NavbarHomePage isLoggedIn={isLoggedIn} />
-      <PostContent id={1} />
+      <PostContent id={params.id} />
 
-      <CommentSection postId={1} />
+      <CommentSection postId={params.id} />
       <Footer />
     </div>
   );

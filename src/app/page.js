@@ -1,8 +1,8 @@
 import React from "react";
-import NavbarHomePage from "@/components/navbar/NavBarHomePage";
-import ForumOverview from "@/components/ForumOverview";
-import ForumPosts from "@/components/ForumPosts";
-import Footer from "@/components/footer/Footer";
+import NavbarHomePage from "../components/navbar/NavBarHomePage";
+import ForumOverview from "../components/ForumOverview";
+import ForumPosts from "../components/ForumPosts";
+import Footer from "../components/footer/Footer";
 export default function Home() {
   const isLoggedIn = true; // todo authen
 

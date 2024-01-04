@@ -2,7 +2,6 @@
 "use client";
 import React, { useState } from "react";
 import styles from "./signup.css";
-import NavbarSignIn from "@/components/navbar/NavbarSignIn";
 
 const SignupPage = () => {
   const [formData, setFormData] = useState({

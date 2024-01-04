@@ -1,4 +1,4 @@
-import NavbarSignIn from "@/components/navbar/NavbarSignIn";
+import NavbarSignIn from "../../components/navbar/NavbarSignIn";
 export default function Layout({ children }) {
   return (
     <>

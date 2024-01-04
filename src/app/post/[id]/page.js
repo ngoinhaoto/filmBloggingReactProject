@@ -3,8 +3,8 @@ import React from "react";
 
 import PostContent from "./PostContent";
 
-import NavbarHomePage from "@/components/navbar/NavBarHomePage";
-import Footer from "@/components/footer/Footer";
+import NavbarHomePage from "../../../components/navbar/NavBarHomePage";
+import Footer from "../../../components/footer/Footer";
 import CommentSection from "./CommentSection";
 
 export default function Post({ params }) {

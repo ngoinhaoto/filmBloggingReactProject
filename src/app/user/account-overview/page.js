@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import NavBarHomePage from "@/components/navbar/NavBarHomePage";
-import UserSideBar from "@/app/user/userSideBar/userSideBar";
+import NavBarHomePage from "../../../components/navbar/NavBarHomePage";
+import UserSideBar from "../../user/userSideBar/userSideBar";
 const isLoggedIn = true;
-import Footer from "@/components/footer/Footer";
+import Footer from "../../../components/footer/Footer";
 
 import { Icon } from "@iconify/react";
 

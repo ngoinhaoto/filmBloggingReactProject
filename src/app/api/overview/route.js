@@ -1,14 +1,9 @@
 import prisma from "../../../../lib/prisma";
 
-export async function GET(request, {searchParams}) {
-  // const sortByDate = request.nextUrl.searchParams.get("sortByDate") || desc;
+export async function GET(request, { searchParams }) {
+  const sortByDate = request.nextUrl.searchParams.get("sortByDate") || "desc";
   const allUsers = await prisma.user.findMany();
   const allPosts = await prisma.post.findMany({
-    /*orderBy: [
-      {
-        createdAt: sortByDate,
-      },
-    ],*/
     include: {
       author: {
         select: {
@@ -19,6 +14,11 @@ export async function GET(request, {searchParams}) {
         },
       },
     },
+    orderBy: [
+      {
+        createdAt: sortByDate,
+      },
+    ],
   });
 
   // const pageNumber = parseInt(request.nextUrl.searchParams.get("page") || 1);

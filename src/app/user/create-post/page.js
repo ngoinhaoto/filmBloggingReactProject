@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
-import Navbar from "@/components/navbar/NavBarHomePage";
+import Navbar from "../../../components/navbar/NavBarHomePage";
 import {
   Dropdown,
   DropdownTrigger,
@@ -11,39 +11,27 @@ import {
   Switch,
 } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
-
 import { useSession } from "next-auth/react";
 
-import Footer from "@/components/footer/Footer";
+import Footer from "../../../components/footer/Footer";
+
+import { UploadButton } from "../../../utils/uploadthing";
+
+// import "@uploadthing/react/styles.css";
+
 const CreatePostPage = () => {
   const currentTime = new Date(); // Get current timestamp
   const { data: session, status } = useSession();
-  const inputThumbnail = useRef(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [categories, setCategories] = useState(null);
   const [nsfw, setNsfw] = useState(false);
   const [spoiled, setSpoiled] = useState(false);
 
+  const [thumbnail, setThumbnail] = useState(null);
+
   const handleContentChange = (content, editor) => {
     setContent(content);
-  };
-
-  const handleThumbnailChange = async (inputThumbnail) => {
-
-      /*const file = inputThumbnail.current.files.[0];
-
-      const response = await fetch(
-        `/api/post?filename=${file.name}`,
-        {
-          method: 'POST',
-          body: file,
-        },
-      );
-
-      const newThumbnail = (await response.json()) as PutBlobResult;
-
-    setThumbnail(newThumbnail);*/
   };
 
   const handleCategoryChange = (selectedItems) => {
@@ -55,9 +43,7 @@ const CreatePostPage = () => {
 
     const categoriesArray = [...categories];
 
-    const thumbnail = inputThumbnail.current.files[0];
     const userId = session.user.id;
-
     const bodyData = {
       title,
       content,
@@ -67,20 +53,17 @@ const CreatePostPage = () => {
       published: true,
       createdAt: currentTime.toISOString(),
       userId,
+      thumbnail,
     };
 
-    const formData = new FormData();
-    formData.append("thumbnail", thumbnail);
-    formData.append("data", JSON.stringify(bodyData));
-
     try {
-      const response = await fetch(`/api/post?thumbnail=${thumbnail.name}`, {
+      const response = await fetch(`/api/post`, {
         method: "POST",
-        body: formData,
+        body: JSON.stringify(bodyData),
       });
-      
-      const inputPost = (await response.json());
-      console.log(inputPost)
+
+      const inputPost = await response.json();
+      console.log(inputPost);
     } catch (error) {
       console.error("Error creating post:", error);
     }
@@ -199,12 +182,25 @@ const CreatePostPage = () => {
             >
               Thumbnail
             </label>
-            <input
+            {/* <input
               type="file"
               id="thumbnail"
               name="thumbnail"
               className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:border-purple-500"
               ref={inputThumbnail}
+            /> */}
+            <UploadButton
+              className="mt-4 ut-button:bg-red-500 ut-button:ut-readying:bg-red-500/50"
+              endpoint="imageUploader"
+              onClientUploadComplete={(res) => {
+                setThumbnail(res[0].url);
+
+                alert("Upload Completed");
+              }}
+              onUploadError={(error) => {
+                // Do something with the error.
+                alert(`ERROR! ${error.message}`);
+              }}
             />
           </div>
           <button

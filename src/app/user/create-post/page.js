@@ -190,7 +190,6 @@ const CreatePostPage = () => {
               ref={inputThumbnail}
             /> */}
             <UploadButton
-              className="mt-4 ut-button:bg-red-500 ut-button:ut-readying:bg-red-500/50"
               endpoint="imageUploader"
               onClientUploadComplete={(res) => {
                 setThumbnail(res[0].url);
@@ -200,6 +199,14 @@ const CreatePostPage = () => {
               onUploadError={(error) => {
                 // Do something with the error.
                 alert(`ERROR! ${error.message}`);
+              }}
+              appearance={{
+                button:
+                  "ut-ready:bg-green-500 ut-uploading:cursor-not-allowed rounded-r-none bg-red-500 bg-none after:bg-orange-400",
+                container:
+                  "w-max flex-row rounded-md border-cyan-300 bg-slate-800",
+                allowedContent:
+                  "flex h-8 flex-col items-center justify-center px-2 text-white",
               }}
             />
           </div>

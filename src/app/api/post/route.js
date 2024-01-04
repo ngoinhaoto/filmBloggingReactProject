@@ -1,13 +1,29 @@
 import prisma from "../../../../lib/prisma";
-import { NextResponse } from "next/server";
+import { put } from '@vercel/blob';
+import { NextResponse } from 'next/server';
 
 export async function POST(req, res) {
+  const { searchParams } = new URL(req.url);
+  const getThumbnailFromParams = searchParams.get('thumbnail');
+
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
   const body = await req.json();
-  console.log(body);
+  console.log(body)
+
+  const title = body.title;
+  const content = body.content;
+  const nsfw = body.nsfw;
+  const spoiledContent = body.spoiled;
+  const createdAt = body.createdAt;
+  const published = body.published;
+  const categories = body.categories;
+  const userId = body.userId;
+  const thumbnail = await put(getThumbnailFromParams, req.body, {
+    access: 'public',
+  });
 
   try {
     const post = await prisma.post.create({
@@ -15,12 +31,13 @@ export async function POST(req, res) {
         title,
         content,
         nsfw,
-        spoiled,
+        spoiledContent,
         author,
         createdAt,
+        categories,
         published,
         userId,
-        thumbnail,
+        thumbnail
       },
     });
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import Navbar from "@/components/navbar/NavBarHomePage";
 import {
@@ -18,21 +18,32 @@ import Footer from "@/components/footer/Footer";
 const CreatePostPage = () => {
   const currentTime = new Date(); // Get current timestamp
   const { data: session, status } = useSession();
-
+  const inputThumbnail = useRef(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(null);
   const [nsfw, setNsfw] = useState(false);
   const [spoiled, setSpoiled] = useState(false);
-  const [thumbnail, setThumbnail] = useState(null);
 
   const handleContentChange = (content, editor) => {
     setContent(content);
   };
 
-  const handleThumbnailChange = (e) => {
-    const file = e.target.files[0];
-    setThumbnail(file);
+  const handleThumbnailChange = async (inputThumbnail) => {
+
+      /*const file = inputThumbnail.current.files.[0];
+
+      const response = await fetch(
+        `/api/post?filename=${file.name}`,
+        {
+          method: 'POST',
+          body: file,
+        },
+      );
+
+      const newThumbnail = (await response.json()) as PutBlobResult;
+
+    setThumbnail(newThumbnail);*/
   };
 
   const handleCategoryChange = (selectedItems) => {
@@ -42,37 +53,36 @@ const CreatePostPage = () => {
   const handlePublish = async (e) => {
     e.preventDefault();
 
+    const categoriesArray = [...categories];
+
+    const thumbnail = inputThumbnail.current.files[0];
     const userId = session.user.id;
-    const author = session.user;
+
+    const bodyData = {
+      title,
+      content,
+      categories: categoriesArray,
+      nsfw,
+      spoiled,
+      published: true,
+      createdAt: currentTime.toISOString(),
+      userId,
+    };
 
     try {
-      const response = await fetch("/api/post", {
+      const response = await fetch(`/api/post?thumbnail=${thumbnail.name}`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: {
-          title,
-          content,
-          categories,
-          nsfw,
-          spoiled,
-          userId,
-          author,
-          published: true,
-          createdAt: currentTime.toISOString(),
-          thumbnail,
-        },
+        body: JSON.stringify(bodyData),
       });
+      
+      const inputPost = (await response.json());
+      console.log(inputPost)
     } catch (error) {
       console.error("Error creating post:", error);
     }
-
-    // console.log("Title:", title);
-    // console.log("Content:", content);
-    // console.log("NSFW:", nsfw);
-    // console.log("Spoiled:", spoiled);
-    // console.log("Category:", categories);
   };
 
   return (
@@ -193,7 +203,7 @@ const CreatePostPage = () => {
               id="thumbnail"
               name="thumbnail"
               className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:border-purple-500"
-              onChange={handleThumbnailChange}
+              ref={inputThumbnail}
             />
           </div>
           <button

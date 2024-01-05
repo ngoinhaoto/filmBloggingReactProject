@@ -1,8 +1,10 @@
+"use client";
 import React from "react";
 import { Chip } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import userFilled from "@iconify/icons-tabler/user-filled";
 import timeLine from "@iconify/icons-mingcute/time-line";
+import Link from "next/link";
 
 const truncateContent = (content, wordCount) => {
   const words = content.split(" ");
@@ -29,21 +31,23 @@ export default function Post({ post }) {
 
   return (
     <>
-      <a
+      <Link
         href={`/post/${post.id}`}
         className="bg-white flex shadow-lg rounded-xl flex-col md:flex-row my-2"
       >
-        <div className="md:basis-1/4">
-          <img
-            src={post.thumbnail}
-            alt="thumbnail"
-            className="md:rounded-l-xl h-full"
-          />
+        <div className="md:basis-1/4 md:h-auto relative">
+          <div
+            className="md:w-full h-60 md:h-full md:rounded-l-xl md:rounded-r-none rounded-t-lg bg-cover bg-center"
+            style={{ backgroundImage: `url(${post.thumbnail})` }}
+          ></div>
         </div>
         <div className="md:basis-3/4 flex-col p-6 w-full">
           <div className="mb-6">
             <div className="text-xl font-medium">{post.title}</div>
-            <div className="text-gray-400">{truncatedContent}</div>
+            <div
+              className="text-gray-400"
+              dangerouslySetInnerHTML={{ __html: truncatedContent }}
+            ></div>
           </div>
           <div className="flex gap-1 flex-wrap mb-3">
             {post.spoiledContent && (
@@ -81,7 +85,7 @@ export default function Post({ post }) {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </>
   );
 }

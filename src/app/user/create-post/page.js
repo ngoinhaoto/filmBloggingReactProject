@@ -182,13 +182,6 @@ const CreatePostPage = () => {
             >
               Thumbnail
             </label>
-            {/* <input
-              type="file"
-              id="thumbnail"
-              name="thumbnail"
-              className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:border-purple-500"
-              ref={inputThumbnail}
-            /> */}
             <UploadButton
               endpoint="imageUploader"
               onClientUploadComplete={(res) => {
@@ -209,6 +202,17 @@ const CreatePostPage = () => {
                   "flex h-8 flex-col items-center justify-center px-2 text-white",
               }}
             />
+
+            {thumbnail && (
+              <div className="mb-4 mt-4">
+                <h3 className="text-md font-bold mb-2">Thumbnail Preview</h3>
+                <img
+                  src={thumbnail}
+                  alt="thumbnail preview"
+                  className="w-32 h-32 object-cover rounded-md border border-gray-300"
+                />
+              </div>
+            )}
           </div>
           <button
             type="submit"

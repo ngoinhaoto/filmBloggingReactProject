@@ -26,7 +26,15 @@ const PostContent = ({ id }) => {
   }, [id]);
 
   if (!post) {
-    return <div>Loading...</div>;
+    return (
+      <>
+        <div className="container mx-auto p-4">
+          <div className="flex justify-between items-center mb-2">
+            <div>Loading...</div>
+          </div>
+        </div>
+      </>
+    );
   }
 
   return (

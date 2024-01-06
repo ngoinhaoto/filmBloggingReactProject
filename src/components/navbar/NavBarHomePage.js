@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import Link from "next/link";
 
 import { signIn, signOut, useSession } from "next-auth/react";
+import { Input, Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
@@ -28,8 +29,8 @@ export default function Navbar() {
   return (
     <>
       <nav className="bg-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4 md:justify-start md:space-x-10">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center py-4">
             <div className="flex justify-start lg:w-0 lg:flex-1">
               <a href="/" className="text-3xl font-['Courier']">
                 MovieMuncher
@@ -74,38 +75,39 @@ export default function Navbar() {
               </button>
             </div>
             <div className="hidden md:flex items-center space-x-4">
-              <input
-                type="text"
-                placeholder="Search"
-                className="px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
+              
+              <Input type="text" variant="flat" label="Search" size="sm" className="w-50"/>
               {session && session.user ? (
                 <>
-                  <Link
-                    className="flex items-center"
-                    href="/user/edit-user-profile"
-                  >
-                    <Icon
-                      className="text-5xl text-purple-600 hover:text-purple-800 transition duration-500 ease-in-out"
-                      icon="iconamoon:profile-circle-fill"
-                    />
-                    <p className="text-sm ml-2 text-purple-600 hover:text-purple-800 transition duration-500 ease-in-out">
-                      {session.user.displayName}
-                    </p>
-                  </Link>
-
-                  <Link
-                    href="/user/create-post"
-                    className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-800 transition duration-500 ease-in-out"
-                  >
+                  <Button color="secondary" variant="shadow" className="font-bold rounded-md flex flex-row items-center justify-center py-6" href="/user/create-post" as={Link}>
+                    <Icon icon="basil:add-solid" color="white" width="30" height="30"/>
                     Create Post
-                  </Link>
-                  <button
-                    onClick={handleSignOut}
-                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-800 transition duration-500 ease-in-out"
-                  >
-                    Sign Out
-                  </button>
+                  </Button>  
+                  <Dropdown placement="bottom-end">
+                    <DropdownTrigger>
+                      <User
+                        as="button"
+                        className="transition-transform flex-row-reverse text-start"
+                        description={`@${session.user.username}`}
+                        name={session.user.displayName}
+                        showFallback
+                        avatarProps={{
+                          isBordered: true,
+                          src:`${session.user.avatar}`,
+                        }}
+                      />
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="User Actions" variant="flat">
+                      <DropdownItem key="profile" className="h-14 gap-2">
+                        <p className="font-bold">Signed in as</p>
+                        <p className="font-bold">@{session.user.username}</p>
+                      </DropdownItem>
+                      <DropdownItem key="settings" href="/user/account-overview" as={Link}>My Profile</DropdownItem>
+                      <DropdownItem key="team_settings" href="/user/post-overview" as={Link}>Post Management</DropdownItem>
+                      <DropdownItem key="system" href="/user/edit-user-profile" as={Link}>Settings</DropdownItem>
+                      <DropdownItem key="logout" color="danger" className="text-danger" onClick={handleSignOut}>Sign Out</DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
                 </>
               ) : (
                 <>
@@ -124,6 +126,7 @@ export default function Navbar() {
                 </>
               )}
             </div>
+           
           </div>
         </div>
         <div className={`${isOpen ? "block" : "hidden"} md:hidden`}>

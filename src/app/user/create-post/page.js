@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import Navbar from "../../../components/navbar/NavBarHomePage";
 import {
@@ -10,16 +10,18 @@ import {
   Button,
   Switch,
 } from "@nextui-org/react";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem, Input } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 
+
+import { useRouter } from "next/navigation";
 import Footer from "../../../components/footer/Footer";
 
 import { UploadButton } from "../../../utils/uploadthing";
 
 // import "@uploadthing/react/styles.css";
 
-const CreatePostPage = () => {
+const CreatePostPage = (props) => {
   const currentTime = new Date(); // Get current timestamp
   const { data: session, status } = useSession();
   const [title, setTitle] = useState("");
@@ -27,8 +29,13 @@ const CreatePostPage = () => {
   const [categories, setCategories] = useState(null);
   const [nsfw, setNsfw] = useState(false);
   const [spoiled, setSpoiled] = useState(false);
+  const [errors, setErrors] = useState({}); 
+  const [isFormValid, setIsFormValid] = useState(false); 
 
   const [thumbnail, setThumbnail] = useState(null);
+
+
+  const router = useRouter()
 
   const handleContentChange = (content, editor) => {
     setContent(content);
@@ -38,34 +45,70 @@ const CreatePostPage = () => {
     setCategories(selectedItems);
   };
 
+  const validateForm = () => {
+    let errors = {}
+    if (!title) {
+      errors.title = "Please enter a title";
+      errors.titleBoolean = true;
+    } 
+
+    if (!content) {
+      errors.content = "Content cannot be empty";
+    } else if (content.length < 30) {
+      errors.content = "Content must be at least 30"
+    }
+
+    if (!categories) {
+      errors.categories = "Select at least one category"
+      errors.categoriesBoolean = true;
+    }
+
+    if (!thumbnail) {
+      errors.thumbnail = "Upload your thumbnail"
+      errors.thumbnailBoolean = true;
+    }
+
+    setErrors(errors);
+    setIsFormValid(Object.keys(errors).length === 0);
+  }
+
   const handlePublish = async (e) => {
     e.preventDefault();
 
-    const categoriesArray = [...categories];
+    await validateForm();
 
-    const userId = session.user.id;
-    const bodyData = {
-      title,
-      content,
-      categories: categoriesArray,
-      nsfw,
-      spoiled,
-      published: true,
-      createdAt: currentTime.toISOString(),
-      userId,
-      thumbnail,
-    };
+    if (isFormValid) { 
 
-    try {
-      const response = await fetch(`/api/post`, {
-        method: "POST",
-        body: JSON.stringify(bodyData),
-      });
+      const categoriesArray = [...categories];
 
-      const inputPost = await response.json();
-      console.log(inputPost);
-    } catch (error) {
-      console.error("Error creating post:", error);
+      const userId = session.user.id;
+      const bodyData = {
+        title,
+        content,
+        categories: categoriesArray,
+        nsfw,
+        spoiled,
+        published: true,
+        createdAt: currentTime.toISOString(),
+        userId,
+        thumbnail,
+      };
+
+      try {
+        const response = await fetch(`/api/post`, {
+          method: "POST",
+          body: JSON.stringify(bodyData),
+        });
+
+        const inputPost = await response.json();
+        console.log(inputPost);
+
+        // if (inputPost.post.id) {
+          router.push(`/post/${inputPost.post.id}`);
+        // }
+      } catch (error) {
+        console.error("Error creating post:", error);
+      }
     }
   };
 
@@ -79,29 +122,20 @@ const CreatePostPage = () => {
           onSubmit={handlePublish}
         >
           <div className="mb-6">
-            <label
-              htmlFor="title"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              Title
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              className="border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring focus:border-purple-500"
-              placeholder="Enter title..."
-              value={title}
+            <Input
+              type="text" 
+              label="Title" 
+              variant="bordered" 
+              placeholder="Your post title" 
+              value={title} 
               onChange={(e) => setTitle(e.target.value)}
-            />
+              required
+              isInvalid={errors.titleBoolean}
+              errorMessage={errors.title}
+            >
+            </Input>
           </div>
           <div className="flex items-center mb-6">
-            <label
-              htmlFor="categories"
-              className="block text-gray-700 font-bold mb-2 mr-4"
-            >
-              Categories:
-            </label>
             <Select
               label="Categories"
               placeholder="Select multiple"
@@ -109,6 +143,8 @@ const CreatePostPage = () => {
               className="max-w-xs"
               variant="bordered"
               onSelectionChange={handleCategoryChange}
+              isInvalid={errors.categoriesBoolean}
+              errorMessage={errors.categories}
             >
               <SelectItem key="horror" value="horror">
                 Horror
@@ -157,7 +193,8 @@ const CreatePostPage = () => {
             >
               Content
             </label>
-            <Editor
+            <div className={errors.content ? "outline outline-pink-700 rounded-lg" : "outline-none"}>
+              <Editor
               apiKey="zxirgmsu4aopej2bbk4zbnvg3k2gn4p324z0i5uf2vwxxgch"
               init={{
                 plugins:
@@ -174,6 +211,9 @@ const CreatePostPage = () => {
               initialValue="Enter your post here!"
               onEditorChange={handleContentChange}
             />
+            </div>
+            
+            {errors.content && <p className="text-red-500 text-xs mt-1 ms-1">{errors.content}</p>}
           </div>
           <div className="mb-6">
             <label
@@ -183,6 +223,7 @@ const CreatePostPage = () => {
               Thumbnail
             </label>
             <UploadButton
+              className={errors.thumbnail ? "outline outline-offset-2 outline-pink-700 rounded-lg" : "outline-none"}
               endpoint="imageUploader"
               onClientUploadComplete={(res) => {
                 setThumbnail(res[0].url);
@@ -202,7 +243,7 @@ const CreatePostPage = () => {
                   "flex h-8 flex-col items-center justify-center px-2 text-white",
               }}
             />
-
+            {errors.thumbnail && <p className="text-red-500 text-xs mt-1 ms-1">{errors.thumbnail}</p>}
             {thumbnail && (
               <div className="mb-4 mt-4">
                 <h3 className="text-md font-bold mb-2">Thumbnail Preview</h3>

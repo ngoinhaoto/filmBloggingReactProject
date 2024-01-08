@@ -1,4 +1,5 @@
 import prisma from "../../../../lib/prisma";
+import { getServerSession } from "next-auth/next";
 
 export const config = {
   api: {
@@ -7,6 +8,15 @@ export const config = {
 };
 
 export async function POST(req, res) {
+  const session = await getServerSession({ req });
+
+  if (!session || !session.user) {
+    return Response.json({
+      name: "lmao",
+      status: "Ur not authorised sorry",
+    });
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }

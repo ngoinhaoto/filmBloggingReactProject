@@ -17,9 +17,9 @@ import { useEffect } from "react";
 import Post from "./Post";
 
 export default function ForumPosts() {
-  const [sortByDate, setSortByDate] = React.useState(new Set(["sortDateAsc"]));
-  const [categories, setCategories] = React.useState(new Set(["Categories"]));
-
+  const [loading, setLoading] = useState(true);
+  const [sortByDate, setSortByDate] = useState(new Set(["sortDateAsc"]));
+  const [categories, setCategories] = useState(new Set(["Categories"]));
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -27,9 +27,11 @@ export default function ForumPosts() {
       .then((response) => response.json())
       .then((data) => {
         setPosts(data.allPosts);
+        setLoading(false); // Set loading to false when data is fetched
       })
       .catch((error) => {
         console.error("Error fetching posts:", error);
+        setLoading(false); // Set loading to false in case of an error
       });
   }, []);
 
@@ -42,7 +44,9 @@ export default function ForumPosts() {
     () => Array.from(categories).join(", ").replaceAll("_", " "),
     [categories]
   );
-
+  // if (loading) {
+  //   return <p>Loading Posts...</p>;
+  // }
   return (
     <>
       <div className="md:basis-3/4 p-6 m-2">

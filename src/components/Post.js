@@ -15,20 +15,65 @@ const truncateContent = (content, wordCount) => {
 };
 
 export default function Post({ post }) {
-  const truncatedContent = truncateContent(post.content, 10); // Limit content to 20 words
+  const truncatedContent = truncateContent(post.content, 10);
   const calculateDaysAgo = (timestamp) => {
-    const millisecondsPerDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
-    const currentDate = new Date(); // Current date
-    const postDate = new Date(timestamp); // Post creation date
+    const millisecondsPerMinute = 60 * 1000;
+    const millisecondsPerHour = 60 * millisecondsPerMinute;
+    const currentDate = new Date();
+    const postDate = new Date(timestamp);
 
-    const differenceInMilliseconds = currentDate - postDate; // Calculate the difference in milliseconds
-    const daysAgo = Math.floor(differenceInMilliseconds / millisecondsPerDay); // Convert milliseconds to days
+    const differenceInMilliseconds = currentDate - postDate;
 
-    return `${daysAgo} days ago`;
+    if (differenceInMilliseconds < millisecondsPerHour) {
+      const minutesAgo = Math.floor(
+        differenceInMilliseconds / millisecondsPerMinute
+      );
+      return `${
+        minutesAgo === 1 ? "1 minute ago" : `${minutesAgo} minutes ago`
+      }`;
+    } else if (differenceInMilliseconds < 24 * millisecondsPerHour) {
+      const hoursAgo = Math.floor(
+        differenceInMilliseconds / millisecondsPerHour
+      );
+      return `${hoursAgo === 1 ? "1 hour ago" : `${hoursAgo} hours ago`}`;
+    } else {
+      const daysAgo = Math.floor(
+        differenceInMilliseconds / (24 * millisecondsPerHour)
+      );
+      return `${daysAgo === 1 ? "1 day ago" : `${daysAgo} days ago`}`;
+    }
   };
 
   const daysAgo = calculateDaysAgo(post.createdAt); // Calculate days ago
-
+  const getCategoryChipStyles = (category) => {
+    switch (category.toLowerCase()) {
+      case "fantasy":
+        return {
+          base: "bg-gradient-to-br from-red-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+          content: "drop-shadow shadow-black text-white",
+        };
+      case "horror":
+        return {
+          base: "bg-gradient-to-br from-green-500 to-yellow-500 border-small border-white/50 shadow-yellow-500/30",
+          content: "drop-shadow shadow-black text-white",
+        };
+      case "action":
+        return {
+          base: "bg-gradient-to-br from-blue-500 to-indigo-500 border-small border-white/50 shadow-indigo-500/30",
+          content: "drop-shadow shadow-black text-white",
+        };
+      case "romance":
+        return {
+          base: "bg-gradient-to-br from-purple-500 to-red-500 border-small border-white/50 shadow-red-500/30",
+          content: "drop-shadow shadow-black text-white",
+        };
+      default:
+        return {
+          base: "bg-gradient-to-br from-gray-500 to-gray-700 border-small border-white/50 shadow-gray-700/30",
+          content: "drop-shadow shadow-black text-white",
+        };
+    }
+  };
   return (
     <>
       <Link
@@ -60,18 +105,16 @@ export default function Post({ post }) {
                 NSFW
               </Chip>
             )}
-            <Chip color="secondary" variant="solid" radius="sm">
-              Fantasy
-            </Chip>
-            <Chip color="default" variant="solid" radius="sm">
-              Horror
-            </Chip>
-            <Chip color="default" variant="solid" radius="sm">
-              Sci-Fi
-            </Chip>
-            <Chip color="default" variant="solid" radius="sm">
-              Action
-            </Chip>
+            {post.categories.map((category) => (
+              <Chip
+                key={category}
+                classNames={getCategoryChipStyles(category)}
+                variant="solid"
+                radius="sm"
+              >
+                {category.charAt(0).toUpperCase() + category.slice(1)}{" "}
+              </Chip>
+            ))}{" "}
           </div>
 
           <div className="w-full flex">

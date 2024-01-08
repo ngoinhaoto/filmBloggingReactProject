@@ -5,7 +5,10 @@ import { useEffect } from "react";
 
 import Post from "./Post";
 
+import "react-loading-skeleton/dist/skeleton.css";
+
 export default function ForumOverview() {
+  const [loading, setLoading] = useState(true);
   const [forumPosts, setForumPosts] = useState("0");
   const [forumUsers, setForumUsers] = useState("0");
 
@@ -15,9 +18,11 @@ export default function ForumOverview() {
       .then((data) => {
         setForumPosts(data.totalPostNumber);
         setForumUsers(data.totalUserNumber);
+        setLoading(false); // Set loading to false when data is fetched
       })
       .catch((error) => {
         console.error("Error fetching posts:", error);
+        setLoading(false); // Set loading to false in case of an error
       });
   }, []);
 

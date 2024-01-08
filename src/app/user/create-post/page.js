@@ -10,7 +10,8 @@ import {
   Button,
   Switch,
 } from "@nextui-org/react";
-import { Select, SelectItem, Input } from "@nextui-org/react";
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/react";
+import { Select, SelectItem, Input, Link } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 
 
@@ -18,6 +19,8 @@ import { useRouter } from "next/navigation";
 import Footer from "../../../components/footer/Footer";
 
 import { UploadButton } from "../../../utils/uploadthing";
+
+import { Icon } from '@iconify/react';
 
 // import "@uploadthing/react/styles.css";
 
@@ -30,10 +33,20 @@ const CreatePostPage = (props) => {
   const [nsfw, setNsfw] = useState(false);
   const [spoiled, setSpoiled] = useState(false);
   const [errors, setErrors] = useState({}); 
-  const [isFormValid, setIsFormValid] = useState(false); 
-
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [thumbnail, setThumbnail] = useState(null);
+  const {isOpen, onOpen, onClose} = useDisclosure();
+  const [incomingPostId, setIncomingPostId] = useState(0);
 
+  const handleModalOpen = (postIdNumber) => {
+    onOpen();
+    setIncomingPostId(postIdNumber);
+  }
+
+  const closeModal = () => {
+    router.push("/user/post-overview")
+  }
 
   const router = useRouter()
 
@@ -70,41 +83,44 @@ const CreatePostPage = (props) => {
 
     setErrors(errors);
     setIsFormValid(Object.keys(errors).length === 0);
+
   }
+
+  useEffect(() => {
+    validateForm();
+  }, [title, content, categories, thumbnail]);
 
   const handlePublish = async (e) => {
     e.preventDefault();
 
-    await validateForm();
+    setIsLoading(true);
 
     if (isFormValid) { 
 
-      const categoriesArray = [...categories];
-
-      const userId = session.user.id;
-      const bodyData = {
-        title,
-        content,
-        categories: categoriesArray,
-        nsfw,
-        spoiled,
-        published: true,
-        createdAt: currentTime.toISOString(),
-        userId,
-        thumbnail,
-      };
-
       try {
+        const categoriesArray = [...categories];
+
+        const userId = session.user.id;
+        const bodyData = {
+          title,
+          content,
+          categories: categoriesArray,
+          nsfw,
+          spoiled,
+          published: true,
+          createdAt: currentTime.toISOString(),
+          userId,
+          thumbnail,
+        };
+
         const response = await fetch(`/api/post`, {
           method: "POST",
           body: JSON.stringify(bodyData),
         });
 
         const inputPost = await response.json();
-        console.log(inputPost);
-
         // if (inputPost.post.id) {
-          router.push(`/post/${inputPost.post.id}`);
+        handleModalOpen(inputPost.post.id)
         // }
       } catch (error) {
         console.error("Error creating post:", error);
@@ -115,6 +131,28 @@ const CreatePostPage = (props) => {
   return (
     <div className="min-h-screen bg-slate-100">
       <Navbar isLoggedIn={true} />
+      <Modal backdrop="blur" isOpen={isOpen} onClose={closeModal}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalBody className="mt-4">
+                <div className="flex flex-col items-center justify-between">
+                  <p className="font-bold text-xl mb-3">Post Successfully!</p>
+                  <Icon icon="line-md:confirm-circle" width="70" height="70" color="#d8b4fe" />
+                </div>
+              </ModalBody>
+              <ModalFooter  className="flex flex-col">
+                <Button as={Link} className="bg-purple-600 text-white" href={`/post/${incomingPostId}`}>
+                  View Post
+                </Button>
+                <Button as={Link} color="default" variant="flat" href="/user/create-post">
+                  Create a new post
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-semibold mb-8 text-center">Create Post</h1>
         <form
@@ -255,12 +293,11 @@ const CreatePostPage = (props) => {
               </div>
             )}
           </div>
-          <button
-            type="submit"
-            className="bg-purple-600 text-white py-3 px-6 rounded-md hover:bg-purple-700 focus:outline-none focus:ring focus:border-purple-500 block mx-auto"
-          >
-            Publish
-          </button>
+          <div className="flex md:flex-row flex-col justify-end gap-3">
+              <Button as={Link} href="/user/post-overview" variant="shadow" color="default" className="font-bold py-6 px-8">Cancel</Button>
+              <Button type="submit" variant="shadow" color="secondary" className="font-bold py-6 px-8" isDisabled={isFormValid ? false : true} isLoading={isLoading ? true : false}>Publish</Button>
+          </div>
+          
         </form>
       </div>
       <Footer />

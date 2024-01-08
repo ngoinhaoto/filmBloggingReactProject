@@ -113,7 +113,16 @@ export default function ForumPosts() {
         <section className="flex flex-col">
           {loading ? (
             <div>
-              <Skeleton height={200} count={5} />
+              <div>
+                <Skeleton
+                  height={200}
+                  count={5}
+                  style={{
+                    borderRadius: "10px", // Rounded corners
+                    marginBottom: "20px", // Adjust margin as needed
+                  }}
+                />
+              </div>
             </div>
           ) : (
             posts.map((post) => <Post key={post.id} post={post} />)

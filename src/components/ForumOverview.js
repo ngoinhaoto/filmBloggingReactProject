@@ -1,16 +1,12 @@
 "use client";
-import { useState } from "react";
-
-import { useEffect } from "react";
-
-import Post from "./Post";
-
+import React, { useState, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 export default function ForumOverview() {
   const [loading, setLoading] = useState(true);
-  const [forumPosts, setForumPosts] = useState("0");
-  const [forumUsers, setForumUsers] = useState("0");
+  const [forumPosts, setForumPosts] = useState(null);
+  const [forumUsers, setForumUsers] = useState(null);
 
   useEffect(() => {
     fetch("/api/overview")
@@ -34,16 +30,37 @@ export default function ForumOverview() {
           <h2 className="uppercase font-bold mb-2 text-fuchsia-800">
             Forum Overview
           </h2>
-          <div className="grid grid-cols-2">
-            <div>
-              <p className="uppercase font-bold text-gray-400">Total Posts</p>
-              <p className="font-medium">{forumPosts}</p>
+          {loading ? (
+            <div className="grid grid-cols-2">
+              <div>
+                <p className="uppercase font-bold text-gray-400">
+                  <Skeleton />
+                </p>
+                <p className="font-medium">
+                  <Skeleton />
+                </p>
+              </div>
+              <div>
+                <p className="uppercase font-bold text-gray-400">
+                  <Skeleton />
+                </p>
+                <p className="font-medium">
+                  <Skeleton />
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="uppercase font-bold text-gray-400">Users</p>
-              <p className="font-medium">{forumUsers}</p>
+          ) : (
+            <div className="grid grid-cols-2">
+              <div>
+                <p className="uppercase font-bold text-gray-400">Total Posts</p>
+                <p className="font-medium">{forumPosts}</p>
+              </div>
+              <div>
+                <p className="uppercase font-bold text-gray-400">Users</p>
+                <p className="font-medium">{forumUsers}</p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

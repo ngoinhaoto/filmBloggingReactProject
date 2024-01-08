@@ -11,11 +11,12 @@ import { Chip } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
 import userFilled from "@iconify/icons-tabler/user-filled";
 import timeLine from "@iconify/icons-mingcute/time-line";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 import { useEffect } from "react";
 
 import Post from "./Post";
-
 export default function ForumPosts() {
   const [loading, setLoading] = useState(true);
   const [sortByDate, setSortByDate] = useState(new Set(["sortDateAsc"]));
@@ -44,9 +45,7 @@ export default function ForumPosts() {
     () => Array.from(categories).join(", ").replaceAll("_", " "),
     [categories]
   );
-  // if (loading) {
-  //   return <p>Loading Posts...</p>;
-  // }
+
   return (
     <>
       <div className="md:basis-3/4 p-6 m-2">
@@ -112,9 +111,13 @@ export default function ForumPosts() {
         </div>
 
         <section className="flex flex-col">
-          {posts.map((post) => (
-            <Post key={post.id} post={post} />
-          ))}
+          {loading ? (
+            <div>
+              <Skeleton height={200} count={5} />
+            </div>
+          ) : (
+            posts.map((post) => <Post key={post.id} post={post} />)
+          )}
         </section>
       </div>
     </>

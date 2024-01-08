@@ -21,8 +21,16 @@ export const authOptions = {
               password: credentials.password,
             },
           });
-          console.log(user);
-          return user;
+          return {
+            id: user.id,
+            username: user.username,
+            displayName: user.displayName,
+            avatar: user.avatar,
+            createdAt: user.createdAt,
+            location: user.location,
+            post: user.post,
+            comment: user.comment,
+          };
         } catch (error) {
           console.error("Error authenticating user:", error);
         }

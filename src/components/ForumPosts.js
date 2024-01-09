@@ -19,7 +19,7 @@ import { useEffect } from "react";
 import Post from "./Post";
 export default function ForumPosts() {
   const [loading, setLoading] = useState(true);
-  const [sortByDate, setSortByDate] = useState(new Set(["sortDateAsc"]));
+  const [sortByDate, setSortByDate] = useState(["sortDateDes"]);
   const [categories, setCategories] = useState(new Set(["Categories"]));
   const [posts, setPosts] = useState([]);
 
@@ -28,18 +28,31 @@ export default function ForumPosts() {
       .then((response) => response.json())
       .then((data) => {
         setPosts(data.allPosts);
-        setLoading(false); // Set loading to false when data is fetched
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching posts:", error);
-        setLoading(false); // Set loading to false in case of an error
+        setLoading(false);
       });
   }, []);
 
-  const selectedSortByDate = React.useMemo(
-    () => Array.from(sortByDate).join(", ").replaceAll("_", " "),
-    [sortByDate]
-  );
+  const sortPosts = (sortOrder) => {
+    const sorted = [...posts].sort((a, b) => {
+      const dateA = new Date(a.createdAt);
+      const dateB = new Date(b.createdAt);
+      return sortOrder === "sortDateAsc" ? dateA - dateB : dateB - dateA;
+    });
+    setPosts(sorted);
+  };
+
+  const handleSortChange = (keys) => {
+    const sortOrder = keys.has("sortDateAsc") ? "sortDateAsc" : "sortDateDes";
+    setSortByDate([sortOrder]);
+    sortPosts(sortOrder);
+  };
+
+  const selectedSortByDate =
+    sortByDate[0] === "sortDateAsc" ? "Oldest Post First" : "Newest Post First";
 
   const selectedCategories = React.useMemo(
     () => Array.from(categories).join(", ").replaceAll("_", " "),
@@ -69,14 +82,10 @@ export default function ForumPosts() {
                 disallowEmptySelection
                 selectionMode="single"
                 selectedKeys={sortByDate}
-                onSelectionChange={setSortByDate}
+                onSelectionChange={handleSortChange}
               >
-                <DropdownItem key="sortDateAsc">
-                  Sort by Date: Ascending
-                </DropdownItem>
-                <DropdownItem key="sortDateDes">
-                  Sort by Date: Descending
-                </DropdownItem>
+                <DropdownItem key="sortDateAsc">Oldest Post First</DropdownItem>
+                <DropdownItem key="sortDateDes">Newest Post First</DropdownItem>
               </DropdownMenu>
             </Dropdown>
 
@@ -104,7 +113,8 @@ export default function ForumPosts() {
                 <DropdownItem key="fantasy">Fantasy</DropdownItem>
                 <DropdownItem key="comedy">Comedy</DropdownItem>
                 <DropdownItem key="action">Action</DropdownItem>
-                <DropdownItem key="Scifi">Sci-Fi</DropdownItem>
+                <DropdownItem key="experimental">Experimental</DropdownItem>
+                <DropdownItem key="romance">Romance</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -113,7 +123,16 @@ export default function ForumPosts() {
         <section className="flex flex-col">
           {loading ? (
             <div>
-              <Skeleton height={200} count={5} />
+              <div>
+                <Skeleton
+                  height={200}
+                  count={5}
+                  style={{
+                    borderRadius: "10px", // Rounded corners
+                    marginBottom: "20px", // Adjust margin as needed
+                  }}
+                />
+              </div>
             </div>
           ) : (
             posts.map((post) => <Post key={post.id} post={post} />)

@@ -3,28 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Chip } from "@nextui-org/react";
 
-const PostContent = ({ id }) => {
-  const [post, setPost] = useState(null);
-
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await fetch(`/api/post/${id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch post");
-        }
-        const data = await response.json();
-        setPost(data.postDetail);
-      } catch (error) {
-        console.error("Error fetching post:", error);
-      }
-    };
-
-    if (id) {
-      fetchPost();
-    }
-  }, [id]);
-
+const PostContent = ({ post }) => {
   if (!post) {
     return (
       <>
@@ -58,7 +37,7 @@ const PostContent = ({ id }) => {
               alt="Author Avatar"
               className="rounded-full h-10 w-10 object-cover inline-block"
             />
-            <div className="text-xl font-bold">{post.author.name}</div>
+            <div className="text-sm font-bold">{post.author.displayName}</div>
           </div>
         </div>
       </div>

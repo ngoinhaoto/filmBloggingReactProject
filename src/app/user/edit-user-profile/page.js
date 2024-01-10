@@ -3,12 +3,11 @@ import EditProfileForm from "../../user/edit-user-profile/EditProfileForm";
 import NavBarHomePage from "../../../components/navbar/NavBarHomePage";
 import UserSideBar from "../../user/userSideBar/userSideBar";
 import Footer from "../../../components/footer/Footer";
-const isLoggedIn = true;
 
 const UserProfilePage = () => {
   return (
     <div className="bg-white">
-      <NavBarHomePage isLoggedIn={isLoggedIn} />
+      <NavBarHomePage />
 
       <div className="container mx-auto p-4 md:p-0">
         <div className="md:flex">

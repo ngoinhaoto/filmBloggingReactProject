@@ -39,7 +39,7 @@ export default async function AccountOverview() {
                   />
                 </div>
                 <p className="mt-2 mb-4 font-bold text-center">
-                  User Display Name
+                  {data.userOverview.displayName}
                 </p>
                 <div className="container flex mb-4 items-start justify-between">
                   <div className="w-1/2">User ID: {data.userOverview.id}</div>

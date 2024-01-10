@@ -4,7 +4,7 @@ import { useSession, getSession, signIn } from "next-auth/react";
 import { Input, Button } from "@nextui-org/react";
 
 const EditProfileForm = () => {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const [formData, setFormData] = useState({
     displayName: "",
     location: "",
@@ -33,12 +33,26 @@ const EditProfileForm = () => {
 
       if (response.ok) {
         // Update the session with the new user data
-        const updatedSession = await getSession(); // Fetch updated session data
-        signIn("credentials", {
-          username: updatedSession.user.username,
-          displayName: updatedSession.user.displayName,
-          location: updatedSession.user.location,
+        const dataurl = response.url;
+
+        const userpage = await fetch(dataurl);
+
+        const userOverview = await userpage.json();
+
+        const userdata = userOverview.userOverview;
+        console.log(userdata);
+
+        update({
+          displayName: userdata.displayName,
+          location: userdata.location,
         });
+
+        // const updatedSession = await getSession(); // Fetch updated session data
+        // signIn("credentials", {
+        //   username: updatedSession.user.username,
+        //   displayName: updatedSession.user.displayName,
+        //   location: updatedSession.user.location,
+        // });
       } else {
         console.error("Failed to update profile");
       }

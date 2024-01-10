@@ -1,31 +1,74 @@
+"use client";
 import React, { useState, useEffect } from "react";
 import Comment from "./Comment";
 import { Textarea } from "@nextui-org/react";
-
 import { Button } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 
-const CommentSection = ({ postId }) => {
-  const [comments, setComments] = useState([]);
+const CommentSection = ({ comments, postID }) => {
+  const { data: session, status } = useSession();
+
+  const userID = session?.user?.id;
+
   const [newComment, setNewComment] = useState("");
+  const [commentList, setCommentList] = useState([]);
+  const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  const loadComments = async () => {
-    // Fetch comments from your backend based on postId
-    // Update the comments state with fetched comments
-    // const comments = await fetchComments(postId);
-    // setComments(comments);
+  // Load comments into state when the 'comments' prop changes
+  useEffect(() => {
+    setCommentList(comments || []);
+  }, [comments]);
+
+  const validateComment = () => {
+    let errors = {};
+
+    if (!newComment) {
+      errors.comment = "Comment cannot be empty";
+    } else if (newComment.length < 10) {
+      errors.comment = "Comment must be at least 10 characters";
+    }
+
+    setErrors(errors);
+    setIsFormValid(Object.keys(errors).length === 0);
   };
 
   const postComment = async () => {
-    // Send the new comment to your backend for the given postId
-    // Example:
-    // await postNewComment(newComment, postId);
-    // Reload comments after posting a new comment
-    // loadComments();
-  };
+    validateComment();
 
-  useEffect(() => {
-    loadComments(); // Load comments on initial render based on postId
-  }, [postId]);
+    if (isFormValid) {
+      const currentDate = new Date().toISOString();
+
+      const commentData = {
+        postID,
+        date: currentDate,
+        userID,
+        commentContent: newComment,
+      };
+
+      const response = await fetch("/api/comment", {
+        method: "POST",
+        body: JSON.stringify(commentData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        // Fetch the updated comment list after successfully posting a comment
+        const updatedCommentsResponse = await fetch(`/api/post/${postID}`);
+        if (updatedCommentsResponse.ok) {
+          const fetchedResult = await updatedCommentsResponse.json();
+
+          const updatedComments = fetchedResult.postDetail.comments;
+
+          setCommentList(updatedComments.comments || []);
+        }
+
+        setNewComment("");
+      }
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -39,6 +82,8 @@ const CommentSection = ({ postId }) => {
           label="Comment"
           placeholder="Sending thoughts and prayers"
           className="w-full md:w-8/12"
+          isInvalid={!!errors.comment}
+          errorMessage={errors.comment}
         />
         <Button
           onClick={postComment}
@@ -49,7 +94,7 @@ const CommentSection = ({ postId }) => {
         </Button>
       </div>
       <div className="comments-list">
-        {comments.map((comment, index) => (
+        {commentList.map((comment, index) => (
           <Comment key={index} comment={comment} />
         ))}
       </div>

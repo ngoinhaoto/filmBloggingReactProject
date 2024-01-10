@@ -51,11 +51,21 @@ export const authOptions = {
   },
 
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token, user }) {
       session.user = token.user;
       return session;
     },
-    async jwt({ token, user }) {
+
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update") {
+        if (session?.displayName) {
+          token.user.displayName = session.displayName;
+        }
+        if (session?.location) {
+          token.user.location = session.location;
+        }
+      }
+
       if (user) {
         token.user = user;
       }

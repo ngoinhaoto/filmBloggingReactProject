@@ -10,6 +10,8 @@ const SignupPage = () => {
     displayName: "",
     location: "",
   });
+  const [isSuccessPopupVisible, setIsSuccessPopupVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,11 +21,38 @@ const SignupPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Handle form submission, you can add your logic here like sending data to an API, etc.
-    console.log(formData); // For example, logging the form data
+    try {
+      const response = await fetch("/api/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setIsSuccessPopupVisible(true);
+      } else {
+        const data = await response.json();
+        if (response.status === 400) {
+          setErrorMessage(data.message);
+        } else {
+          setErrorMessage("Username already taken");
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setErrorMessage("Failed to sign up");
+    }
+  };
+
+  const closePopup = () => {
+    setIsSuccessPopupVisible(false);
+    setErrorMessage("");
+    window.location.href = "/signin";
   };
 
   return (
@@ -108,6 +137,33 @@ const SignupPage = () => {
           </a>
         </div>
       </form>
+      {isSuccessPopupVisible && (
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-700 bg-opacity-70 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg text-center">
+            <p className="mb-4">Successfully signed up!</p>
+            <button
+              onClick={closePopup}
+              className="bg-purple-800 text-white px-4 py-2 rounded hover:bg-purple-600 focus:outline-none transition duration-500 ease-in-out"
+            >
+              Go to Sign In
+            </button>
+          </div>
+        </div>
+      )}
+
+      {errorMessage && (
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-700 bg-opacity-70 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg text-center">
+            <p className="mb-4">{errorMessage}</p>
+            <button
+              onClick={() => setErrorMessage("")}
+              className="bg-purple-800 text-white px-4 py-2 rounded hover:bg-purple-600 focus:outline-none transition duration-500 ease-in-out"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

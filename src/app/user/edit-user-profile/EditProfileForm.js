@@ -1,61 +1,103 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSession, getSession, signIn } from "next-auth/react";
 import { Input, Button } from "@nextui-org/react";
 
 const EditProfileForm = () => {
-  const [avatar, setAvatar] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
-  const [location, setLocation] = useState("");
+  const { data: session, status, update } = useSession();
+  const [formData, setFormData] = useState({
+    displayName: "",
+    location: "",
+  });
 
-  const handleFormSubmit = (e) => {
+  useEffect(() => {
+    if (session?.user) {
+      setFormData({
+        displayName: session.user.displayName || "",
+        location: session.user.location || "",
+      });
+    }
+  }, [session]);
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // handle form submission later here
+
+    try {
+      const response = await fetch(`/api/user/${session?.user?.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Update the session with the new user data
+        const dataurl = response.url;
+
+        const userpage = await fetch(dataurl);
+
+        const userOverview = await userpage.json();
+
+        const userdata = userOverview.userOverview;
+        console.log(userdata);
+
+        update({
+          displayName: userdata.displayName,
+          location: userdata.location,
+        });
+
+        // const updatedSession = await getSession(); // Fetch updated session data
+        // signIn("credentials", {
+        //   username: updatedSession.user.username,
+        //   displayName: updatedSession.user.displayName,
+        //   location: updatedSession.user.location,
+        // });
+      } else {
+        console.error("Failed to update profile");
+      }
+    } catch (error) {
+      console.error("Error updating profile: ", error);
+    }
   };
 
   return (
     <form onSubmit={handleFormSubmit}>
-      <Input
+      {/* <Input
         type="text"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        value={formData.username}
+        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
         placeholder="Username"
         variant="bordered"
         color="secondary"
         label="Username"
         className="mb-3"
-      />
-      <Input
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        variant="bordered"
-        color="secondary"
-        label="Password"
-        className="mb-3"
-      />
+      /> */}
+
       <Input
         type="text"
-        value={displayName}
-        onChange={(e) => setDisplayName(e.target.value)}
+        value={formData.displayName}
+        onChange={(e) =>
+          setFormData({ ...formData, displayName: e.target.value })
+        }
         placeholder="Display Name"
         variant="bordered"
         color="secondary"
         label="Display Name"
         className="mb-3"
       />
+
       <Input
         type="text"
-        value={location}
-        onChange={(e) => setLocation(e.target.value)}
+        value={formData.location}
+        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
         placeholder="Location"
         variant="bordered"
         color="secondary"
         label="Location"
         className="mb-3"
       />
+
       <Button
         type="submit"
         radius="sm"

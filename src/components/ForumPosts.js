@@ -6,6 +6,8 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  Select,
+  SelectItem
 } from "@nextui-org/react";
 import { Chip } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
@@ -20,7 +22,7 @@ import Post from "./Post";
 export default function ForumPosts() {
   const [loading, setLoading] = useState(true);
   const [sortByDate, setSortByDate] = useState(["sortDateDes"]);
-  const [categories, setCategories] = useState(new Set(["Categories"]));
+  const [categories, setCategories] = useState(new Set([]));
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -54,10 +56,12 @@ export default function ForumPosts() {
   const selectedSortByDate =
     sortByDate[0] === "sortDateAsc" ? "Oldest Post First" : "Newest Post First";
 
-  const selectedCategories = React.useMemo(
-    () => Array.from(categories).join(", ").replaceAll("_", " "),
-    [categories]
-  );
+  const filteredPosts = posts.filter((post) => {
+    if (categories.size === 0) {
+      return true; // Show all posts if no categories are selected
+    }
+    return Array.from(categories).every((category) => post.categories.includes(category));
+  });
 
   return (
     <>
@@ -88,35 +92,34 @@ export default function ForumPosts() {
                 <DropdownItem key="sortDateDes">Newest Post First</DropdownItem>
               </DropdownMenu>
             </Dropdown>
-
-            <Dropdown>
-              <DropdownTrigger>
-                <Button
-                  variant="faded"
-                  radius="sm"
-                  color="secondary"
-                  className="capitalize ms-2"
-                >
-                  {selectedCategories}
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                aria-label="Multiple selection example"
-                variant="flat"
-                closeOnSelect={false}
-                disallowEmptySelection
-                selectionMode="multiple"
-                selectedKeys={categories}
-                onSelectionChange={setCategories}
-              >
-                <DropdownItem key="horror">Horror</DropdownItem>
-                <DropdownItem key="fantasy">Fantasy</DropdownItem>
-                <DropdownItem key="comedy">Comedy</DropdownItem>
-                <DropdownItem key="action">Action</DropdownItem>
-                <DropdownItem key="experimental">Experimental</DropdownItem>
-                <DropdownItem key="romance">Romance</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
+            <Select
+              label="Categories"
+              placeholder="Select multiple"
+              selectionMode="multiple"
+              className="max-w-xs"
+              variant="bordered"
+              onSelectionChange={setCategories}
+            >
+              <SelectItem key="horror" value="horror">
+                Horror
+              </SelectItem>
+              <SelectItem key="fantasy" value="fantasy">
+                Fantasy
+              </SelectItem>
+              <SelectItem key="action" value="action">
+                Action
+              </SelectItem>
+              <SelectItem key="experimental" value="experimental">
+                Experimental
+              </SelectItem>
+              <SelectItem key="comedy" value="comedy">
+                Comedy
+              </SelectItem>
+              <SelectItem key="romance" value="romance">
+                Romance
+              </SelectItem>
+            </Select>
+            
           </div>
         </div>
 
@@ -135,7 +138,7 @@ export default function ForumPosts() {
               </div>
             </div>
           ) : (
-            posts.map((post) => <Post key={post.id} post={post} />)
+            filteredPosts.map((post) => <Post key={post.id} post={post} />)
           )}
         </section>
       </div>

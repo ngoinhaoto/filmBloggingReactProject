@@ -55,14 +55,13 @@ const CommentSection = ({ comments, postID }) => {
       });
 
       if (response.ok) {
-        // Fetch the updated comment list after successfully posting a comment
         const updatedCommentsResponse = await fetch(`/api/post/${postID}`);
         if (updatedCommentsResponse.ok) {
           const fetchedResult = await updatedCommentsResponse.json();
 
           const updatedComments = fetchedResult.postDetail.comments;
 
-          setCommentList(updatedComments.comments || []);
+          setCommentList(updatedComments || []);
         }
 
         setNewComment("");

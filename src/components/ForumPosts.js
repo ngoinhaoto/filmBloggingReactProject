@@ -7,7 +7,7 @@ import {
   DropdownItem,
   Button,
   Select,
-  SelectItem
+  SelectItem,
 } from "@nextui-org/react";
 import { Chip } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
@@ -19,7 +19,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useEffect } from "react";
 
 import Post from "./Post";
-export default function ForumPosts() {
+export default function ForumPosts({ searchValue }) {
   const [loading, setLoading] = useState(true);
   const [sortByDate, setSortByDate] = useState(["sortDateDes"]);
   const [categories, setCategories] = useState(new Set([]));
@@ -57,10 +57,20 @@ export default function ForumPosts() {
     sortByDate[0] === "sortDateAsc" ? "Oldest Post First" : "Newest Post First";
 
   const filteredPosts = posts.filter((post) => {
-    if (categories.size === 0) {
-      return true; // Show all posts if no categories are selected
-    }
-    return Array.from(categories).every((category) => post.categories.includes(category));
+    const isInSearch =
+      !searchValue || // if searchValue is empty, consider all posts
+      post.title.toLowerCase().includes(searchValue.toLowerCase()) || //  if the title includes the searchValue
+      post.content.toLowerCase().includes(searchValue.toLowerCase()) ||
+      post.author.displayName.toLowerCase().includes(searchValue.toLowerCase());
+    //  if the content includes the searchValue
+
+    const isInCategories =
+      categories.size === 0 || // if no categories are selected, consider all categories
+      Array.from(categories).every((category) =>
+        post.categories.includes(category)
+      ); // check if the post belongs to all selected categories
+
+    return isInSearch && isInCategories;
   });
 
   return (
@@ -119,7 +129,6 @@ export default function ForumPosts() {
                 Romance
               </SelectItem>
             </Select>
-            
           </div>
         </div>
 

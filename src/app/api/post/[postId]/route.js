@@ -28,6 +28,10 @@ export async function GET(request, { params }) {
               },
             },
           },
+
+          orderBy: {
+            createdAt: 'desc'
+          }
         },
       },
     });

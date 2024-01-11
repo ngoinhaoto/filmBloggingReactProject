@@ -4,21 +4,26 @@ import Comment from "./Comment";
 import { Textarea } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-const CommentSection = ({ comments, postID }) => {
+const CommentSection = ({ comments, postID, callback}) => {
   const { data: session, status } = useSession();
 
   const userID = session?.user?.id;
+
+  const router = useRouter();
 
   const [newComment, setNewComment] = useState("");
   const [commentList, setCommentList] = useState([]);
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Load comments into state when the 'comments' prop changes
   useEffect(() => {
     setCommentList(comments || []);
-  }, [comments]);
+    validateComment();
+  }, [comments, newComment]);
 
   const validateComment = () => {
     let errors = {};
@@ -34,9 +39,9 @@ const CommentSection = ({ comments, postID }) => {
   };
 
   const postComment = async () => {
-    validateComment();
 
     if (isFormValid) {
+      setIsLoading(true);
       const currentDate = new Date().toISOString();
 
       const commentData = {
@@ -55,16 +60,9 @@ const CommentSection = ({ comments, postID }) => {
       });
 
       if (response.ok) {
-        const updatedCommentsResponse = await fetch(`/api/post/${postID}`);
-        if (updatedCommentsResponse.ok) {
-          const fetchedResult = await updatedCommentsResponse.json();
-
-          const updatedComments = fetchedResult.postDetail.comments;
-
-          setCommentList(updatedComments || []);
-        }
-
-        setNewComment("");
+        setNewComment("")
+        callback();
+        setIsLoading(false);
       }
     }
   };
@@ -88,6 +86,7 @@ const CommentSection = ({ comments, postID }) => {
           onClick={postComment}
           radius="full"
           className="bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg md:ml-2 w-full md:w-auto"
+          isLoading={isLoading ? true : false}
         >
           Post
         </Button>

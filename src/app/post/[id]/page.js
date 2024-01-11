@@ -11,24 +11,24 @@ const Post = ({ params }) => {
   const [comments, setComments] = useState([]);
   const [notFound, setNotFound] = useState(false);
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await fetch(`/api/post/${params.id}`);
-        if (!response.ok) {
-          setNotFound(true);
-          return;
-        }
-        const data = await response.json();
-        setPost(data.postDetail);
-        if (data.postDetail.comments) {
-          setComments(data.postDetail.comments);
-        }
-      } catch (error) {
-        console.error("Error fetching post:", error);
+  const fetchPost = async () => {
+    try {
+      const response = await fetch(`/api/post/${params.id}`);
+      if (!response.ok) {
+        setNotFound(true);
+        return;
       }
-    };
+      const data = await response.json();
+      setPost(data.postDetail);
+      if (data.postDetail.comments) {
+        setComments(data.postDetail.comments);
+      }
+    } catch (error) {
+      console.error("Error fetching post:", error);
+    }
+  };
 
+  useEffect(() => {
     if (params.id) {
       fetchPost();
     }
@@ -44,7 +44,7 @@ const Post = ({ params }) => {
       ) : post ? (
         <>
           <PostContent post={post} />
-          <CommentSection comments={comments} postID={params.id} />
+          <CommentSection comments={comments} postID={params.id} callback={fetchPost}/>
         </>
       ) : (
         <div className="container mx-auto p-4">

@@ -1,11 +1,7 @@
 import prisma from "../../../../lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+
 export async function POST(req, res) {
   const session = await getServerSession({ req });
 

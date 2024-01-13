@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { Chip } from "@nextui-org/react";
 
+import styles from "./PostContent.module.css"; // Import the CSS module
+
 const PostContent = ({ post }) => {
   if (!post) {
     return (
@@ -42,7 +44,7 @@ const PostContent = ({ post }) => {
         </div>
       </div>
       <div
-        className="text-lg"
+        className="prose lg:prose-xl"
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
     </div>

@@ -3,8 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { Chip } from "@nextui-org/react";
 
-import styles from "./PostContent.module.css"; // Import the CSS module
-
 const PostContent = ({ post }) => {
   if (!post) {
     return (
@@ -44,7 +42,7 @@ const PostContent = ({ post }) => {
         </div>
       </div>
       <div
-        className="prose lg:prose-xl"
+        className="prose-sm prose-slate lg:prose-xl prose-img:rounded-xl max-w-none"
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
     </div>

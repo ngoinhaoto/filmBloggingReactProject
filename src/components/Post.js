@@ -7,11 +7,14 @@ import timeLine from "@iconify/icons-mingcute/time-line";
 import Link from "next/link";
 
 const truncateContent = (content, wordCount) => {
-  const words = content.split(" ");
+  // Remove HTML tags, including <img> tags
+  const plainText = content.replace(/<[^>]*>/g, "");
+
+  const words = plainText.split(" ");
   if (words.length > wordCount) {
     return words.slice(0, wordCount).join(" ") + " ...";
   }
-  return content;
+  return plainText;
 };
 
 export default function Post({ post }) {

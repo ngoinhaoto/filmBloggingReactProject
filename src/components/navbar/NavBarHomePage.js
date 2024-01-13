@@ -1,15 +1,49 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 
 import Link from "next/link";
 
 import { signIn, signOut, useSession } from "next-auth/react";
-import { Input, Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
+import {
+  Input,
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Avatar,
+  User,
+} from "@nextui-org/react";
 
-export default function Navbar() {
+import { useRouter, useSearchParams } from "next/navigation";
+
+export default function Navbar({ onSearchChange }) {
   const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    // Call the callback function to pass the search value to the parent (Home) component
+    onSearchChange(value);
+  };
+
+  // const handleSearchChange = (e) => {
+  //   const query = e.target.value;
+  //   setSearchQuery(query);
+
+  //   // Update the URL with the search query
+  //   // const url = query ? `/?search=${encodeURIComponent(query)}` : "/";
+  //   // router.push(url);
+  // };
+
+  if (status === "loading") {
+    return null;
+  }
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -18,12 +52,13 @@ export default function Navbar() {
   const handleSignOut = () => {
     signOut();
   };
+
   const handleSignIn = () => {
     signIn();
   };
 
   if (status === "loading") {
-    return null; // or render a loading indicator
+    return null;
   }
 
   return (
@@ -75,14 +110,32 @@ export default function Navbar() {
               </button>
             </div>
             <div className="hidden md:flex items-center space-x-4">
-              
-              <Input type="text" variant="flat" label="Search" size="sm" className="w-50"/>
+              <Input
+                type="text"
+                variant="flat"
+                label="Search for posts"
+                size="sm"
+                className="w-50"
+                value={searchValue}
+                onChange={handleSearchChange}
+              />
               {session && session.user ? (
                 <>
-                  <Button color="secondary" variant="shadow" className="font-bold rounded-md flex flex-row items-center justify-center py-6" href="/user/create-post" as={Link}>
-                    <Icon icon="basil:add-solid" color="white" width="30" height="30"/>
+                  <Button
+                    color="secondary"
+                    variant="shadow"
+                    className="font-bold rounded-md flex flex-row items-center justify-center py-6"
+                    href="/user/create-post"
+                    as={Link}
+                  >
+                    <Icon
+                      icon="basil:add-solid"
+                      color="white"
+                      width="30"
+                      height="30"
+                    />
                     Create Post
-                  </Button>  
+                  </Button>
                   <Dropdown placement="bottom-end">
                     <DropdownTrigger>
                       <User
@@ -93,7 +146,7 @@ export default function Navbar() {
                         showFallback
                         avatarProps={{
                           isBordered: true,
-                          src:`${session.user.avatar}`,
+                          src: `${session.user.avatar}`,
                         }}
                       />
                     </DropdownTrigger>
@@ -102,10 +155,35 @@ export default function Navbar() {
                         <p className="font-bold">Signed in as</p>
                         <p className="font-bold">@{session.user.username}</p>
                       </DropdownItem>
-                      <DropdownItem key="settings" href="/user/account-overview" as={Link}>My Profile</DropdownItem>
-                      <DropdownItem key="team_settings" href="/user/post-overview" as={Link}>Post Management</DropdownItem>
-                      <DropdownItem key="system" href="/user/edit-user-profile" as={Link}>Settings</DropdownItem>
-                      <DropdownItem key="logout" color="danger" className="text-danger" onClick={handleSignOut}>Sign Out</DropdownItem>
+                      <DropdownItem
+                        key="settings"
+                        href="/user/account-overview"
+                        as={Link}
+                      >
+                        My Profile
+                      </DropdownItem>
+                      <DropdownItem
+                        key="team_settings"
+                        href="/user/post-overview"
+                        as={Link}
+                      >
+                        Post Management
+                      </DropdownItem>
+                      <DropdownItem
+                        key="system"
+                        href="/user/edit-user-profile"
+                        as={Link}
+                      >
+                        Settings
+                      </DropdownItem>
+                      <DropdownItem
+                        key="logout"
+                        color="danger"
+                        className="text-danger"
+                        onClick={handleSignOut}
+                      >
+                        Sign Out
+                      </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
                 </>
@@ -126,14 +204,15 @@ export default function Navbar() {
                 </>
               )}
             </div>
-           
           </div>
         </div>
         <div className={`${isOpen ? "block" : "hidden"} md:hidden`}>
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <input
+            <Input
               type="text"
               placeholder="Search"
+              value={searchValue}
+              onChange={handleSearchChange}
               className="w-full px-4 py-2 rounded-md border focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
             {session && session.user ? (

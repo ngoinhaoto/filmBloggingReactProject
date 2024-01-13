@@ -2,6 +2,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import NextAuth from "next-auth";
 
 import prisma from "../../../../../lib/prisma";
+import bcrypt from "bcrypt";
 
 export const authOptions = {
   secrets: process.env.NEXTAUTH_SECRET,
@@ -12,15 +13,27 @@ export const authOptions = {
         username: { label: "Username", type: "text", placeholder: "stuffs" },
         password: { label: "Password", type: "password" },
       },
-
       async authorize(credentials, req) {
         try {
           const user = await prisma.user.findUnique({
             where: {
               username: credentials.username,
-              password: credentials.password,
             },
           });
+
+          if (!user) {
+            return null;
+          }
+
+          const passwordMatch = await bcrypt.compare(
+            credentials.password,
+            user.password
+          );
+
+          if (!passwordMatch) {
+            return null;
+          }
+
           return {
             id: user.id,
             username: user.username,
@@ -33,6 +46,7 @@ export const authOptions = {
           };
         } catch (error) {
           console.error("Error authenticating user:", error);
+          return null;
         }
       },
     }),

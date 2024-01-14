@@ -59,7 +59,7 @@ const PostContent = ({ post }) => {
         </div>
       </div>
       <div
-        className="prose-sm prose-slate lg:prose-xl prose-img:rounded-xl md:prose-img"
+        className="prose max-w-screen-lg prose-sm lg:prose-base prose-img:rounded-xl"
         dangerouslySetInnerHTML={{ __html: modifiedContent }}
       />
     </div>

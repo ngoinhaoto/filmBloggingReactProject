@@ -1,6 +1,7 @@
 /** * @type {import('tailwindcss').Config} */
 import { nextui } from "@nextui-org/react";
 import { withUt } from "uploadthing/tw";
+require("@tailwindcss/typography");
 
 module.exports = withUt({
   content: [
@@ -20,5 +21,5 @@ module.exports = withUt({
     },
   },
   darkMode: "class",
-  plugins: [nextui()],
+  plugins: [nextui(), require("@tailwindcss/typography")],
 });

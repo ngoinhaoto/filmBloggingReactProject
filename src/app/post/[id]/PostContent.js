@@ -16,6 +16,23 @@ const PostContent = ({ post }) => {
     );
   }
 
+  // Function to add inline styles to img tags
+  const addInlineStyles = (html) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    const images = doc.querySelectorAll("img");
+
+    images.forEach((img) => {
+      img.style.maxWidth = "100%";
+      img.style.height = "auto";
+    });
+
+    return doc.documentElement.innerHTML;
+  };
+
+  const modifiedContent = addInlineStyles(post.content);
+
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-2">
@@ -42,8 +59,8 @@ const PostContent = ({ post }) => {
         </div>
       </div>
       <div
-        className="text-lg"
-        dangerouslySetInnerHTML={{ __html: post.content }}
+        className="prose max-w-screen-lg prose-sm lg:prose-base prose-img:rounded-xl"
+        dangerouslySetInnerHTML={{ __html: modifiedContent }}
       />
     </div>
   );

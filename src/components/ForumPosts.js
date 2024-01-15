@@ -8,6 +8,7 @@ import {
   Button,
   Select,
   SelectItem,
+  Switch,
 } from "@nextui-org/react";
 import { Chip } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
@@ -24,6 +25,8 @@ export default function ForumPosts({ searchValue }) {
   const [sortByDate, setSortByDate] = useState(["sortDateDes"]);
   const [categories, setCategories] = useState(new Set([]));
   const [posts, setPosts] = useState([]);
+  const [allowNSFW, setAllowNSFW] = useState(true);
+  const [allowSpoiledContent, setAllowSpoiledContent] = useState(true);
 
   useEffect(() => {
     fetch("/api/overview")
@@ -70,7 +73,14 @@ export default function ForumPosts({ searchValue }) {
         post.categories.includes(category)
       ); // check if the post belongs to all selected categories
 
-    return isInSearch && isInCategories;
+    const passNSFWFilter = allowNSFW || !post.nsfw;
+
+    const passSpoiledContentFilter =
+      allowSpoiledContent || !post.spoiledContent; // Show Spoiled Content if allowSpoiledContent is true
+
+    return (
+      isInSearch && isInCategories && passNSFWFilter && passSpoiledContentFilter
+    );
   });
 
   return (
@@ -79,6 +89,26 @@ export default function ForumPosts({ searchValue }) {
         <div className="flex mb-4 justify-between w-full">
           <h2 className="font-bold mb-2 text-3xl ">Post Space!</h2>
           <div>
+            <Switch
+              color="secondary"
+              className="mx-3"
+              checked={allowNSFW}
+              defaultSelected
+              onChange={() => setAllowNSFW((prev) => !prev)}
+            >
+              Allow NSFW
+            </Switch>
+
+            <Switch
+              color="warning"
+              defaultSelected
+              className="mx-3"
+              checked={allowSpoiledContent}
+              onChange={() => setAllowSpoiledContent((prev) => !prev)}
+            >
+              Allow Spoiled-Content
+            </Switch>
+
             <Dropdown>
               <DropdownTrigger>
                 <Button

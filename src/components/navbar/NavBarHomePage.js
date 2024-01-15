@@ -75,7 +75,7 @@ export default function NavbarHomePage({ onSearchChange = () => {} }) {
           <NavbarMenuToggle aria-label={isOpen ? "Close menu" : "Open menu"} />
         </NavbarContent>
 
-        <NavbarContent className="sm:hidden pr-3" justify="center">
+        <NavbarContent className="sm:hidden pr-3" justify="end">
           <NavbarBrand>
             <a href="/" className="text-3xl font-['Courier']">
               MovieMuncher
@@ -91,94 +91,100 @@ export default function NavbarHomePage({ onSearchChange = () => {} }) {
           </NavbarItem>
         </NavbarContent>
 
-        <NavbarContent justify="end" className="hidden sm:flex">
-          <Input
-            type="text"
-            variant="flat"
-            label="Search for posts"
-            size="sm"
-            className="w-50"
-            value={searchValue}
-            onChange={handleSearchChange}
-          />
-
+        <NavbarContent justify="end" className="hidden sm:flex gap-4">
+          <NavbarItem>
+            <Input
+              type="text"
+              variant="flat"
+              label="Search for posts"
+              size="sm"
+              className="w-56"
+              value={searchValue}
+              onChange={handleSearchChange}
+            />
+          </NavbarItem>
           {session && session.user ? (
             <>
-              <Button
-                color="secondary"
-                variant="shadow"
-                className="font-bold rounded-md flex flex-row items-center justify-center py-6"
-                href="/user/create-post"
-                as={Link}
-                style={{ minWidth: "50px", minHeight: "50px" }}
-              >
-                <Icon
-                  icon="basil:add-solid"
-                  color="white"
-                  width="120"
-                  height="120"
-                />
-                Create Post
-              </Button>
-              <Dropdown placement="bottom-end">
-                <DropdownTrigger>
-                  <User
-                    as="button"
-                    className="transition-transform flex-row-reverse text-start"
-                    description={`@${session.user.username}`}
-                    name={session.user.displayName}
-                    showFallback
-                    avatarProps={{
-                      isBordered: true,
-                      src: `${session.user.avatar}`,
-                    }}
+              <NavbarItem>
+                <Button
+                  color="secondary"
+                  variant="shadow"
+                  className="font-bold rounded-md flex flex-row items-center justify-center py-6"
+                  href="/user/create-post"
+                  as={Link}
+                >
+                  <Icon
+                    icon="basil:add-solid"
+                    color="white"
+                    width="30"
+                    height="30"
                   />
-                </DropdownTrigger>
-                <DropdownMenu aria-label="User Actions" variant="flat">
-                  <DropdownItem key="profile" className="h-14 gap-2">
-                    <p className="font-bold">Signed in as</p>
-                    <p className="font-bold">@{session.user.username}</p>
-                  </DropdownItem>
-                  <DropdownItem
-                    key="settings"
-                    href="/user/account-overview"
-                    as={Link}
-                  >
-                    My Profile
-                  </DropdownItem>
-                  <DropdownItem
-                    key="team_settings"
-                    href="/user/post-overview"
-                    as={Link}
-                  >
-                    Post Management
-                  </DropdownItem>
-                  <DropdownItem
-                    key="system"
-                    href="/user/edit-user-profile"
-                    as={Link}
-                  >
-                    Settings
-                  </DropdownItem>
-                  <DropdownItem
-                    key="logout"
-                    color="danger"
-                    className="text-danger"
-                    onClick={handleSignOut}
-                  >
-                    Sign Out
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+                  Create Post
+                </Button>
+              </NavbarItem>
+              <NavbarItem>
+                <Dropdown placement="bottom-end">
+                  <DropdownTrigger>
+                    <User
+                      as="button"
+                      className="transition-transform flex-row-reverse text-start"
+                      description={`@${session.user.username}`}
+                      name={session.user.displayName}
+                      showFallback
+                      avatarProps={{
+                        isBordered: true,
+                        src: `${session.user.avatar}`,
+                      }}
+                    />
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="User Actions" variant="flat">
+                    <DropdownItem key="profile" className="h-14 gap-2">
+                      <p className="font-bold">Signed in as</p>
+                      <p className="font-bold">@{session.user.username}</p>
+                    </DropdownItem>
+                    <DropdownItem
+                      key="settings"
+                      href="/user/account-overview"
+                      as={Link}
+                    >
+                      My Profile
+                    </DropdownItem>
+                    <DropdownItem
+                      key="team_settings"
+                      href="/user/post-overview"
+                      as={Link}
+                    >
+                      Post Management
+                    </DropdownItem>
+                    <DropdownItem
+                      key="system"
+                      href="/user/edit-user-profile"
+                      as={Link}
+                    >
+                      Settings
+                    </DropdownItem>
+                    <DropdownItem
+                      key="logout"
+                      color="danger"
+                      className="text-danger"
+                      onClick={handleSignOut}
+                    >
+                      Sign Out
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </NavbarItem>
             </>
           ) : (
             <>
-              <button
-                onClick={handleSignIn}
-                className="px-4 py-2 bg-purple-600 text-white rounded-md"
-              >
-                Sign In
-              </button>
+              <NavbarItem>
+                <button
+                  onClick={handleSignIn}
+                  className="px-4 py-2 bg-purple-600 text-white rounded-md"
+                >
+                  Sign In
+                </button>
+              </NavbarItem>
             </>
           )}
         </NavbarContent>

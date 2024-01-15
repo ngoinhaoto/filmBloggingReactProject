@@ -17,6 +17,14 @@ export async function POST(req) {
   const avatar = "https://i.imgur.com/UEO3Ul7.jpeg";
 
   try {
+    // Check if the username is longer than 50 characters
+    if (username.length > 50) {
+      return NextResponse.json(
+        { message: "Username must not exceed 50 characters" },
+        { status: 400 }
+      );
+    }
+
     // Check if the username already exists in the database
     const existingUser = await prisma.user.findUnique({
       where: {

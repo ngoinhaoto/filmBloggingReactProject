@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Textarea } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 
-const Comment = ({ comment }) => {
-  const commentUserDisplayName = comment.commentUser.displayName;
-  const commentUsername = comment.commentUser.username;
-  const commentUserAvatar = comment.commentUser.avatar;
-  const commentContent = comment.commentBody;
-  const commentDate = comment.createdAt;
+const Comment = ({ comment, onDelete, onEdit }) => {
+  const { data: session } = useSession();
+  const userID = session?.user?.id;
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedComment, setEditedComment] = useState(comment.commentBody);
+
+  useEffect(() => {
+    setEditedComment(comment.commentBody);
+  }, [comment]);
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditedComment(comment.commentBody);
+  };
+
+  const handleSaveEdit = async () => {
+    setIsEditing(false);
+    onEdit(comment.id, editedComment);
+  };
   // Function to format the date
   const formatDate = (date) => {
     const currentDate = new Date();
@@ -31,19 +51,58 @@ const Comment = ({ comment }) => {
   return (
     <div className="flex items-start space-x-4 py-4 border-b border-gray-200">
       <img
-        src={commentUserAvatar}
+        src={comment.commentUser.avatar}
         alt="Avatar"
         className="w-12 h-12 rounded-full object-cover"
       />
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-semibold">{commentUserDisplayName}</p>
-            <p className="text-xs text-gray-500">@{commentUsername}</p>
+            <p className="font-semibold">{comment.commentUser.displayName}</p>
+            <p className="text-xs text-gray-500">
+              @{comment.commentUser.username}
+            </p>
           </div>
-          <p className="text-xs text-gray-500">{formatDate(commentDate)}</p>
+          <p className="text-xs text-gray-500">
+            {formatDate(comment.createdAt)}
+          </p>
         </div>
-        <p className="mt-1">{commentContent}</p>
+        {isEditing ? (
+          <div>
+            <Textarea
+              type="text"
+              color="secondary"
+              value={editedComment}
+              onChange={(e) => setEditedComment(e.target.value)}
+            />
+            <div className="mt-2">
+              <Button
+                onClick={handleSaveEdit}
+                color="success"
+                className="text-white mx-2"
+              >
+                Save
+              </Button>
+              <Button onClick={handleCancelEdit} color="danger">
+                Cancel
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <p className="mt-1">{comment.commentBody}</p>
+            {userID === comment.commentUser.id && (
+              <div className="mt-2">
+                <Button onClick={handleEdit} color="primary" className="mr-2">
+                  Edit
+                </Button>
+                <Button onClick={() => onDelete(comment.id)} color="danger">
+                  Delete
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

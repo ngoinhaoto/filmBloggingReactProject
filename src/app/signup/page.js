@@ -39,8 +39,6 @@ const SignupPage = () => {
         const data = await response.json();
         if (response.status === 400) {
           setErrorMessage(data.message);
-        } else {
-          setErrorMessage("Username already taken");
         }
       }
     } catch (error) {

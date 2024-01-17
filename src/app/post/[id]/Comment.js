@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Textarea } from "@nextui-org/react";
-import { Button } from "@nextui-org/react";
+import {
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/react";
+
+import { Icon } from "@iconify/react";
 import { useSession } from "next-auth/react";
 
 const Comment = ({ comment, onDelete, onEdit }) => {
@@ -27,6 +35,11 @@ const Comment = ({ comment, onDelete, onEdit }) => {
     setIsEditing(false);
     onEdit(comment.id, editedComment);
   };
+
+  const handleDelete = () => {
+    onDelete(comment.id);
+  };
+
   // Function to format the date
   const formatDate = (date) => {
     const currentDate = new Date();
@@ -63,9 +76,30 @@ const Comment = ({ comment, onDelete, onEdit }) => {
               @{comment.commentUser.username}
             </p>
           </div>
-          <p className="text-xs text-gray-500">
-            {formatDate(comment.createdAt)}
-          </p>
+          <div className="flex items-center">
+            <p className="text-xs text-gray-500 mr-4">
+              {formatDate(comment.createdAt)}
+            </p>
+            {userID === comment.commentUser.id && (
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button variant="light">
+                    <Icon
+                      icon="pepicons-pencil:dots-y"
+                      color="#6b21a8"
+                      width="30"
+                      height="30"
+                      className="m-0"
+                    />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu className="right-0 mt-2">
+                  <DropdownItem onClick={handleEdit}>Edit</DropdownItem>
+                  <DropdownItem onClick={handleDelete}>Delete</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            )}
+          </div>
         </div>
         {isEditing ? (
           <div>
@@ -91,16 +125,6 @@ const Comment = ({ comment, onDelete, onEdit }) => {
         ) : (
           <div>
             <p className="mt-1">{comment.commentBody}</p>
-            {userID === comment.commentUser.id && (
-              <div className="mt-2">
-                <Button onClick={handleEdit} color="primary" className="mr-2">
-                  Edit
-                </Button>
-                <Button onClick={() => onDelete(comment.id)} color="danger">
-                  Delete
-                </Button>
-              </div>
-            )}
           </div>
         )}
       </div>

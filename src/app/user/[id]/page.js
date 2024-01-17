@@ -13,7 +13,6 @@ export default function UserPage({ params }) {
     const fetchData = async () => {
       try {
         const response = await fetch(`/api/user/${params.id}`);
-
         if (!response.ok) {
           // If the response is not okay, set userNotFound to true
           setUserNotFound(true);
@@ -21,7 +20,6 @@ export default function UserPage({ params }) {
         }
 
         const data = await response.json();
-        console.log(data);
         setUserOverview(data.userOverview);
       } catch (error) {
         console.error("Error fetching user profile:", error);

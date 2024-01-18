@@ -11,12 +11,9 @@ import {
 import { Icon } from "@iconify/react";
 import { useSession } from "next-auth/react";
 
-const Comment = ({ comment }) => {
-  const commentUserDisplayName = comment.commentUser.displayName;
-  const commentUsername = comment.commentUser.username;
-  const commentUserAvatar = comment.commentUser.avatar;
-  const commentContent = comment.commentBody;
-  const commentDate = comment.createdAt;
+const Comment = ({ comment, onDelete, onEdit }) => {
+  const { data: session } = useSession();
+  const userID = session?.user?.id;
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedComment, setEditedComment] = useState(comment.commentBody);
@@ -67,15 +64,17 @@ const Comment = ({ comment }) => {
   return (
     <div className="flex items-start space-x-4 py-4 border-b border-gray-200">
       <img
-        src={commentUserAvatar}
+        src={comment.commentUser.avatar}
         alt="Avatar"
         className="w-12 h-12 rounded-full object-cover"
       />
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-semibold">{commentUserDisplayName}</p>
-            <p className="text-xs text-gray-500">@{commentUsername}</p>
+            <p className="font-semibold">{comment.commentUser.displayName}</p>
+            <p className="text-xs text-gray-500">
+              @{comment.commentUser.username}
+            </p>
           </div>
           <div className="flex items-center">
             <p className="text-xs text-gray-500 mr-4">

@@ -1,44 +1,29 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import NavBarHomePage from "../../../components/navbar/NavBarHomePage";
 import UserSideBar from "../../user/userSideBar/userSideBar";
 const isLoggedIn = true;
 import Footer from "../../../components/footer/Footer";
-import PostList from "./PostList"
+
 import { Icon } from "@iconify/react";
-import { useSession, getSession } from "next-auth/react";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
+  Chip,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+} from "@nextui-org/react";
 
 export default function PostOverview() {
-
-  const { data: session, status } = useSession();
-  const [posts, setPosts] = useState([])
-
-  useEffect(() => {
-    fetchUserData();
-  }, [session, status]);
-
-  const fetchUserData = async () => {
-    try {
-      if (status === "authenticated" && session?.user?.id) {
-        const response = await fetch(`/api/user/${session.user.id}`);
-        if (response.ok) {
-          const fetchedUserData = await response.json();
-          setPosts(fetchedUserData.userOverview.post);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-
-  const countPublishedAndDraftPosts = () => {
-    const publishedCount = posts.filter((post) => post.published).length;
-    const draftCount = posts.length - publishedCount;
-
-    return { publishedCount, draftCount };
-  };
-
-  const { publishedCount, draftCount } = countPublishedAndDraftPosts();
+  const [filteredPost, setFilterdPost] = useState("");
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
@@ -65,7 +50,7 @@ export default function PostOverview() {
                       </div>
                       <div className="flex-col text-start ms-4">
                         <div className="text-slate-400">My Posts</div>
-                        <div className="font-bold text-3xl">{posts.length}</div>
+                        <div className="font-bold text-3xl">20</div>
                       </div>
                     </div>
                     <button className="w-full text-center py-2 bg-slate-100 rounded-b-xl hover:bg-slate-400 hover:text-white">
@@ -84,7 +69,7 @@ export default function PostOverview() {
                       </div>
                       <div className="flex-col text-start ms-4">
                         <div className="text-slate-400">Published</div>
-                        <div className="font-bold text-3xl">{publishedCount}</div>
+                        <div className="font-bold text-3xl">4</div>
                       </div>
                     </div>
                     <button className="w-full text-center py-2 bg-slate-100 rounded-b-xl hover:bg-slate-400 hover:text-white">
@@ -103,7 +88,7 @@ export default function PostOverview() {
                       </div>
                       <div className="flex-col text-start ms-4">
                         <div className="text-slate-400">Draft</div>
-                        <div className="font-bold text-3xl">{draftCount}</div>
+                        <div className="font-bold text-3xl">10</div>
                       </div>
                     </div>
                     <button className="w-full text-center py-2 bg-slate-100 rounded-b-xl hover:bg-slate-400 hover:text-white">
@@ -112,9 +97,108 @@ export default function PostOverview() {
                   </div>
                 </div>
                 <div className="flex flex-col w-full mt-8">
-                  <PostList fetchUserData={fetchUserData} posts={posts}/>
+                  <div className="flex flex-row justify-between items-center px-4 py-2 bg-white shadow-md rounded-lg">
+                    <a href="" className="md:basis-3/5 text-start">
+                      This is post title
+                    </a>
+                    <div className="md:basis-1/5 flex flex-row items-center justify-between">
+                      <Chip
+                        color="secondary"
+                        className="text-xs uppercase font-extrabold"
+                      >
+                        Published
+                      </Chip>
+                      <div>
+                        <Dropdown placement="bottom-end">
+                          <DropdownTrigger>
+                            <Button variant="light">
+                              <Icon
+                                icon="pepicons-pencil:dots-y"
+                                color="#6b21a8"
+                                width="30"
+                                height="30"
+                                className="m-0"
+                              />
+                            </Button>
+                          </DropdownTrigger>
+                          <DropdownMenu aria-label="Dynamic Actions">
+                            <DropdownItem color="default">
+                              View post
+                            </DropdownItem>
+                            <DropdownItem color="default">
+                              Unpublish
+                            </DropdownItem>
+                            <DropdownItem color="danger">
+                              <Button onPress={onOpen}>Open Modal</Button>
+                              <Modal
+                                backdrop="opaque"
+                                isOpen={isOpen}
+                                onOpenChange={onOpenChange}
+                                classNames={{
+                                  backdrop:
+                                    "bg-gradient-to-t from-zinc-900 to-zinc-900/10 backdrop-opacity-20",
+                                }}
+                              >
+                                <ModalContent>
+                                  {(onClose) => (
+                                    <>
+                                      <ModalHeader className="flex flex-col gap-1">
+                                        Modal Title
+                                      </ModalHeader>
+                                      <ModalBody>
+                                        <p>
+                                          Lorem ipsum dolor sit amet,
+                                          consectetur adipiscing elit. Nullam
+                                          pulvinar risus non risus hendrerit
+                                          venenatis. Pellentesque sit amet
+                                          hendrerit risus, sed porttitor quam.
+                                        </p>
+                                        <p>
+                                          Lorem ipsum dolor sit amet,
+                                          consectetur adipiscing elit. Nullam
+                                          pulvinar risus non risus hendrerit
+                                          venenatis. Pellentesque sit amet
+                                          hendrerit risus, sed porttitor quam.
+                                        </p>
+                                        <p>
+                                          Magna exercitation reprehenderit magna
+                                          aute tempor cupidatat consequat elit
+                                          dolor adipisicing. Mollit dolor
+                                          eiusmod sunt ex incididunt cillum
+                                          quis. Velit duis sit officia eiusmod
+                                          Lorem aliqua enim laboris do dolor
+                                          eiusmod. Et mollit incididunt nisi
+                                          consectetur esse laborum eiusmod
+                                          pariatur proident Lorem eiusmod et.
+                                          Culpa deserunt nostrud ad veniam.
+                                        </p>
+                                      </ModalBody>
+                                      <ModalFooter>
+                                        <Button
+                                          color="danger"
+                                          variant="light"
+                                          onPress={onClose}
+                                        >
+                                          Close
+                                        </Button>
+                                        <Button
+                                          color="primary"
+                                          onPress={onClose}
+                                        >
+                                          Action
+                                        </Button>
+                                      </ModalFooter>
+                                    </>
+                                  )}
+                                </ModalContent>
+                              </Modal>
+                            </DropdownItem>
+                          </DropdownMenu>
+                        </Dropdown>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                
               </div>
             </div>
           </div>

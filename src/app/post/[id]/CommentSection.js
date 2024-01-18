@@ -109,6 +109,40 @@ const CommentSection = ({ comments, postID, callback }) => {
     }
   };
 
+  const editComment = async (commentId, editedComment) => {
+    const response = await fetch(`/api/comment/${commentId}`, {
+      method: "PUT",
+      body: JSON.stringify({ comment: editedComment }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.ok) {
+      const updatedComments = commentList.map((comment) =>
+        comment.id === commentId
+          ? { ...comment, commentBody: editedComment }
+          : comment
+      );
+      setCommentList(updatedComments);
+      callback();
+    }
+  };
+
+  const deleteComment = async (commentId) => {
+    const response = await fetch(`/api/comment/${commentId}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      const updatedComments = commentList.filter(
+        (comment) => comment.id !== commentId
+      );
+      setCommentList(updatedComments);
+      callback();
+    }
+  };
+
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-3xl font-bold mb-4">Comments</h2>
@@ -159,7 +193,12 @@ const CommentSection = ({ comments, postID, callback }) => {
       )}
       <div className="comments-list">
         {commentList.map((comment, index) => (
-          <Comment key={index} comment={comment} />
+          <Comment
+            key={index}
+            comment={comment}
+            onDelete={deleteComment}
+            onEdit={editComment}
+          />
         ))}
       </div>
     </div>

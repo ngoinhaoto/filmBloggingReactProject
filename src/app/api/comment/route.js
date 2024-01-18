@@ -42,3 +42,23 @@ export async function POST(req, res) {
     );
   }
 }
+
+export async function GET(req) {
+  const session = await getServerSession({ req });
+
+  if (!session || !session.user) {
+    return NextResponse.json({
+      name: "lmao",
+      status: "Ur not authorised sorry",
+    });
+  }
+
+  try {
+    const comments = await prisma.comment.findMany();
+
+    return NextResponse.json(comments, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ message: "Unknown error" }, { status: 500 });
+  }
+}

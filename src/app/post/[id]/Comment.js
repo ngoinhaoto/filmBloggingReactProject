@@ -1,4 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Textarea } from "@nextui-org/react";
+import {
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/react";
+
+import { Icon } from "@iconify/react";
+import { useSession } from "next-auth/react";
 
 const Comment = ({ comment }) => {
   const commentUserDisplayName = comment.commentUser.displayName;
@@ -6,6 +17,31 @@ const Comment = ({ comment }) => {
   const commentUserAvatar = comment.commentUser.avatar;
   const commentContent = comment.commentBody;
   const commentDate = comment.createdAt;
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedComment, setEditedComment] = useState(comment.commentBody);
+
+  useEffect(() => {
+    setEditedComment(comment.commentBody);
+  }, [comment]);
+
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditedComment(comment.commentBody);
+  };
+
+  const handleSaveEdit = async () => {
+    setIsEditing(false);
+    onEdit(comment.id, editedComment);
+  };
+
+  const handleDelete = () => {
+    onDelete(comment.id);
+  };
 
   // Function to format the date
   const formatDate = (date) => {
@@ -41,9 +77,57 @@ const Comment = ({ comment }) => {
             <p className="font-semibold">{commentUserDisplayName}</p>
             <p className="text-xs text-gray-500">@{commentUsername}</p>
           </div>
-          <p className="text-xs text-gray-500">{formatDate(commentDate)}</p>
+          <div className="flex items-center">
+            <p className="text-xs text-gray-500 mr-4">
+              {formatDate(comment.createdAt)}
+            </p>
+            {userID === comment.commentUser.id && (
+              <Dropdown>
+                <DropdownTrigger>
+                  <Button variant="light">
+                    <Icon
+                      icon="pepicons-pencil:dots-y"
+                      color="#6b21a8"
+                      width="30"
+                      height="30"
+                      className="m-0"
+                    />
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu className="right-0 mt-2">
+                  <DropdownItem onClick={handleEdit}>Edit</DropdownItem>
+                  <DropdownItem onClick={handleDelete}>Delete</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
+            )}
+          </div>
         </div>
-        <p className="mt-1">{commentContent}</p>
+        {isEditing ? (
+          <div>
+            <Textarea
+              type="text"
+              color="secondary"
+              value={editedComment}
+              onChange={(e) => setEditedComment(e.target.value)}
+            />
+            <div className="mt-2">
+              <Button
+                onClick={handleSaveEdit}
+                color="success"
+                className="text-white mx-2"
+              >
+                Save
+              </Button>
+              <Button onClick={handleCancelEdit} color="danger">
+                Cancel
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <p className="mt-1">{comment.commentBody}</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -78,6 +78,10 @@ export const authOptions = {
         if (session?.location) {
           token.user.location = session.location;
         }
+
+        if (session?.avatar) {
+          token.user.avatar = session.avatar;
+        }
       }
 
       if (user) {

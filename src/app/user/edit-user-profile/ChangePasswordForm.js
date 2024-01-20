@@ -77,6 +77,7 @@ export default function ChangePasswordForm() {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         onClose={handleCloseModal}
+        placement="center"
       >
         {" "}
         <ModalContent>

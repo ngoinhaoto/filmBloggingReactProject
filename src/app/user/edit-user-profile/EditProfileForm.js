@@ -32,27 +32,10 @@ const EditProfileForm = () => {
       });
 
       if (response.ok) {
-        // Update the session with the new user data
-        const dataurl = response.url;
-
-        const userpage = await fetch(dataurl);
-
-        const userOverview = await userpage.json();
-
-        const userdata = userOverview.userOverview;
-        console.log(userdata);
-
         update({
-          displayName: userdata.displayName,
-          location: userdata.location,
+          displayName: formData.displayName,
+          location: formData.location,
         });
-
-        // const updatedSession = await getSession(); // Fetch updated session data
-        // signIn("credentials", {
-        //   username: updatedSession.user.username,
-        //   displayName: updatedSession.user.displayName,
-        //   location: updatedSession.user.location,
-        // });
       } else {
         console.error("Failed to update profile");
       }

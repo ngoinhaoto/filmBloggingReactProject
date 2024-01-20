@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 
 import ChangePasswordForm from "./ChangePasswordForm";
-
+import ChangeAvatarForm from "./ChangeAvatarForm";
 const UserProfilePage = () => {
   return (
     <div className="bg-white">
@@ -27,6 +27,8 @@ const UserProfilePage = () => {
             <EditProfileForm />
 
             <ChangePasswordForm />
+
+            <ChangeAvatarForm />
           </div>
         </div>
       </div>

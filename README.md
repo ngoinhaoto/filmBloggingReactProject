@@ -1,8 +1,55 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MovieMuncher
+
+This is a film blog web application created by Truong & Tri for VNUK's Advanced Web Design Class created by NextJS 13, app router.
 
 ## Getting Started
 
-First, run the development server:
+First, please clone the project from Github.
+
+Then install all the libraries
+
+```
+npm install
+```
+
+Download .env and .env.local files from [Here](https://drive.google.com/drive/folders/1f6X7a-AfFTQWPcruxrCu5pEfzTFgxzCG?usp=sharing)
+
+There are two ways of using the database, running postgresql locally and on Supabase.
+
+### Database set up
+1. Running Locally
+If you want to run locally using PostgresSQL, please download PostgresSQL here: https://www.postgresql.org/download/. After setting up and creating the database. You should put the connection string inside the .env file.
+
+After adding connection string to the .env and .env.local file, you can run prisma, which is an ORM we used for this project.
+
+You can run the command below to 
+
+```
+# Migrate Dev creates a migration on database
+npx prisma migrate dev
+# Prisma db push creates dummy data
+npx prisma db seed
+# You can check the database by using prisma studio
+npx prisma studio
+```
+
+If you find all the data, you can start using the application. You might have to restart VSCode after using migration. 
+
+2. Running Supabase
+
+If using supabase, you can use the connection string that we provided. Do the same with running locally by running following commands
+
+```
+# Migrate Dev creates a migration on database
+npx prisma migrate dev
+# Prisma db push creates dummy data
+npx prisma db seed
+# You can check the database by using prisma studio
+npx prisma studio
+```
+
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -20,6 +67,7 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -27,10 +75,4 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

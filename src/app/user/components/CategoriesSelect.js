@@ -1,8 +1,12 @@
 // CategoriesSelect.js
+"use client";
 import React from "react";
 import { Select, SelectItem } from "@nextui-org/react";
 
+import Category from "../../../components/Category";
+
 const CategoriesSelect = ({ selectedItems, handleCategoryChange, errors }) => {
+  const categories = Category();
   return (
     <div className="flex items-center mb-6">
       <Select
@@ -16,24 +20,11 @@ const CategoriesSelect = ({ selectedItems, handleCategoryChange, errors }) => {
         isInvalid={errors.categoriesBoolean}
         errorMessage={errors.categories}
       >
-        <SelectItem key="horror" value="horror">
-                Horror
-              </SelectItem>
-              <SelectItem key="fantasy" value="fantasy">
-                Fantasy
-              </SelectItem>
-              <SelectItem key="action" value="action">
-                Action
-              </SelectItem>
-              <SelectItem key="experimental" value="experimental">
-                Experimental
-              </SelectItem>
-              <SelectItem key="comedy" value="comedy">
-                Comedy
-              </SelectItem>
-              <SelectItem key="romance" value="romance">
-                Romance
-        </SelectItem>
+        {categories.map((category) => (
+          <SelectItem key={category} value={category}>
+            {category.charAt(0).toUpperCase() + category.slice(1)}
+          </SelectItem>
+        ))}
       </Select>
     </div>
   );

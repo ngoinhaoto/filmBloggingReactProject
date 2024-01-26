@@ -30,6 +30,13 @@ const PostContent = ({ post }) => {
       video.style.height = "auto";
     });
 
+    const iframes = doc.querySelectorAll("iframe");
+
+    iframes.forEach((iframe) => {
+      iframe.style.maxWidth = "100%";
+      iframe.style.height = "auto";
+    });
+
     images.forEach((img) => {
       img.style.maxWidth = "100%";
       img.style.height = "auto";

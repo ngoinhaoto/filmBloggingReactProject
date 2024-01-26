@@ -40,13 +40,6 @@ export async function PUT(req, { params }) {
   const currentPassword = result.currentPassword;
   const newPassword = result.newPassword;
 
-  if (newPassword === currentPassword) {
-    return NextResponse.json(
-      { message: "New password must not be the same with current password." },
-      { status: 400 }
-    );
-  }
-
   if (!newPassword || newPassword === "") {
     return NextResponse.json(
       { message: "Password cannot be empty." },
@@ -54,6 +47,12 @@ export async function PUT(req, { params }) {
     );
   }
 
+  if (newPassword === currentPassword) {
+    return NextResponse.json(
+      { message: "New password must not be the same with current password." },
+      { status: 400 }
+    );
+  }
   if (newPassword.length < 8) {
     return NextResponse.json(
       { message: "New password must be at least 8 characters" },

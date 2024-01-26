@@ -3,11 +3,11 @@ import React, { useState, useEffect } from "react";
 import NavBarHomePage from "../../../components/navbar/NavBarHomePage";
 import Footer from "../../../components/footer/Footer";
 import Skeleton from "react-loading-skeleton";
-import UserInformation from "./UserInformation"
+import UserInformation from "./UserInformation";
 
 import Link from "next/link";
 import UserPost from "./UserPost";
-import { Avatar, Tabs, Tab, } from "@nextui-org/react";
+import { Avatar, Tabs, Tab } from "@nextui-org/react";
 
 function formatDate(timestamp) {
   const currentDate = new Date();
@@ -97,7 +97,30 @@ export default function UserPage({ params }) {
                         userData.comment.map((comment) => (
                           <li key={comment.id}>
                             <Link href={`/post/${comment.postId}`}>
-                              {comment.commentBody}
+                              <div className="flex items-start space-x-4 py-4 border-b border-gray-200">
+                                {" "}
+                                <div className="flex-1">
+                                  <div className="flex items-center justify-between">
+                                    <h3>
+                                      in Post:{" "}
+                                      <span className="italic">
+                                        {comment.Post.title}
+                                      </span>{" "}
+                                      by author:{" "}
+                                      <span className="font-bold">
+                                        {comment.Post.author.username}
+                                      </span>
+                                    </h3>
+
+                                    <p className="text-xs text-gray-500 mr-4 end">
+                                      {formatDate(comment.createdAt)}
+                                    </p>
+                                  </div>
+                                  <div className="flex items-center"></div>
+
+                                  <p>{comment.commentBody}</p>
+                                </div>
+                              </div>
                             </Link>
                           </li>
                         ))}
@@ -105,9 +128,7 @@ export default function UserPage({ params }) {
                   </Tab>
                 </Tabs>
               </div>
-
             </div>
-
           )}
         </div>
         <Footer />

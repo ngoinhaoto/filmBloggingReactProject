@@ -18,7 +18,15 @@ export async function GET(request, { params }) {
     },
     include: {
       post: true,
-      comment: true,
+      comment: {
+        include: {
+          Post: {
+            include: {
+              author: true,
+            },
+          },
+        },
+      },
     },
   });
 

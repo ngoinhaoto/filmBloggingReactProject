@@ -10,6 +10,7 @@ import {
 
 import { Icon } from "@iconify/react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 const Comment = ({ comment, onDelete, onEdit }) => {
   const { data: session } = useSession();
@@ -63,15 +64,21 @@ const Comment = ({ comment, onDelete, onEdit }) => {
 
   return (
     <div className="flex items-start space-x-4 py-4 border-b border-gray-200">
-      <img
-        src={comment.commentUser.avatar}
-        alt="Avatar"
-        className="w-12 h-12 rounded-full object-cover"
-      />
+      <Link href={`/profile/${comment.userId}`}>
+        <img
+          src={comment.commentUser.avatar}
+          alt="Avatar"
+          className="w-12 h-12 rounded-full object-cover"
+        />
+      </Link>
+
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-semibold">{comment.commentUser.displayName}</p>
+            <span className="font-semibold">
+              {comment.commentUser.displayName}
+            </span>
+
             <p className="text-xs text-gray-500">
               @{comment.commentUser.username}
             </p>

@@ -47,12 +47,16 @@ const Post = ({ params }) => {
         <>
           <div className="flex md:flex-row flex-col-reverse container xl:px-36 mx-auto mt-5">
             <div className="md:basis-4/5">
-                <PostContent post={post} />
-                <Divider></Divider>
-                <CommentSection comments={comments} postID={params.id} callback={fetchPost}/>
-            </div>         
+              <PostContent post={post} />
+              <Divider></Divider>
+              <CommentSection
+                comments={comments}
+                postID={params.id}
+                callback={fetchPost}
+              />
+            </div>
             <div className="md:basis-1/5 m-3">
-                <Author author={post.author}/>
+              <Author author={post.author} />
             </div>
           </div>
         </>
@@ -63,7 +67,6 @@ const Post = ({ params }) => {
           </div>
         </div>
       )}
-      <Footer />
     </div>
   );
 };

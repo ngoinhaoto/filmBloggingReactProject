@@ -83,13 +83,13 @@ export default function Post({ post }) {
         href={`/post/${post.id}`}
         className="bg-white flex shadow-lg rounded-xl flex-col md:flex-row my-2"
       >
-        <div className="md:basis-1/4 md:h-auto relative">
+        <div className="md:basis-1/3 md:h-auto relative">
           <div
             className="md:w-full h-60 md:h-full md:rounded-l-xl md:rounded-r-none rounded-t-lg bg-cover bg-center"
             style={{ backgroundImage: `url(${post.thumbnail})` }}
           ></div>
         </div>
-        <div className="md:basis-3/4 flex-col p-6 w-full">
+        <div className="md:basis-2/3 flex-col p-6 w-full">
           <div className="mb-6">
             <div className="text-xl font-medium">{post.title}</div>
             <div
@@ -126,7 +126,7 @@ export default function Post({ post }) {
               <p className="text-gray-600">{post.author.displayName}</p>
             </div>
             <div className="flex items-center">
-              <Icon icon={timeLine} color="#4b5563" />
+              <Icon icon={timeLine} color="#4b5563" className="me-1"/>
               <p className="text-gray-600">{daysAgo}</p>
             </div>
           </div>

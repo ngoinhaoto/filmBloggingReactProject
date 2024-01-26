@@ -18,6 +18,8 @@ export async function GET(request, { params }) {
             username: true,
             displayName: true,
             avatar: true,
+            location: true,
+            createdAt: true
           },
         },
         comments: {
@@ -120,7 +122,6 @@ export async function PUT(req, { params }) {
     categories,
     nsfw,
     spoiled,
-    published,
     userId,
     thumbnail
   } = result;
@@ -149,7 +150,6 @@ export async function PUT(req, { params }) {
         nsfw,
         spoiledContent: spoiled,
         categories,
-        published,
         userId,
         thumbnail,
       }

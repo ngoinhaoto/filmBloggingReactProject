@@ -60,7 +60,6 @@ const CreatePostPage = (props) => {
           categories: categoriesArray,
           nsfw,
           spoiled,
-          published: true,
           createdAt: currentTime.toISOString(),
           userId,
           thumbnail,

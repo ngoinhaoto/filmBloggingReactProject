@@ -45,8 +45,9 @@ const EditProfileForm = () => {
   };
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      {/* <Input
+    <>
+      <form onSubmit={handleFormSubmit}>
+        {/* <Input
         type="text"
         value={formData.username}
         onChange={(e) => setFormData({ ...formData, username: e.target.value })}
@@ -57,40 +58,43 @@ const EditProfileForm = () => {
         className="mb-3"
       /> */}
 
-      <Input
-        type="text"
-        value={formData.displayName}
-        onChange={(e) =>
-          setFormData({ ...formData, displayName: e.target.value })
-        }
-        placeholder="Display Name"
-        variant="bordered"
-        color="secondary"
-        label="Display Name"
-        className="mb-3"
-      />
+        <Input
+          type="text"
+          value={formData.displayName}
+          onChange={(e) =>
+            setFormData({ ...formData, displayName: e.target.value })
+          }
+          placeholder="Display Name"
+          variant="bordered"
+          color="secondary"
+          label="Display Name"
+          className="mb-3"
+        />
 
-      <Input
-        type="text"
-        value={formData.location}
-        onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-        placeholder="Location"
-        variant="bordered"
-        color="secondary"
-        label="Location"
-        className="mb-3"
-      />
+        <Input
+          type="text"
+          value={formData.location}
+          onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+          placeholder="Location"
+          variant="bordered"
+          color="secondary"
+          label="Location"
+          className="mb-3"
+        />
 
-      <Button
-        type="submit"
-        radius="sm"
-        color="secondary"
-        className="font-medium"
-      >
-        Save Changes
-      </Button>
-    </form>
-  );
+        <div className="flex justify-end">
+          <Button
+            type="submit"
+            radius="sm"
+            color="secondary"
+            className="font-medium"
+          >
+            Save Changes
+          </Button>
+        </div>
+
+      </form>
+    </>);
 };
 
 export default EditProfileForm;

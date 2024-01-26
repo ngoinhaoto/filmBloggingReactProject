@@ -3,10 +3,11 @@ import React, { useState, useEffect } from "react";
 import NavBarHomePage from "../../../components/navbar/NavBarHomePage";
 import Footer from "../../../components/footer/Footer";
 import Skeleton from "react-loading-skeleton";
+import UserInformation from "./UserInformation"
 
 import Link from "next/link";
 import UserPost from "./UserPost";
-import { Avatar } from "@nextui-org/react";
+import { Avatar, Tabs, Tab, } from "@nextui-org/react";
 
 function formatDate(timestamp) {
   const currentDate = new Date();
@@ -62,7 +63,7 @@ export default function UserPage({ params }) {
     <>
       <div className="bg-white">
         <NavBarHomePage />
-        <div className="container mx-auto p-4 flex justify-center items-center">
+        <div className="mt-5">
           {loading && <Skeleton height={200} count={5} />}
 
           {!loading && userNotFound && (
@@ -72,46 +73,41 @@ export default function UserPage({ params }) {
           )}
 
           {!loading && !userNotFound && (
-            <div className="flex-col">
-              <div className="flex-col text-center items-center">
-                <div className="w-36 h-36 mx-auto mb-4">
-                  <Avatar
-                    isBordered
-                    src={userData && userData.avatar}
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                </div>
-                <div>Display Name: {userData.displayName}</div>
-                <div>Location: {userData.location}</div>
-                <div>Created: {formatDate(userData.createdAt)}</div>{" "}
+            <div className="flex md:flex-row-reverse flex-col xl:px-36 mx-auto container">
+              <div className="md:basis-1/4 m-3">
+                <UserInformation user={userData} />
               </div>
-              <div className="mt-8">
-                <h2 className="text-2xl font-bold mb-4">User Posts:</h2>
-                <ul>
-                  {userData &&
-                    userData.post &&
-                    userData.post.map((post) => (
-                      <li key={post.id}>
-                        <UserPost post={post} />
-                      </li>
-                    ))}
-                </ul>
+              <div className="md:basis-3/4 m-3">
+                <Tabs aria-label="Options" color="secondary">
+                  <Tab key="post" title="Posts">
+                    <ul>
+                      {userData &&
+                        userData.post &&
+                        userData.post.map((post) => (
+                          <li key={post.id}>
+                            <UserPost post={post} />
+                          </li>
+                        ))}
+                    </ul>
+                  </Tab>
+                  <Tab key="comment" title="Comments">
+                    <ul>
+                      {userData &&
+                        userData.comment &&
+                        userData.comment.map((comment) => (
+                          <li key={comment.id}>
+                            <Link href={`/post/${comment.postId}`}>
+                              {comment.commentBody}
+                            </Link>
+                          </li>
+                        ))}
+                    </ul>
+                  </Tab>
+                </Tabs>
               </div>
-              <div className="mt-8">
-                <h2 className="text-2xl font-bold mb-4">User Comments:</h2>
-                <ul>
-                  {userData &&
-                    userData.comment &&
-                    userData.comment.map((comment) => (
-                      <li key={comment.id}>
-                        <Link href={`/post/${comment.postId}`}>
-                          {comment.commentBody}
-                        </Link>
-                      </li>
-                    ))}
-                </ul>
-              </div>
+
             </div>
+
           )}
         </div>
         <Footer />

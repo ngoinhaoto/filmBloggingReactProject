@@ -40,6 +40,7 @@ export default function ChangeAvatarForm() {
           avatar: avatar,
         });
         onClose();
+        setAvatar(null);
       } else {
         const errorMessage = await response.json();
         alert(`Failed to change avatar: ${errorMessage.message}`);
@@ -51,13 +52,18 @@ export default function ChangeAvatarForm() {
 
   return (
     <div className="mt-4">
-      <Button
+      <div className="flex flex-row justify-between items-center">
+        <div>Avatar</div>
+        <Button
         onPress={onOpen}
         className="bg-gradient-to-tr from-blue-500 to-purple-500 text-white shadow-lg"
+        radius="sm"
       >
         Change Avatar
       </Button>
 
+      </div>
+      
       <Modal isOpen={isOpen} onClose={onClose} placement="center">
         <ModalContent>
           {(onClose) => (

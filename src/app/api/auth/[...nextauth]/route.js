@@ -19,6 +19,9 @@ export const authOptions = {
             where: {
               username: credentials.username,
             },
+            include: {
+              post: true,
+            }
           });
 
           if (!user) {
@@ -41,8 +44,7 @@ export const authOptions = {
             avatar: user.avatar,
             createdAt: user.createdAt,
             location: user.location,
-            post: user.post,
-            comment: user.comment,
+            post: user.post.length
           };
         } catch (error) {
           console.error("Error authenticating user:", error);

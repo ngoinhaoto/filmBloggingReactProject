@@ -69,9 +69,13 @@ export default function ChangePasswordForm() {
 
   return (
     <div className="mt-4">
-      <Button onPress={onOpen} color="warning">
-        Change Password
-      </Button>
+      <div className="flex flex-row justify-between items-center">
+        <div>Password</div>
+        <Button onPress={onOpen} color="warning" radius="sm">
+          Change
+        </Button>
+      </div>
+      
 
       <Modal
         isOpen={isOpen}

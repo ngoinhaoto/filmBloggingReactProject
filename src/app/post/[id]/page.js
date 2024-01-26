@@ -5,6 +5,8 @@ import PostContent from "./PostContent";
 import NavbarHomePage from "../../../components/navbar/NavBarHomePage";
 import Footer from "../../../components/footer/Footer";
 import CommentSection from "./CommentSection";
+import Author from "./Author";
+import { Divider } from "@nextui-org/react";
 
 const Post = ({ params }) => {
   const [post, setPost] = useState(null);
@@ -35,19 +37,27 @@ const Post = ({ params }) => {
   }, [params.id]);
 
   return (
-    <div className="bg-slate-100">
+    <div className="bg-white">
       <NavbarHomePage />
       {notFound ? (
-        <div className="container mx-auto p-4 text-center">
+        <div className="container xl:px-36 mx-auto mt-5">
           <div className="text-4xl font-bold text-red-500">Page not found</div>
         </div>
       ) : post ? (
         <>
-          <PostContent post={post} />
-          <CommentSection comments={comments} postID={params.id} callback={fetchPost}/>
+          <div className="flex md:flex-row flex-col-reverse container xl:px-36 mx-auto mt-5">
+            <div className="md:basis-4/5">
+                <PostContent post={post} />
+                <Divider></Divider>
+                <CommentSection comments={comments} postID={params.id} callback={fetchPost}/>
+            </div>         
+            <div className="md:basis-1/5 m-3">
+                <Author author={post.author}/>
+            </div>
+          </div>
         </>
       ) : (
-        <div className="container mx-auto p-4">
+        <div className="container xl:px-36 mx-auto mt-5">
           <div className="flex justify-between items-center mb-2">
             <div>Loading...</div>
           </div>

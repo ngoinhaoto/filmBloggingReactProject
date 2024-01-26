@@ -70,7 +70,7 @@ export default function NavbarHomePage({ onSearchChange = () => {} }) {
 
   return (
     <>
-      <Navbar isBordered shouldHideOnScroll>
+      <Navbar isBordered shouldHideOnScroll maxWidth="xl" className="xl:px-52">
         <NavbarContent className="sm:hidden" justify="start">
           <NavbarMenuToggle aria-label={isOpen ? "Close menu" : "Open menu"} />
         </NavbarContent>
@@ -101,6 +101,7 @@ export default function NavbarHomePage({ onSearchChange = () => {} }) {
               className="w-56"
               value={searchValue}
               onChange={handleSearchChange}
+              radius="md"
             />
           </NavbarItem>
           {session && session.user ? (
@@ -108,14 +109,15 @@ export default function NavbarHomePage({ onSearchChange = () => {} }) {
               <NavbarItem>
                 <Button
                   color="secondary"
-                  variant="shadow"
-                  className="font-bold rounded-md flex flex-row items-center justify-center py-6"
+                  variant="bordered"
+                  className="font-bold flex flex-row items-center justify-center py-6"
                   href="/user/create-post"
                   as={Link}
+                  radius="md"
                 >
                   <Icon
                     icon="basil:add-solid"
-                    color="white"
+                    color="secondary"
                     width="30"
                     height="30"
                   />
@@ -125,16 +127,14 @@ export default function NavbarHomePage({ onSearchChange = () => {} }) {
               <NavbarItem>
                 <Dropdown placement="bottom-end">
                   <DropdownTrigger>
-                    <User
+                  <Avatar
+                      isBordered
                       as="button"
-                      className="transition-transform flex-row-reverse text-start"
-                      description={`@${session.user.username}`}
+                      className="transition-transform"
+                      color="default"
                       name={session.user.displayName}
-                      showFallback
-                      avatarProps={{
-                        isBordered: true,
-                        src: `${session.user.avatar}`,
-                      }}
+                      size="md"
+                      src={session.user.avatar}
                     />
                   </DropdownTrigger>
                   <DropdownMenu aria-label="User Actions" variant="flat">

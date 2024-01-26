@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <div className="bg-slate-100">
       <NavbarHomePage onSearchChange={handleSearchChange} />
-      <div className="flex flex-col-reverse md:flex-row container mx-auto mt-5">
+      <div className="flex flex-col-reverse md:flex-row container xl:px-36 mx-auto mt-5">
         <div className="md:w-3/4 h-full">
           <ForumPosts searchValue={searchValue} />
         </div>

@@ -22,7 +22,16 @@ export async function GET(request, { params }) {
         include: {
           Post: {
             include: {
-              author: true,
+              author: {
+                select: {
+                  id: true,
+                  displayName: true,
+                  username: true,
+                  avatar: true,
+                  location: true,
+                  createdAt: true
+                }
+              },
             },
           },
         },

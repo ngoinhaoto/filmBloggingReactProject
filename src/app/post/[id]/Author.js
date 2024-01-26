@@ -38,16 +38,15 @@ export default function Author({author}) {
                 <p className="uppercase font-bold text-gray-400 mb-2">Posted by</p>
                 <div className="p-6 border rounded-lg">
                     <a href={`/profile/${author.id}`} className="mb-4 flex">
-                        <Avatar
-                            isBordered="true"
-                            size="lg"
-                            src={`${author.avatar}`}
-                            className="mr-3"
-                        />
-                        <div className="flex flex-col justify-center">
-                            <p className="text-lg font-bold">{author.displayName}</p>
-                            <p className="text-gray-400 text-sm">@{author.username}</p>
-                        </div>
+                        <User
+
+                          name={(<p>{author.displayName}</p>)}
+                          description={`@${author.username}`}
+                          avatarProps={{
+                            src: `${author.avatar}`,
+                            variant: `bordered`
+                          }}
+                        />         
                     </a>
                     
                     <Divider/>

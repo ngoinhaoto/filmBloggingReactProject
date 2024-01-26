@@ -36,10 +36,10 @@ export default function AccountOverview() {
     <>
       <div className="bg-gray-100">
         <NavBarHomePage />
-        <div className="container xl:px-36 mx-auto mt-5">
-          <div className="md:flex">
+        <div className="container xl:px-36 px-3 mx-auto mt-5">
+          <div className="flex md:flex-row flex-col">
             <UserSideBar />
-            <div className="w-full md:w-4/5 m-3 text-center">
+            <div className="md:w-full m-3 text-center">
               <h1 className="text-2xl mb-6">Account Overview</h1>
 
               <div className="user-overview flex-col flex items-center align-middle justify-center">

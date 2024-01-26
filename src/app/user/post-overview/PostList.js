@@ -32,6 +32,12 @@ export default function PostList({ fetchUserData, posts }) {
     onClose()
   }
 
+  const formatDateTime = (originalDateTime) => {
+    const dateTime = new Date(originalDateTime)
+    const formattedDateTime = dateTime.toLocaleString();
+    return formattedDateTime
+  }
+
   async function deletePost(deletePostId) {
     try {
       const response = await fetch(`/api/post/${deletePostId}`, {
@@ -56,7 +62,7 @@ export default function PostList({ fetchUserData, posts }) {
           </a>
           <div className="md:basis-2/5 flex flex-row items-center justify-between">
 
-            <div>{post.createdAt}</div>
+            <div>{formatDateTime(post.createdAt)}</div>
             <div>
               <Dropdown placement="bottom-end">
                 <DropdownTrigger>

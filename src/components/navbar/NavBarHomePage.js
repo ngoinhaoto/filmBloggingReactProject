@@ -178,12 +178,17 @@ export default function NavbarHomePage({ onSearchChange = () => {} }) {
           ) : (
             <>
               <NavbarItem>
-                <button
-                  onClick={handleSignIn}
-                  className="px-4 py-2 bg-purple-600 text-white rounded-md"
+              <Button
+                  color="secondary"
+                  variant="flat"
+                  className="font-bold flex flex-row items-center justify-center py-6"
+                  href="/signin"
+                  as={Link}
+                  radius="md"
                 >
+                  <Icon icon="iconamoon:enter-duotone" width={30}/>
                   Sign In
-                </button>
+                </Button>
               </NavbarItem>
             </>
           )}
@@ -213,7 +218,7 @@ export default function NavbarHomePage({ onSearchChange = () => {} }) {
               <NavbarMenuItem>
                 <Link
                   href="/user/edit-user-profile/"
-                  className="block px-4 py-2 text-left w-full bg-orange-800 text-white hover:bg-purple-600 hover:text-white rounded-md flex items-center"
+                  className="px-4 py-2 text-left w-full bg-orange-800 text-white hover:bg-purple-600 hover:text-white rounded-md flex items-center"
                 >
                   <span>User Profile </span>
                   <Icon

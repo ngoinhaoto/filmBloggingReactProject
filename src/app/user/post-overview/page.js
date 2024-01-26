@@ -37,24 +37,21 @@ export default function PostOverview() {
       <div className="bg-gray-100">
         <NavBarHomePage isLoggedIn={isLoggedIn} />
 
-        <div className="container xl:px-36 mx-auto mt-5">
-          <div className="md:flex">
+        <div className="container xl:px-36 px-3 mx-auto mt-5">
+          <div className="flex md:flex-row flex-col">
             <UserSideBar />
-            <div className="w-full md:w-4/5 text-start m-3">
+            <div className="text-start m-3 md:w-full">
               <h1 className="text-2xl">Post Overview</h1>
 
-              <div className="user-overview flex-col flex items-center align-middle justify-center">
                 
-                <div className="flex flex-col w-full mt-4">
-                  <div className="flex flex-row mb-2">
+                <div className="flex flex-col mt-4">
+                  <div className="flex flex-row mb-1">
                     <div className="basis-3/5 font-bold uppercase text-gray-400 text-sm">Title</div>
                     <div className="basis-2/5 font-bold uppercase text-gray-400 text-sm">Created at</div>
                   </div>
                   <Divider className="mb-4"/>
                   <PostList fetchUserData={fetchUserData} posts={posts}/>
                 </div>
-                
-              </div>
             </div>
           </div>
         </div>

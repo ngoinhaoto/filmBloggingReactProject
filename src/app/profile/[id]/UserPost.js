@@ -75,7 +75,7 @@ export default function UserPost({ post }) {
 
   return (
     <Link href={`/post/${post.id}`} passHref>
-      <div className="bg-white flex shadow-lg rounded-xl flex-col md:flex-row my-2">
+      <div className="bg-white flex shadow-lg rounded-xl flex-col md:flex-row mt-4">
         <div className="md:basis-1/4 md:h-auto relative">
           <div
             className="md:w-full h-60 md:h-full md:rounded-l-xl md:rounded-r-none rounded-t-lg bg-cover bg-center"

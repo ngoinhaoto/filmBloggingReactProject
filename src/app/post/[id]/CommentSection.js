@@ -14,6 +14,7 @@ import {
 } from "@nextui-org/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Icon } from "@iconify/react";
 
 const CommentSection = ({ comments, postID, callback }) => {
   const { data: session, status } = useSession();
@@ -68,6 +69,14 @@ const CommentSection = ({ comments, postID, callback }) => {
 
     setSortByDate(selectedOption);
   };
+
+  const toggleSortOrder = () => {
+    // Toggle sort direction
+    setSortDirection((prevDirection) =>
+      prevDirection === "desc" ? "asc" : "desc"
+    );
+  };
+
   const validateComment = () => {
     let errors = {};
 
@@ -145,28 +154,17 @@ const CommentSection = ({ comments, postID, callback }) => {
 
   return (
     <div className="container mx-auto p-4">
+      <div className="flex flex-row items-center justify-between">
       <h2 className="text-3xl font-bold mb-4">Comments</h2>
-      <Dropdown>
-        <DropdownTrigger>
-          <Button
-            variant="faded"
-            radius="sm"
-            color="secondary"
-            className="capitalize ms-2"
-          >
-            Sort by: {sortByDate === "newest" ? "Newest" : "Oldest"} (
-            {sortDirection === "asc" ? "Asc" : "Desc"})
-          </Button>
-        </DropdownTrigger>
-        <DropdownMenu>
-          <DropdownItem onClick={() => handleSortChange("newest")}>
-            Newest
-          </DropdownItem>
-          <DropdownItem onClick={() => handleSortChange("oldest")}>
-            Oldest
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+      <Button
+          variant="faded"
+          radius="sm"
+          color="secondary"
+          className="capitalize ms-2"
+          onClick={toggleSortOrder}
+        > {sortDirection === "asc" ? <>Oldest<Icon icon="iconoir:sort-up" width={25}/></> : <>Newest<Icon icon="iconoir:sort-down" width={25}/></>}
+        </Button>
+      </div>
 
       {session && (
         <div className="flex flex-wrap md:flex-nowrap gap-4 items-center mt-4 mb-4">

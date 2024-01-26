@@ -72,7 +72,7 @@ export default function ForumOverview() {
           <>
           <User
             as={Link}
-            href={`user/account-overview`}
+            href={`/profile/${session.user.id}`}
             name={session.user.displayName}
             description={`${session.user.post} post(s) on this forum`}
             avatarProps={{
@@ -96,7 +96,20 @@ export default function ForumOverview() {
                   Create Post
           </Button>
           </>
-        ) : (<></>)}
+        ) : (
+        <>
+        <p className="text-gray-400">Sign in to start creating posts</p>
+        <Button
+                  color="default"
+                  variant="flat"
+                  className="font-bold flex flex-row items-center justify-center mt-2 "
+                  href="/signin"
+                  as={Link}
+                  radius="sm"
+                >
+                  Sign In
+          </Button>
+          </>)}
         </div>
       </div>
     </>

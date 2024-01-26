@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from "react";
 import { Divider, Button, User, Link, Avatar } from "@nextui-org/react";
 import { Icon } from "@iconify/react";
@@ -36,18 +37,13 @@ export default function UserInformation({ user }) {
             <div className="shadow-lg rounded-xl bg-white">
                 <img src="/board.jpg" alt="banner" className="rounded-t-xl" />
                 <div className="p-6">
-                    <div className="mb-4 flex">
-                        <Avatar
-                            isBordered="true"
-                            size="lg"
-                            src={`${user.avatar}`}
-                            className="mr-3"
-                        />
-                        <div className="flex flex-col justify-center">
-                            <p className="text-lg font-bold">{user.displayName}</p>
-                            <p className="text-gray-400 text-sm">@{user.username}</p>
-                        </div>
-                    </div>
+                        <User
+                        name={user.displayName}
+                        description={`@${user.username}`}
+                        avatarProps={{
+                          src: `${user.avatar}`
+                        }}
+                        className="mb-4"/>                     
                     
                     <Divider/>
                     <div className="flex-col mt-4 text-gray-700">
@@ -60,7 +56,6 @@ export default function UserInformation({ user }) {
                             Joined {calculateDaysAgo(user.createdAt)}
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </>

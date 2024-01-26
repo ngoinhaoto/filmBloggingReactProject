@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Chip } from "@nextui-org/react";
+import { Chip, Divider } from "@nextui-org/react";
 
 const PostContent = ({ post }) => {
   if (!post) {
@@ -40,40 +40,42 @@ const PostContent = ({ post }) => {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-2">
-        <div>
+        <div className="w-full">
           <h1 className="text-4xl font-bold mb-2">{post.title}</h1>
-          <p className="uppercase font-bold text-gray-400 text-sm mb-4">
+          <p className="uppercase font-bold text-gray-400 text-sm mb-2">
             Posted by 
             <a href={`/profile/${post.userId}`} className="hover:underline text-gray-500"> {post.author.displayName} </a>
             on <span className="text-gray-500">{formattedDateTime}</span>
             </p>
-          <div className="flex gap-1 flex-wrap mb-4 uppercase font-bold text-xs">
+          <div className="flex flex-row gap-1 flex-wrap mb-4 uppercase font-bold items-center">
+            <p className="text-gray-400 text-sm">TAGS BY</p>
             {post.spoiledContent &&
             <Chip
             classNames={{
-              base: "bg-gradient-to-br from-yellow-500 to-pink-400 border-small border-white/50 shadow-pink-500/30",
+              base: "bg-gradient-to-br from-yellow-500 to-pink-400 border-small border-white/50 shadow-pink-500/30 mb-1",
               content: "drop-shadow shadow-black text-white",
             }}
             variant="shadow"
             radius="sm">
-                Spoiled
+                <p className="font-bold text-xs">Spoiled</p>
             </Chip>}
             {post.nsfw && 
             <Chip
             classNames={{
-              base: "bg-gradient-to-br from-red-500 to-pink-400 border-small border-white/50 shadow-pink-500/30",
+              base: "bg-gradient-to-br from-red-500 to-pink-400 border-small border-white/50 shadow-pink-500/30 mb-1",
               content: "drop-shadow shadow-black text-white",
             }}
             variant="shadow"
             radius="sm">
-              NSFW
+              <p className="font-bold text-xs">NSFW</p>
             </Chip>}
             {post.categories.map((category, index) => (
-              <Chip key={index} color="default" variant="solid" radius="sm">
-                {category}
+              <Chip key={index} color="primary" variant="solid" radius="sm" className="mb-1">
+                <p className="font-bold text-xs">{category}</p>
               </Chip>
             ))}
           </div>
+          <Divider/>
         </div>
         {/* Author Name & Avatar */}
         

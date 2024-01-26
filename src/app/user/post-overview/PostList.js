@@ -18,7 +18,7 @@ import {
   onOpenChange
 } from "@nextui-org/react";
 
-export default function PostList({ fetchUserData, posts }) {
+export default function PostList({ fetchUserData, posts, session, update }) {
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [selectedPost, setSelectedPost] = useState(null)
@@ -45,6 +45,7 @@ export default function PostList({ fetchUserData, posts }) {
       });
 
       if (response.ok) {
+        update({post: session?.user?.post-1})
         closeModal();
         fetchUserData();
       }

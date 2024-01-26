@@ -84,6 +84,10 @@ export const authOptions = {
         if (session?.avatar) {
           token.user.avatar = session.avatar;
         }
+        
+        if (session?.post) {
+          token.user.post = session.post;
+        }
       }
 
       if (user) {

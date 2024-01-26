@@ -68,6 +68,7 @@ const CreatePostPage = (props) => {
 
         const inputPost = await response.json();
         handleModalOpen(inputPost.post.id)
+        update({post: session.user.post+1})
 
         // }
       } catch (error) {

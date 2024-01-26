@@ -11,7 +11,7 @@ import { Divider } from "@nextui-org/react";
 
 export default function PostOverview() {
 
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const [posts, setPosts] = useState([])
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function PostOverview() {
                     <div className="basis-2/5 font-bold uppercase text-gray-400 text-sm">Created at</div>
                   </div>
                   <Divider className="mb-4"/>
-                  <PostList fetchUserData={fetchUserData} posts={posts}/>
+                  <PostList fetchUserData={fetchUserData} posts={posts} session={session} update={update}/>
                 </div>
             </div>
           </div>

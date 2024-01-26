@@ -107,6 +107,7 @@ export default function ChangePasswordForm() {
                         </button>
                       }
                       type={isCurrentPasswordVisible ? "text" : "password"}
+                      required
                       id="currentPassword"
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
@@ -130,6 +131,7 @@ export default function ChangePasswordForm() {
                       }
                       type={isNewPasswordVisible ? "text" : "password"}
                       id="newPassword"
+                      required
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                     />

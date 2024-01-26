@@ -2,8 +2,10 @@ import prisma from "../../../../lib/prisma";
 import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 
+import { authOptions } from "../auth/[...nextauth]/route";
+
 export async function POST(req, res) {
-  const session = await getServerSession({ req });
+  const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     return Response.json({
@@ -44,7 +46,7 @@ export async function POST(req, res) {
 }
 
 export async function GET(req) {
-  const session = await getServerSession({ req });
+  const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     return NextResponse.json({

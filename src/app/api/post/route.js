@@ -1,6 +1,8 @@
 import prisma from "../../../../lib/prisma";
 import { getServerSession } from "next-auth/next";
 
+import { authOptions } from "../auth/[...nextauth]/route";
+
 export const config = {
   api: {
     bodyParser: false,
@@ -8,7 +10,7 @@ export const config = {
 };
 
 export async function POST(req, res) {
-  const session = await getServerSession({ req });
+  const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
     return Response.json({
@@ -25,16 +27,8 @@ export async function POST(req, res) {
 
   console.log("RESULT: ", result);
 
-  const {
-    title,
-    content,
-    categories,
-    nsfw,
-    spoiled,
-    userId,
-    thumbnail,
-    createdAt,
-  } = result;
+  const { title, content, categories, nsfw, spoiled, thumbnail, createdAt } =
+    result;
   try {
     const post = await prisma.post.create({
       data: {
@@ -44,7 +38,7 @@ export async function POST(req, res) {
         spoiledContent: spoiled,
         createdAt,
         categories,
-        userId,
+        userId: session.user.id,
         thumbnail,
       },
       include: {

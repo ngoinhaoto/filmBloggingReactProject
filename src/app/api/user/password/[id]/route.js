@@ -1,10 +1,21 @@
 import prisma from "../../../../../../lib/prisma";
 
 import bcrypt from "bcrypt";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../../../auth/[...nextauth]/route";
 
 import { NextResponse } from "next/server";
 
 export async function PUT(req, { params }) {
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user) {
+    return Response.json({
+      name: "lmao",
+      status: "Ur not authorised sorry",
+    });
+  }
+
   if (req.method !== "PUT") {
     return NextResponse.json(
       { message: "Method Not Allowed" },

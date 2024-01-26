@@ -67,6 +67,7 @@ const Post = ({ params }) => {
           </div>
         </div>
       )}
+      <Footer></Footer>
     </div>
   );
 };

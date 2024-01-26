@@ -17,10 +17,35 @@ export async function POST(req) {
   const avatar = "https://i.imgur.com/UEO3Ul7.jpeg";
 
   try {
-    // Check if the username is longer than 50 characters
-    if (username.length > 50) {
+    if (password.length < 8) {
       return NextResponse.json(
-        { message: "Username must not exceed 50 characters" },
+        { message: "Password must be at least 8 characters long" },
+        { status: 400 }
+      );
+    }
+
+    // Check if the username is longer than 50 characters
+    if (username.length > 50 || username.length < 5) {
+      return NextResponse.json(
+        { message: "Username length should be between 5 and 50 characters" },
+        { status: 400 }
+      );
+    }
+
+    if (displayName.length === 0) {
+      return NextResponse.json(
+        {
+          message: "Display Name must not be empty",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (location.length === 0) {
+      return NextResponse.json(
+        {
+          message: "Location must not be empty",
+        },
         { status: 400 }
       );
     }

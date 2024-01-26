@@ -11,9 +11,12 @@ export async function PUT(req, { params }) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
-    return NextResponse.json({
-      message: "Ur not authorised sorry",
-    }, {status: 403});
+    return NextResponse.json(
+      {
+        message: "Ur not authorised sorry",
+      },
+      { status: 403 }
+    );
   }
 
   if (req.method !== "PUT") {
@@ -37,10 +40,24 @@ export async function PUT(req, { params }) {
   const currentPassword = result.currentPassword;
   const newPassword = result.newPassword;
 
-  if(!newPassword || newPassword === "") {
+  if (newPassword === currentPassword) {
+    return NextResponse.json(
+      { message: "New password must not be the same with current password." },
+      { status: 400 }
+    );
+  }
+
+  if (!newPassword || newPassword === "") {
     return NextResponse.json(
       { message: "Password cannot be empty." },
-      { status: 403 }
+      { status: 400 }
+    );
+  }
+
+  if (newPassword.length < 8) {
+    return NextResponse.json(
+      { message: "New password must be at least 8 characters" },
+      { status: 400 }
     );
   }
 

@@ -1,6 +1,6 @@
 # MovieMuncher
 
-This is a film blog web application created by Truong & Tri for VNUK's Advanced Web Design Class created by NextJS 13, app router.
+This is a film blog web application created by Truong & Chinh for VNUK's Advanced Web Design Class created by NextJS 13, app router.
 
 ## Getting Started
 

@@ -14,29 +14,36 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.2.9",
-    "@prisma/client": "^5.7.0",
+    "@prisma/client": "^5.8.1",
     "@tinymce/tinymce-react": "^4.3.2",
+    "@uploadthing/react": "^6.1.0",
     "@vercel/postgres": "^0.5.1",
+    "bcrypt": "^5.1.1",
     "draft-js": "^0.11.7",
+    "faker": "^5.5.3",
     "framer-motion": "^10.16.15",
     "next": "14.0.3",
+    "next-auth": "^4.24.5",
     "react": "^18",
     "react-dom": "^18",
     "react-draft-wysiwyg": "^1.15.0",
     "react-loading-skeleton": "^3.3.1",
-    "react-quill": "^2.0.0"
+    "react-quill": "^0.0.2",
+    "uploadthing": "^6.1.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.3.1",
     "@iconify/icons-mingcute": "^1.2.9",
     "@iconify/icons-tabler": "^1.2.95",
     "@iconify/react": "^4.1.1",
     "@iconify/tailwind": "^0.1.4",
+    "@tailwindcss/typography": "^0.5.10",
     "@types/react": "18.2.47",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
     "postcss": "^8",
-    "prisma": "^5.7.0",
+    "prisma": "^5.8.1",
     "tailwindcss": "^3.3.0"
   }
 }

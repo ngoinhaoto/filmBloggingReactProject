@@ -56,10 +56,9 @@ export async function DELETE(req, { params }) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
-    return Response.json({
-      name: "lmao",
-      status: "Ur not authorised sorry",
-    });
+    return NextResponse.json({
+      message: "Ur not authorised sorry",
+    }, { status: 403 });
   }
 
   const postId = parseInt(params.postId, 10);
@@ -105,13 +104,26 @@ export async function PUT(req, { params }) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
-    return Response.json({
-      name: "lmao",
-      status: "Ur not authorised sorry",
-    });
+    return NextResponse.json({
+      message: "Ur not authorised sorry",
+    }, { status: 403 });
   }
 
   const result = await req.json();
+  if (result.userId) {
+    return NextResponse.json({
+      message: "Invalid field.",
+    }, { status: 403 });
+  }
+
+  for (const field in result) {
+    if (result.hasOwnProperty(field) && typeof result[field] === "string" && result[field].trim() === "") {
+      return NextResponse.json({
+        message: "Invalid field: Empty string not allowed.",
+      }, {status: 403});
+    }
+  }
+
   const postId = parseInt(params.postId)
 
   console.log("RESULT: ", result);
@@ -122,9 +134,15 @@ export async function PUT(req, { params }) {
     categories,
     nsfw,
     spoiled,
-    userId,
     thumbnail
   } = result;
+
+  if (categories && (categories.length === 0 || categories.some(cat => typeof cat === "string" && cat.trim() === ""))) {
+    return NextResponse.json({
+      message: "Invalid field: categories must be in array and cannot contain empty object's string.",
+    }, {status: 403});
+  }
+
   try {
     const checkUserId = await prisma.post.findUnique({
       where: {
@@ -132,14 +150,14 @@ export async function PUT(req, { params }) {
       }
     })
 
-    if(!checkUserId) {
-      return NextResponse.json({message: "Post does not exist."}, {status: 404})
+    if (!checkUserId) {
+      return NextResponse.json({ message: "Post does not exist." }, { status: 404 })
     }
 
-    if(checkUserId.userId !== session.user.id) {
-      return NextResponse.json({message: "You do not own this post"}, {status: 403})
+    if (checkUserId.userId !== session.user.id) {
+      return NextResponse.json({ message: "You do not own this post" }, { status: 403 })
     }
-    
+
     const post = await prisma.post.update({
       where: {
         id: postId
@@ -150,7 +168,6 @@ export async function PUT(req, { params }) {
         nsfw,
         spoiledContent: spoiled,
         categories,
-        userId,
         thumbnail,
       }
     });

@@ -12,7 +12,7 @@ import PostForm from "../components/PostForm";
 
 const CreatePostPage = (props) => {
   const currentTime = new Date(); // Get current timestamp
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("Enter your post here!");
   const [categories, setCategories] = useState(null);
@@ -52,16 +52,12 @@ const CreatePostPage = (props) => {
 
       try {
         const categoriesArray = [...categories];
-
-        const userId = session.user.id;
         const bodyData = {
           title,
           content,
           categories: categoriesArray,
           nsfw,
           spoiled,
-          createdAt: currentTime.toISOString(),
-          userId,
           thumbnail,
         };
 
@@ -71,8 +67,8 @@ const CreatePostPage = (props) => {
         });
 
         const inputPost = await response.json();
-        // if (inputPost.post.id) {
         handleModalOpen(inputPost.post.id)
+
         // }
       } catch (error) {
         console.error("Error creating post:", error);

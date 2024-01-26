@@ -18,9 +18,6 @@ import { Icon } from "@iconify/react";
 
 const CommentSection = ({ comments, postID, callback }) => {
   const { data: session, status } = useSession();
-
-  const userID = session?.user?.id;
-
   const router = useRouter();
 
   const [newComment, setNewComment] = useState("");
@@ -97,8 +94,6 @@ const CommentSection = ({ comments, postID, callback }) => {
 
       const commentData = {
         postID,
-        date: currentDate,
-        userID,
         commentContent: newComment,
       };
 

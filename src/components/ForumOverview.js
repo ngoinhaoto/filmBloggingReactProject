@@ -10,7 +10,7 @@ export default function ForumOverview() {
   const [loading, setLoading] = useState(true);
   const [forumPosts, setForumPosts] = useState(null);
   const [forumUsers, setForumUsers] = useState(null);
-  const { data: session, status } = useSession();
+  const { data: session, status, update} = useSession();
 
   useEffect(() => {
     fetch("/api/overview")

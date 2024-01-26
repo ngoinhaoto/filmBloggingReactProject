@@ -24,8 +24,8 @@ model User {
 
 model Post {
   id             Int       @id @default(autoincrement())
-  title          String?
-  content        String?
+  title          String
+  content        String
   thumbnail      String
   nsfw           Boolean   @default(false)
   spoiledContent Boolean   @default(false)
@@ -39,10 +39,10 @@ model Post {
 
 model Comment {
   id          Int      @id @default(autoincrement())
-  commentBody String?
+  commentBody String
   commentUser User     @relation("LinkBetweenUserAndComment", fields: [userId], references: [id])
-  Post        Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId      Int?
+  Post        Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId      Int
   createdAt   DateTime @default(now())
   userId      Int
 }

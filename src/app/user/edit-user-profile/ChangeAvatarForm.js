@@ -21,6 +21,29 @@ export default function ChangeAvatarForm() {
 
   const [avatar, setAvatar] = useState(null);
 
+  const handleDeleteAvatar = async () => {
+    try {
+      const userId = session?.user?.id;
+
+      const response = await fetch(`/api/user/avatar/${userId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        alert("Avatar deleted successfully");
+
+        console.log(response);
+
+        const dummyAvatar = "https://i.imgur.com/UEO3Ul7.jpeg";
+        update({
+          avatar: dummyAvatar,
+        });
+      }
+    } catch (error) {
+      console.log("error deleting avatar: ", error);
+    }
+  };
+
   const handleSaveChange = async () => {
     try {
       const userId = session?.user?.id;
@@ -53,17 +76,26 @@ export default function ChangeAvatarForm() {
   return (
     <div className="mt-4">
       <div className="flex flex-row justify-between items-center">
-        <div>Avatar</div>
+        <div>Edit Avatar</div>
         <Button
-        onPress={onOpen}
-        className="bg-gradient-to-tr from-blue-500 to-purple-500 text-white shadow-lg"
-        radius="sm"
-      >
-        Change Avatar
-      </Button>
-
+          onPress={onOpen}
+          className="bg-gradient-to-tr from-blue-500 to-purple-500 text-white shadow-lg"
+          radius="sm"
+        >
+          Change Avatar
+        </Button>
       </div>
-      
+
+      <div className="flex flex-row justify-between items-center mt-4">
+        <div>Delete Avatar</div>
+        <Button
+          className="bg-gradient-to-tr from-yellow-500 to-red-800 text-white shadow-lg"
+          radius="sm"
+          onPress={handleDeleteAvatar}
+        >
+          Remove Avatar
+        </Button>
+      </div>
       <Modal isOpen={isOpen} onClose={onClose} placement="center">
         <ModalContent>
           {(onClose) => (

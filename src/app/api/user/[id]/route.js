@@ -1,10 +1,11 @@
+//user/[id]/route.js
 import { user } from "@nextui-org/react";
 import prisma from "../../../../../lib/prisma";
 import { NextResponse, NextRequest } from "next/server";
 
 import { getServerSession } from "next-auth/next";
-
 import { authOptions } from "../../auth/[...nextauth]/route";
+
 export async function GET(request, { params }) {
   function exclude(user, keys) {
     return Object.fromEntries(
@@ -30,8 +31,8 @@ export async function GET(request, { params }) {
                   username: true,
                   avatar: true,
                   location: true,
-                  createdAt: true,
-                },
+                  createdAt: true
+                }
               },
             },
           },
@@ -51,10 +52,9 @@ export async function PUT(req, { params }) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
-    return Response.json({
-      name: "lmao",
-      status: "Ur not authorised sorry",
-    });
+    return NextResponse.json({
+      message: "Ur not authorised sorry",
+    }, {status: 403});
   }
 
   if (req.method !== "PUT") {
@@ -66,7 +66,17 @@ export async function PUT(req, { params }) {
 
   const userId = parseInt(params.id);
 
+  if (userId !== session.user.id) {
+    return NextResponse.json(
+      { message: "You do not own this account or this account does not exist." },
+      { status: 403 }
+    );
+  }
+
   const { displayName, location } = await req.json();
+  if (displayName === "" || location === "") {
+    return NextResponse.json({ message: "Not Allowed - Empty string not allowed" }, { status: 403 });
+  }
 
   try {
     await prisma.user.update({

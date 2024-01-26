@@ -78,16 +78,12 @@ export default function EditPostPage({params}) {
     
           try {
             const categoriesArray = [...categories];
-    
-            const userId = session.user.id;
             const bodyData = {
               title,
               content,
               categories: categoriesArray,
               nsfw,
               spoiled,
-              published: true,
-              userId,
               thumbnail,
             };
     

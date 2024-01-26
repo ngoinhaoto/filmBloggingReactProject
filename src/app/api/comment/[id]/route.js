@@ -33,10 +33,9 @@ export async function DELETE(req, { params }) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
-    return Response.json({
-      name: "lmao",
-      status: "Ur not authorised sorry",
-    });
+    return NextResponse.json({
+      message: "Ur not authorised sorry",
+    }, {status: 403});
   }
 
   const commentId = parseInt(params.id, 10);
@@ -81,16 +80,18 @@ export async function DELETE(req, { params }) {
 export async function PUT(req, { params }) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
-    return Response.json({
-      name: "lmao",
-      status: "Ur not authorised sorry",
-    });
+    return NextResponse.json({
+      message: "Ur not authorised sorry",
+    }, {status: 403});
   }
 
   const commentId = parseInt(params.id, 10);
   const updatedCommentBody = await req.json();
 
   const updatedCommentContent = updatedCommentBody.comment;
+  if (!updatedCommentContent || updatedCommentContent === "") {
+    return NextResponse.json({message: "Invalid field"}, {status: 403})
+  }
 
   try {
     const existingComment = await prisma.comment.findUnique({
@@ -100,7 +101,7 @@ export async function PUT(req, { params }) {
     });
 
     if (!existingComment) {
-      return new NextResponse.json(
+      return NextResponse.json(
         { message: "Comment not found" },
         { status: 404 }
       );
@@ -122,7 +123,7 @@ export async function PUT(req, { params }) {
       },
     });
 
-    return new NextResponse(updatedComment, { status: 200 });
+    return NextResponse.json({updatedComment}, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json({ message: "Unknown error" }, { status: 500 });

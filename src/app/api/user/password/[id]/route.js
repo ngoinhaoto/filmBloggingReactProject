@@ -1,3 +1,4 @@
+//user/password/[id]/route.js
 import prisma from "../../../../../../lib/prisma";
 
 import bcrypt from "bcrypt";
@@ -10,10 +11,9 @@ export async function PUT(req, { params }) {
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user) {
-    return Response.json({
-      name: "lmao",
-      status: "Ur not authorised sorry",
-    });
+    return NextResponse.json({
+      message: "Ur not authorised sorry",
+    }, {status: 403});
   }
 
   if (req.method !== "PUT") {
@@ -25,10 +25,24 @@ export async function PUT(req, { params }) {
 
   const userId = parseInt(params.id);
 
+  if (userId !== session.user.id) {
+    return NextResponse.json(
+      { message: "You dont know this account" },
+      { status: 403 }
+    );
+  }
+
   const result = await req.json();
 
   const currentPassword = result.currentPassword;
   const newPassword = result.newPassword;
+
+  if(!newPassword || newPassword === "") {
+    return NextResponse.json(
+      { message: "Password cannot be empty." },
+      { status: 403 }
+    );
+  }
 
   try {
     const currentUser = await prisma.user.findUnique({

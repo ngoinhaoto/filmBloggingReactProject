@@ -14,7 +14,7 @@ npm install
 
 Download .env and .env.local files from [Here](https://drive.google.com/drive/folders/1f6X7a-AfFTQWPcruxrCu5pEfzTFgxzCG?usp=sharing)
 
-There are two ways of using the database, running postgresql locally and on Vercel.
+There are two ways of using the database, running postgresql locally and on supabase.
 
 Still we heavily recommend to run on local because vercel written speed is very slow...
 
@@ -39,21 +39,8 @@ npx prisma studio
 
 If you find all the data, you can start using the application. You might have to restart VSCode after using migration. 
 
-2. Running Vercel Database (this is a lot slower)
 
-If using vercel, you can use the connection string that we provided from [Here](https://drive.google.com/drive/folders/1f6X7a-AfFTQWPcruxrCu5pEfzTFgxzCG?usp=sharing). Then run the following commands
-
-```
-# Migrate Dev creates a migration on database
-npx prisma migrate dev
-# Pull the data from the database, no need to seed data because data is already on the server
-npx prisma db pull
-# You can check the database by using prisma studio
-npx prisma studio
-```
-
-
-3. Running Supabase Database (faster than vercel)
+2. Running Supabase Database (slower than local)
 
 When using Supabase database, you have to replace the schema.prisma at /prisma/schema.prisma and add the .env and .env.local we provided [Here](https://drive.google.com/drive/folders/1f6X7a-AfFTQWPcruxrCu5pEfzTFgxzCG?usp=sharing).
 Then run the following commmands

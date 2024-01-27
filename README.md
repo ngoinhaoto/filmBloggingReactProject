@@ -35,9 +35,9 @@ npx prisma studio
 
 If you find all the data, you can start using the application. You might have to restart VSCode after using migration. 
 
-2. Running Supabase
+2. Running Vercel Database
 
-If using supabase, you can use the connection string that we provided. Do the same with running locally by running following commands
+If using vercel, you can use the connection string that we provided. Do the same with running locally by running following commands
 
 ```
 # Migrate Dev creates a migration on database

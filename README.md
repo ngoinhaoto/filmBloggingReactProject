@@ -16,8 +16,6 @@ Download .env and .env.local files from [Here](https://drive.google.com/drive/fo
 
 There are two ways of using the database, running postgresql locally and on supabase.
 
-Still we heavily recommend to run on local because vercel written speed is very slow...
-
 ### Database set up
 1. Running Locally
 If you want to run locally using PostgresSQL, please download PostgresSQL here: https://www.postgresql.org/download/. After setting up and creating the database. You should put the connection string inside the .env file accordingly to your postgres setting.

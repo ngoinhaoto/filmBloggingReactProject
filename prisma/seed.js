@@ -3,6 +3,24 @@ const prisma = new PrismaClient()
 const { faker } = require('@faker-js/faker');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+let categoryList = [
+  "horror",
+  "fantasy",
+  "action",
+  "experimental",
+  "comedy",
+  "romance",
+  "scifi",
+  "adventure",
+  "animation",
+  "documentary",
+  "family",
+  "music",
+  "mystery",
+  "thriller",
+  "war",
+  "western",
+];
 
 function generateDummyPost() {
   const username = faker.internet.userName();
@@ -14,9 +32,8 @@ function generateDummyPost() {
   const location = faker.location.city() + ', ' + faker.location.country();
   const title = faker.lorem.sentence();
   const content = faker.lorem.paragraph();
-  const categories = Array.from({ length: 3 }, () => faker.lorem.word());
   const thumbnail = 'https://i.imgur.com/qNk5dQy.jpg';
-
+  const categories = categoryList.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * (5 - 3 + 1)) + 3);
   // const saltRound = 10;
 
   // const password = await bcrypt.hash(plainPassword, saltRound);

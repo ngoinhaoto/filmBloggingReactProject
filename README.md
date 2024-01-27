@@ -42,8 +42,8 @@ If using supabase, you can use the connection string that we provided. Do the sa
 ```
 # Migrate Dev creates a migration on database
 npx prisma migrate dev
-# Prisma db push creates dummy data
-npx prisma db seed
+# Pull the data from the database, no need to seed data because data is already on the server
+npx prisma db pull
 # You can check the database by using prisma studio
 npx prisma studio
 ```

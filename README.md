@@ -41,7 +41,7 @@ If you find all the data, you can start using the application. You might have to
 
 2. Running Vercel Database (this is a lot slower)
 
-If using vercel, you can use the connection string that we provided. Do the same with running locally by running following commands
+If using vercel, you can use the connection string that we provided from [Here](https://drive.google.com/drive/folders/1f6X7a-AfFTQWPcruxrCu5pEfzTFgxzCG?usp=sharing). Then run the following commands
 
 ```
 # Migrate Dev creates a migration on database
@@ -53,7 +53,22 @@ npx prisma studio
 ```
 
 
-Then, run the development server:
+3. Running Supabase Database (faster than vercel)
+
+When using Supabase database, you have to replace the schema.prisma at /prisma/schema.prisma and add the .env and .env.local we provided [Here](https://drive.google.com/drive/folders/1f6X7a-AfFTQWPcruxrCu5pEfzTFgxzCG?usp=sharing).
+Then run the following commmands
+
+```
+# Migrate Dev creates a migration on database
+npx prisma migrate dev
+# Pull the data from the database, no need to seed data because data is already on the server
+npx prisma db pull
+# You can check the database by using prisma studio
+npx prisma studio
+```
+
+
+### Then, run the development server:
 
 ```bash
 npm run dev

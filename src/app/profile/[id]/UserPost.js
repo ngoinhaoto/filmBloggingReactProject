@@ -101,15 +101,14 @@ export default function UserPost({ post }) {
                 NSFW
               </Chip>
             )}
-            <Chip
-              key={post.categories[0]}
-              classNames={categoryChipStyles}
-              variant="solid"
-              radius="sm"
-            >
-              {post.categories[0].charAt(0).toUpperCase() +
-                post.categories[0].slice(1)}{" "}
-            </Chip>
+            {post.categories.map((category, index) => (
+              <Chip
+                key={index}
+                variant="solid"
+                radius="sm"
+              >    {category.charAt(0).toUpperCase() + category.slice(1)}{" "}</Chip>
+
+            ))}
           </div>
 
           <div className="w-full flex">

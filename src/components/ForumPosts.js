@@ -139,11 +139,11 @@ export default function ForumPosts({ searchValue }) {
                   
                   <Switch
                     color="danger"
-                    checked={allowNSFW}
-                    defaultSelected
+                    // checked={allowNSFW}
                     aria-label
                     onChange={() => setAllowNSFW((prev) => !prev)}
                     isIconOnly
+                    defaultSelected={allowNSFW}
                   ></Switch>
                 </div>
                 <div className="flex flex-row items-center w-full justify-between">
@@ -153,8 +153,8 @@ export default function ForumPosts({ searchValue }) {
                   </div>      
                   <Switch
                     color="warning"
-                    defaultSelected
-                    checked={allowSpoiledContent}
+                    // checked={allowSpoiledContent}
+                    defaultSelected={allowSpoiledContent}
                     onChange={() => setAllowSpoiledContent((prev) => !prev)}
                     isIconOnly
                   ></Switch>
@@ -174,6 +174,7 @@ export default function ForumPosts({ searchValue }) {
                     variant="flat"
                     color="primary"
                     onSelectionChange={setCategories}
+                    defaultSelectedKeys={categories}
                   >
                     {categoriesList.map((category) => (
                       <SelectItem key={category} value={category}>
